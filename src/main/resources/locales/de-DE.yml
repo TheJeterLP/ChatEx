@@ -1,0 +1,24 @@
+Commands:
+  Reload:
+    Description: 'Lädt das Plugin und seine Konfiguration neu.'
+  Clear:
+    Description: 'Leert den Chat.'
+    Console: 'KONSOLE'
+    Unknown: 'UNBEKANNT'
+Messages:
+  Chat:
+    AdDetected: '&4[FEHLER] &7Werbung ist nicht erlaubt! &c(%perm)'
+  Commands:
+    Reload:
+      Success: '&aChatEx wurde neugeladen.'
+    Clear:
+      Success: '&aDer Chat wurde geleert von '
+  CommandResult:
+    NoPermission: '&4[FEHLER] &7Dafür hast du nicht die nötigen Rechte! &c(%perm)'
+    WrongUsage: '&c[FEHLER] &7Falsche Benutzung! Benutze &6/%cmd% help&7!'
+  Player:
+      Join: '%faction %prefix%displayname%suffix &ehat den Server betreten!'
+      FirstJoin: '%faction %prefix%displayname%suffix &ehat den Server &6das erste Mal &ebetreten!'
+      Quit: '%faction %prefix%displayname%suffix &ehat den Server verlassen!'
+      Kick: '%faction %prefix%displayname%suffix &ewurde vom Server gekickt!'
+    

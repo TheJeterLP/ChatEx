@@ -1,0 +1,6 @@
+name: ${project.name}
+main: de.thejeterlp.chatex.ChatEX
+version: ${project.version}
+author: TheJeterLP
+description: Chat management plugin
+softdepend: [PermissionsEx,Vault]
