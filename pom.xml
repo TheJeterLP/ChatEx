@@ -13,6 +13,17 @@
         <url>scm:git:git@github.com:TheJeterLP/ChatEx.git</url>
         <developerConnection>scm:git:git@github.com:TheJeterLP/ChatEx.git</developerConnection>
     </scm>
+    
+    <distributionManagement>
+        <repository>
+            <id>jeter-repo</id>
+            <url>http://jeter.de:8081/repository/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>jeter-repo</id>
+            <url>http://jeter.de:8081/repository/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
            
     <build>
         <defaultGoal>clean install</defaultGoal>
@@ -30,6 +41,7 @@
             </resource>
         </resources>      
     </build>
+    
     <repositories>
         <repository>
             <id>spigot-repo</id>
@@ -43,7 +55,12 @@
             <id>pex-repo</id>
             <url>http://maven.elmakers.com/repository/</url>
         </repository>
+        <repository>
+            <id>jeter-repo</id>
+            <url>http://jeter.de:8081/repository/releases/</url>
+        </repository>
     </repositories>
+    
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -67,6 +84,7 @@
             <version>LATEST</version>
         </dependency>
     </dependencies>
+    
     <properties>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
