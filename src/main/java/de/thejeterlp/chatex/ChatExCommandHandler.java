@@ -5,7 +5,9 @@ import de.thejeterlp.chatex.command.CommandArgs;
 import de.thejeterlp.chatex.command.CommandHandler;
 import de.thejeterlp.chatex.command.CommandResult;
 import de.thejeterlp.chatex.command.HelpPage;
+import de.thejeterlp.chatex.utils.Config;
 import de.thejeterlp.chatex.utils.Locales;
+import de.thejeterlp.chatex.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -28,8 +30,12 @@ public class ChatExCommandHandler {
 
     @BaseCommand(command = "chatex", sender = BaseCommand.Sender.CONSOLE)
     public CommandResult executeConsole(CommandSender sender, CommandArgs args) {
-        if (helpPage.sendHelp(sender, args)) return CommandResult.SUCCESS;
-        if (!args.isEmpty()) return CommandResult.ERROR;
+        if (helpPage.sendHelp(sender, args)) {
+            return CommandResult.SUCCESS;
+        }
+        if (!args.isEmpty()) {
+            return CommandResult.ERROR;
+        }
         sender.sendMessage("§aChatEx plugin by " + ChatEX.getInstance().getDescription().getAuthors());
         return CommandResult.SUCCESS;
     }
@@ -44,6 +50,14 @@ public class ChatExCommandHandler {
         Bukkit.getPluginManager().disablePlugin(ChatEX.getInstance());
         Bukkit.getPluginManager().enablePlugin(ChatEX.getInstance());
         sender.sendMessage(Locales.MESSAGES_RELOAD.getString());
+
+        if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                String name = Utils.replacePlayerPlaceholders(p, Config.TABLIST_FORMAT.getString());
+                p.setPlayerListName(name);
+            }
+        }
+
         return CommandResult.SUCCESS;
     }
 
