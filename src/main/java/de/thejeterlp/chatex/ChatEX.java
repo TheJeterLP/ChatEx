@@ -7,16 +7,16 @@ import de.thejeterlp.chatex.plugins.PluginManager;
 import de.thejeterlp.chatex.utils.Config;
 import java.io.File;
 import org.bukkit.plugin.java.JavaPlugin;
- 
+
 /**
  * @author TheJeterLP
  */
 public class ChatEX extends JavaPlugin {
-    
+
     private static ChatEX INSTANCE;
     private static PluginManager manager;
     private CommandManager cmanager;
-    
+
     @Override
     public void onEnable() {
         try {
@@ -45,25 +45,27 @@ public class ChatEX extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             e.printStackTrace();
         }
-        
+
     }
-    
+
     @Override
     public void onDisable() {
         getServer().getScheduler().cancelTasks(this);
         getLogger().info("is now disabled!");
     }
-    
+
     public static ChatEX getInstance() {
         return INSTANCE;
     }
-    
+
     public static PermissionsPlugin getManager() {
         return manager;
     }
-    
+
     public static void debug(String message) {
-        if (!Config.DEBUG.getBoolean()) return;
+        if (!Config.DEBUG.getBoolean()) {
+            return;
+        }
         String output = "[DEBUG] " + message;
         getInstance().getLogger().info(output);
     }

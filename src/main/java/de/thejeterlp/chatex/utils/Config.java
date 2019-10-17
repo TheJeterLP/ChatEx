@@ -25,8 +25,8 @@ public enum Config {
     ADS_ENABLED("Ads.Enabled", true, "Should we check for ads?"),
     ADS_BYPASS("Ads.Bypass", Arrays.asList("127.0.0.1", "my-domain.com"), "A list with allowed ips or domains."),
     ADS_LOG("Ads.Log", true, "Should the ads be loged in a file?"),
-    CHANGE_TABLIST_NAME("Tablist.Change" , true, "Do you want to have the prefixes and suffixes in the tablist?"),
-    TABLIST_FORMAT("Tablist.format" , "%prefix%displayname%suffix" , "The format of the tablist name"),
+    CHANGE_TABLIST_NAME("Tablist.Change", true, "Do you want to have the prefixes and suffixes in the tablist?"),
+    TABLIST_FORMAT("Tablist.format", "%prefix%displayname%suffix", "The format of the tablist name"),
     CHANGE_JOIN_AND_QUIT("Messages.JoinAndQuit.Enabled", false, "Do you want to change the join and the quit messages?");
 
     private final Object value;

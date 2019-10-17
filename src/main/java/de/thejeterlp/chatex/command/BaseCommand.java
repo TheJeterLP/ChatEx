@@ -17,14 +17,12 @@ public @interface BaseCommand {
         PLAYER,
         CONSOLE;
     }
-    
+
     Sender sender();
 
     String command();
-    
+
     String permission() default "";
-    
+
     String subCommand() default "";
 }
-
-

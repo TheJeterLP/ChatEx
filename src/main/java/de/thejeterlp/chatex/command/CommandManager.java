@@ -39,7 +39,9 @@ public class CommandManager implements CommandExecutor {
     }
 
     private void registerCommand(String name) {
-        if (cmap.getCommand(name) != null) return;
+        if (cmap.getCommand(name) != null) {
+            return;
+        }
         BukkitCommand cmd = new BukkitCommand(name);
         cmap.register(plugin.getName().toLowerCase(), cmd);
         cmd.setExecutor(this);
@@ -49,7 +51,9 @@ public class CommandManager implements CommandExecutor {
     private BaseCommand getCommand(Command c, CommandArgs args, Sender sender) {
         BaseCommand ret = null;
         for (BaseCommand bc : cmds.keySet()) {
-            if (bc.sender() != sender) continue;
+            if (bc.sender() != sender) {
+                continue;
+            }
             ChatEX.debug("bc.sender() equals sender Line 53");
             if (bc.command().equalsIgnoreCase(c.getName())) {
                 ChatEX.debug("bc.command() equals c.getName()! Line 53");
@@ -70,7 +74,9 @@ public class CommandManager implements CommandExecutor {
         BaseCommand bcmd = getCommand(c, args, sender);
         if (bcmd == null) {
             for (BaseCommand bc : cmds.keySet()) {
-                if (bc.sender() != sender) continue;
+                if (bc.sender() != sender) {
+                    continue;
+                }
                 if (bc.command().equalsIgnoreCase(c.getName()) && bc.subCommand().trim().isEmpty()) {
                     bcmd = bc;
                     break;
@@ -138,7 +144,9 @@ public class CommandManager implements CommandExecutor {
         BaseCommand bcmd = getCommand(c, args, sender);
         if (bcmd == null) {
             for (BaseCommand bc : cmds.keySet()) {
-                if (bc.sender() != sender) continue;
+                if (bc.sender() != sender) {
+                    continue;
+                }
                 if (bc.command().equalsIgnoreCase(c.getName()) && bc.subCommand().trim().isEmpty()) {
                     bcmd = bc;
                     break;

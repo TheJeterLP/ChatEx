@@ -21,24 +21,24 @@ import org.bukkit.event.player.PlayerQuitEvent;
  * @author TheJeterLP
  */
 public class ChatListener implements Listener {
-    
+
     public void register() {
         Bukkit.getServer().getPluginManager().registerEvents(this, ChatEX.getInstance());
     }
-    
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
         if (Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
             String msg = (e.getPlayer().hasPlayedBefore() ? Locales.PLAYER_FIRST_JOIN.getString() : Locales.PLAYER_JOIN.getString());
             e.setJoinMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
         }
-        
+
         if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
             String name = Utils.replacePlayerPlaceholders(e.getPlayer(), Config.TABLIST_FORMAT.getString());
             e.getPlayer().setPlayerListName(name);
         }
     }
-    
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(final PlayerQuitEvent e) {
         if (!Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
@@ -47,7 +47,7 @@ public class ChatListener implements Listener {
         String msg = Locales.PLAYER_QUIT.getString();
         e.setQuitMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
     }
-    
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onKick(final PlayerKickEvent e) {
         if (!Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
@@ -56,7 +56,7 @@ public class ChatListener implements Listener {
         String msg = Locales.PLAYER_KICK.getString();
         e.setLeaveMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
     }
-    
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
         if (!event.getPlayer().hasPermission("chatex.allowchat")) {
@@ -66,13 +66,13 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
             return;
         }
-        
+
         String format = PluginManager.getInstance().getMessageFormat(event.getPlayer());
         boolean localChat = Config.RANGEMODE.getBoolean();
         boolean global = false;
         Player player = event.getPlayer();
         String chatMessage = event.getMessage();
-        
+
         if (Utils.check(chatMessage, player)) {
             Map<String, String> rep = new HashMap<>();
             rep.put("%perm", "chatex.bypassads");
@@ -80,7 +80,7 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
             return;
         }
-        
+
         if (localChat) {
             ChatEX.debug("Local chat is enabled!");
             if (chatMessage.startsWith("!") && player.hasPermission("chatex.chat.global")) {
@@ -105,5 +105,5 @@ public class ChatListener implements Listener {
         ChatEX.debug("Logging chatmessage...");
         ChatLogger.writeToFile(event.getPlayer(), event.getMessage());
     }
-    
+
 }

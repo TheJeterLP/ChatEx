@@ -15,7 +15,9 @@ import org.bukkit.entity.Player;
 public class ChatLogger {
 
     public static void writeToFile(Player player, String message) {
-        if (!Config.LOGCHAT.getBoolean()) return;
+        if (!Config.LOGCHAT.getBoolean()) {
+            return;
+        }
         BufferedWriter bw = null;
         File file = new File(ChatEX.getInstance().getDataFolder().getAbsolutePath() + File.separator + "logs");
         if (!file.exists()) {
@@ -38,7 +40,9 @@ public class ChatLogger {
     }
 
     public static void writeToAdFile(Player player, String message) {
-        if (!Config.ADS_LOG.getBoolean()) return;
+        if (!Config.ADS_LOG.getBoolean()) {
+            return;
+        }
         BufferedWriter bw = null;
         try {
             bw = new BufferedWriter(new FileWriter(ChatEX.getInstance().getDataFolder().getAbsolutePath() + File.separator + "ads.log", true));

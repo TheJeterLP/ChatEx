@@ -15,7 +15,7 @@ public class MethodContainer {
     public MethodContainer(HashMap<Sender, Method> map) {
         methods = map;
     }
-      
+
     public Method getMethod(Sender s) {
         return methods.get(s);
     }
@@ -27,7 +27,5 @@ public class MethodContainer {
     public HashMap<Sender, Method> getMethodMap() {
         return methods;
     }
-    
-    
 
 }

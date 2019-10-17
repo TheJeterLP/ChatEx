@@ -27,7 +27,9 @@ public class HelpPage {
     }
 
     public void prepare() {
-        if (helpPages == null || helpPages.isEmpty()) return;
+        if (helpPages == null || helpPages.isEmpty()) {
+            return;
+        }
         HELP_TEXT.add(ChatColor.GREEN + "------------------------" + ChatColor.BLUE + "Help" + ChatColor.GREEN + "-------------------------");
         for (CommandHelp ch : helpPages) {
             HELP_TEXT.add(ch.getText());
