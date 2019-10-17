@@ -78,11 +78,6 @@
             <artifactId>PermissionsEx</artifactId>
             <version>1.23</version>
         </dependency>
-        <dependency>
-            <groupId>net.gravitydevelopment.updater</groupId>
-            <artifactId>updater</artifactId>
-            <version>LATEST</version>
-        </dependency>
     </dependencies>
     
     <properties>

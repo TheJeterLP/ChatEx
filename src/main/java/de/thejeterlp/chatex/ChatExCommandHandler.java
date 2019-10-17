@@ -5,7 +5,6 @@ import de.thejeterlp.chatex.command.CommandArgs;
 import de.thejeterlp.chatex.command.CommandHandler;
 import de.thejeterlp.chatex.command.CommandResult;
 import de.thejeterlp.chatex.command.HelpPage;
-import de.thejeterlp.chatex.plugins.PluginManager;
 import de.thejeterlp.chatex.utils.Config;
 import de.thejeterlp.chatex.utils.Locales;
 import de.thejeterlp.chatex.utils.Utils;
@@ -14,8 +13,6 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 /**
  * @author TheJeterLP
@@ -56,19 +53,8 @@ public class ChatExCommandHandler {
 
         if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
             for (Player p : Bukkit.getOnlinePlayers()) {
-                Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-
-                Team team = null;
-
-                if (board.getTeam(p.getName()) == null) {
-                    team = board.registerNewTeam(p.getName());
-                } else {
-                    team = board.getTeam(p.getName());
-                }
-
-                team.setPrefix(Utils.replaceColors(PluginManager.getInstance().getPrefix(p)));
-                team.setSuffix(Utils.replaceColors(PluginManager.getInstance().getSuffix(p)));
-                team.addEntry(p.getName());
+                String name = Utils.replacePlayerPlaceholders(p, Config.TABLIST_FORMAT.getString());
+                p.setPlayerListName(name);
             }
         }
 
