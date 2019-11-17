@@ -1,0 +1,25 @@
+Commands:
+  Reload:
+    Description: Recarrega o plugin e sua configuracao.
+  Clear:
+    Description: Limpa o chat.
+    Console: CONSOLE
+    Unknown: DESCONHECIDO
+Messages:
+  Commands:
+    Reload:
+      Success: '&aConfig foi recarregada.'
+    Clear:
+      Success: '&aO chat foi limpo por '
+  Chat:
+    AdDetected: '&4[ERRO] &7Propaganda nao e permitida! &c(%perm)'
+    AdNotify: "&c%jogador tentou escrever propaganda no chat. Ele/ela escreveu: \n\
+      &a %message"
+  CommandResult:
+    NoPermission: '&4[ERRO] &7Voce nao tem permissao para isso! &c(%perm)'
+    WrongUsage: '&c[ERROR] &7Modo errado de usar! Por favor digite &6/%cmd% help&7!'
+  Player:
+    Join: '%prefix%displayname%suffix &eentrou no servidor!'
+    FirstJoin: '%prefix%displayname%suffix &eentrou no servidor &6pela primeira vez!'
+    Kick: '%faction %prefix%displayname%suffix &efoi kickado do servidor!'
+    Quit: '%faction %prefix%displayname%suffix &esaiu do servidor!'

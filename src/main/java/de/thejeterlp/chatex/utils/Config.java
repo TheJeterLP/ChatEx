@@ -21,7 +21,7 @@ public enum Config {
     MULTISUFFIXES("multi-suffixes", false, "Should the multi-suffixes be enabled? See readme.txt for more info."),
     LOGCHAT("logChat", true, "Should the chat be logged?"),
     DEBUG("Debug", false, "Enables debug mode. Enable this if you get a bug."),
-    LOCALE("Locale", "en-EN", "Which language do you want? (You can choose betwenn de-DE, fr-FR and en-EN by default.)"),
+    LOCALE("Locale", "en-EN", "Which language do you want? (You can choose betwenn de-DE, fr-FR, pt-BR and en-EN by default.)"),
     ADS_ENABLED("Ads.Enabled", true, "Should we check for ads?"),
     ADS_BYPASS("Ads.Bypass", Arrays.asList("127.0.0.1", "my-domain.com"), "A list with allowed ips or domains."),
     ADS_LOG("Ads.Log", true, "Should the ads be loged in a file?"),
