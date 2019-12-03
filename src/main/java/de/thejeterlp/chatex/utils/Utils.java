@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -36,6 +37,14 @@ public class Utils {
     private static final String permissionChatUnderline = "chatex.chat.underline";
     private static final String permissionChatItalic = "chatex.chat.italic";
     private static final String permissionChatReset = "chatex.chat.reset";
+
+    // Time Display Formats
+    private static final DateFormat dateMonths = new SimpleDateFormat("MM");
+    private static final DateFormat dateHours12 = new SimpleDateFormat("hh");
+    private static final DateFormat dateHours24 = new SimpleDateFormat("HH");
+    private static final DateFormat dateMinutes = new SimpleDateFormat("mm");
+    private static final DateFormat dateSeconds = new SimpleDateFormat("ss");
+
 
     public static String translateColorCodes(String string, Player p) {
         if (string == null) {
@@ -98,10 +107,28 @@ public class Utils {
 
     private static String replaceTime(String message) {
         Calendar calendar = Calendar.getInstance();
+        Date currentDate = calendar.getTime();
         if (message.contains("%time")) {
             DateFormat date = new SimpleDateFormat("HH:mm:ss");
-            message = message.replace("%time", date.format(calendar.getTime()));
+            message = message.replace("%time", date.format(currentDate));
         }
+        // Check for padded versions first
+        if (message.contains("%MM")) {
+            message = message.replace("%MM", dateMonths.format(currentDate));
+        }
+        if (message.contains("%hh")) {
+            message = message.replace("%hh", dateHours12.format(currentDate));
+        }
+        if (message.contains("%HH")) {
+            message = message.replace("%HH", dateHours24.format(currentDate));
+        }
+        if (message.contains("%ii")) {
+            message = message.replace("%ii", dateMinutes.format(currentDate));
+        }
+        if (message.contains("%ss")) {
+            message = message.replace("%ss", dateMinutes.format(currentDate));
+        }
+
         if (message.contains("%h")) {
             final String hour = String.valueOf(calendar.get(Calendar.HOUR));
             message = message.replace("%h", hour);
