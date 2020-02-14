@@ -24,28 +24,26 @@ public class UpdateChecker {
     private final File file;
     private final int id;
     private final Thread thread;
+    private final String downloadLink;
 
-    private int page = 1;
     private final UpdateType updateType;
     private Result result = Result.SUCCESS;
-    private String downloadLink;
-    private boolean emptyPage;
+
     private String version;
 
-    private static final String DOWNLOAD = "/download";
     private static final String VERSIONS = "/versions";
-    private static final String PAGE = "?page=";
+    private static final String DOWNLOAD = "/download";
     private static final String API_RESOURCE = "https://api.spiget.org/v2/resources/";
 
     public UpdateChecker(JavaPlugin plugin, int id, File file, UpdateType updateType) {
         this.plugin = plugin;
         this.updateFolder = plugin.getServer().getUpdateFolderFile();
+        this.updateFolder.mkdirs();
         this.id = id;
         this.file = file;
         this.updateType = updateType;
         this.USER_AGENT = plugin.getName() + " UpdateChecker";
-
-        downloadLink = API_RESOURCE + id;
+        this.downloadLink = API_RESOURCE + id + VERSIONS + "%version" + DOWNLOAD;
 
         thread = new Thread(new UpdaterRunnable());
         thread.start();
@@ -123,9 +121,7 @@ public class UpdateChecker {
      */
     private void checkUpdate() {
         try {
-            String page = Integer.toString(this.page);
-
-            URL url = new URL(API_RESOURCE + id + VERSIONS + PAGE + page);
+            URL url = new URL(API_RESOURCE + id + VERSIONS);
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.addRequestProperty("User-Agent", USER_AGENT);
@@ -136,41 +132,34 @@ public class UpdateChecker {
             JsonElement element = new JsonParser().parse(reader);
             JsonArray jsonArray = element.getAsJsonArray();
 
-            if (jsonArray.size() == 10 && !emptyPage) {
-                connection.disconnect();
-                this.page++;
-                checkUpdate();
-            } else if (jsonArray.size() == 0) {
-                emptyPage = true;
-                this.page--;
-                checkUpdate();
-            } else if (jsonArray.size() < 10) {
-                element = jsonArray.get(jsonArray.size() - 1);
+            element = jsonArray.get(jsonArray.size() - 1);
 
-                JsonObject object = element.getAsJsonObject();
-                element = object.get("name");
-                version = element.toString().replaceAll("\"", "").replace("v", "");
+            JsonObject object = element.getAsJsonObject();
+            element = object.get("name");
+            version = element.toString().replaceAll("\"", "").replace("v", "");
+            
+            element = object.get("id");
+            String versionID = element.getAsString();
 
-                plugin.getLogger().info("Checking for update...");
+            plugin.getLogger().info("Checking for update...");
 
-                if (shouldUpdate(version, plugin.getDescription().getVersion()) && updateType == UpdateType.VERSION_CHECK) {
-                    result = Result.UPDATE_FOUND;
-                    plugin.getLogger().info("Update found!");
-                } else if (updateType == UpdateType.DOWNLOAD) {
-                    plugin.getLogger().info("Downloading update... version not checked");
-                    download();
-                } else if (updateType == UpdateType.CHECK_DOWNLOAD) {
-                    if (shouldUpdate(version, plugin.getDescription().getVersion())) {
-                        plugin.getLogger().info("Update found, downloading now...");
-                        download();
-                    } else {
-                        plugin.getLogger().info("Update not found");
-                        result = Result.NO_UPDATE;
-                    }
+            if (shouldUpdate(version, plugin.getDescription().getVersion()) && updateType == UpdateType.VERSION_CHECK) {
+                result = Result.UPDATE_FOUND;
+                plugin.getLogger().info("Update found!");
+            } else if (updateType == UpdateType.DOWNLOAD) {
+                plugin.getLogger().info("Downloading update... version not checked");
+                download(versionID);
+            } else if (updateType == UpdateType.CHECK_DOWNLOAD) {
+                if (shouldUpdate(version, plugin.getDescription().getVersion())) {
+                    plugin.getLogger().info("Update found, downloading now...");
+                    download(versionID);
                 } else {
                     plugin.getLogger().info("Update not found");
                     result = Result.NO_UPDATE;
                 }
+            } else {
+                plugin.getLogger().info("Update not found");
+                result = Result.NO_UPDATE;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -184,29 +173,42 @@ public class UpdateChecker {
      * @param oldVersion current version
      */
     private boolean shouldUpdate(String newVersion, String oldVersion) {
-        return !newVersion.equalsIgnoreCase(oldVersion);
+        try {
+            int oldV = Integer.valueOf(oldVersion.replaceAll("\\.", ""));
+            int newV = Integer.valueOf(newVersion.replaceAll("\\.", ""));
+            return oldV < newV;
+        } catch (NumberFormatException ex) {
+            ex.printStackTrace();
+            return !newVersion.equalsIgnoreCase(oldVersion);
+        }
     }
 
     /**
      * Downloads the file
      */
-    private void download() {
+    private void download(String versionid) {
         BufferedInputStream in = null;
         FileOutputStream fout = null;
 
         try {
-            URL url = new URL(downloadLink);
-            in = new BufferedInputStream(url.openStream());
+            URL url = new URL(downloadLink.replaceAll("%version", versionid));
+
+            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            httpConnection.setRequestProperty("User-Agent", "SpigetResourceUpdater");
+
+            in = new BufferedInputStream(httpConnection.getInputStream());
             fout = new FileOutputStream(new File(updateFolder, file.getName()));
 
-            final byte[] data = new byte[4096];
-            int count;
-            while ((count = in.read(data, 0, 4096)) != -1) {
-                fout.write(data, 0, count);
+            int grabSize = 2048;
+
+            byte[] data = new byte[grabSize];
+            int grab;
+            while ((grab = in.read(data, 0, grabSize)) >= 0) {
+                fout.write(data, 0, grab);
             }
         } catch (Exception e) {
             plugin.getLogger().log(Level.SEVERE, "Updater tried to download the update, but was unsuccessful.");
-
+            e.printStackTrace();
             result = Result.FAILED;
         } finally {
             try {
@@ -244,9 +246,9 @@ public class UpdateChecker {
 
     public class UpdaterRunnable implements Runnable {
 
+        @Override
         public void run() {
-            if (checkResource(downloadLink)) {
-                downloadLink = downloadLink + DOWNLOAD;
+            if (checkResource(API_RESOURCE + id)) {
                 checkUpdate();
             }
         }
