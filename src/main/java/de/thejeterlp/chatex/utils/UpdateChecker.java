@@ -137,13 +137,14 @@ public class UpdateChecker {
             element = jsonArray.get(jsonArray.size() - 1);
 
             JsonObject object = element.getAsJsonObject();
-            element = object.get("name");
+            element = object.get("title");
             String name = element.toString().replaceAll("\"", "");
             String[] nameArray = name.split("v");
                         
             version = nameArray[0];
             jenkinsBuildNumber = nameArray[1];
             
+            plugin.getLogger().info("Version installed is " + plugin.getDescription().getVersion());
             plugin.getLogger().info("Latest version found online is " + version + " Jenkins Build Number is " + jenkinsBuildNumber);
 
             if (shouldUpdate(version, plugin.getDescription().getVersion()) && updateType == UpdateType.VERSION_CHECK) {
