@@ -138,7 +138,7 @@ public class UpdateChecker {
             JsonObject object = element.getAsJsonObject();
             element = object.get("name");
             String name = element.toString().replaceAll("\"", "");
-            String[] nameArray = name.split("jenkins");
+            String[] nameArray = name.split("v");
                         
             version = nameArray[0];
             jenkinsBuildNumber = nameArray[1];
