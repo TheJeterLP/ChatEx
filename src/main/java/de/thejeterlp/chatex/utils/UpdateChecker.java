@@ -30,9 +30,9 @@ public class UpdateChecker {
     private Result result = Result.SUCCESS;
 
     private String version;
+    private String jenkinsBuildNumber;
 
     private static final String VERSIONS = "/versions";
-    private static final String DOWNLOAD = "/download";
     private static final String API_RESOURCE = "https://api.spiget.org/v2/resources/";
 
     public UpdateChecker(JavaPlugin plugin, int id, File file, UpdateType updateType) {
@@ -43,7 +43,7 @@ public class UpdateChecker {
         this.file = file;
         this.updateType = updateType;
         this.USER_AGENT = plugin.getName() + " UpdateChecker";
-        this.downloadLink = API_RESOURCE + id + VERSIONS + "%version" + DOWNLOAD;
+        this.downloadLink = "https://jenkins.jeter.de/job/" + plugin.getName() + "/%build%/artifact/target/" + file.getName();
 
         thread = new Thread(new UpdaterRunnable());
         thread.start();
@@ -121,6 +121,7 @@ public class UpdateChecker {
      */
     private void checkUpdate() {
         try {
+            plugin.getLogger().info("Checking for update...");
             URL url = new URL(API_RESOURCE + id + VERSIONS);
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -136,23 +137,24 @@ public class UpdateChecker {
 
             JsonObject object = element.getAsJsonObject();
             element = object.get("name");
-            version = element.toString().replaceAll("\"", "").replace("v", "");
+            String name = element.toString().replaceAll("\"", "");
+            String[] nameArray = name.split("v");
+                        
+            version = nameArray[0];
+            jenkinsBuildNumber = nameArray[1];
             
-            element = object.get("id");
-            String versionID = element.getAsString();
-
-            plugin.getLogger().info("Checking for update...");
+            plugin.getLogger().info("Latest version found online is " + version + " Jenkins Build Number is " + jenkinsBuildNumber);
 
             if (shouldUpdate(version, plugin.getDescription().getVersion()) && updateType == UpdateType.VERSION_CHECK) {
                 result = Result.UPDATE_FOUND;
                 plugin.getLogger().info("Update found!");
             } else if (updateType == UpdateType.DOWNLOAD) {
                 plugin.getLogger().info("Downloading update... version not checked");
-                download(versionID);
+                download();
             } else if (updateType == UpdateType.CHECK_DOWNLOAD) {
                 if (shouldUpdate(version, plugin.getDescription().getVersion())) {
                     plugin.getLogger().info("Update found, downloading now...");
-                    download(versionID);
+                    download();
                 } else {
                     plugin.getLogger().info("Update not found");
                     result = Result.NO_UPDATE;
@@ -186,15 +188,17 @@ public class UpdateChecker {
     /**
      * Downloads the file
      */
-    private void download(String versionid) {
+    private void download() {
         BufferedInputStream in = null;
         FileOutputStream fout = null;
 
         try {
-            URL url = new URL(downloadLink.replaceAll("%version", versionid));
+            URL url = new URL(downloadLink.replaceAll("%build%", jenkinsBuildNumber));
+
+            plugin.getLogger().info("Downloading update from " + url.toExternalForm());
 
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
-            httpConnection.setRequestProperty("User-Agent", "SpigetResourceUpdater");
+            httpConnection.setRequestProperty("User-Agent", plugin.getName() + " auto-updater");
 
             in = new BufferedInputStream(httpConnection.getInputStream());
             fout = new FileOutputStream(new File(updateFolder, file.getName()));

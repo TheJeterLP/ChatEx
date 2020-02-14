@@ -49,8 +49,6 @@ public class ChatEX extends JavaPlugin {
             if (Config.CHECK_UPDATE.getBoolean()) {
                 getLogger().info("UpdateChecker enabled in config.");
                 updatechecker = new UpdateChecker(this, 71041, this.getFile(), UpdateChecker.UpdateType.CHECK_DOWNLOAD);
-                
-                getLogger().info("Updater result is: " + updatechecker.getResult());
             } else {
                 getLogger().warning("UpdateChecker disabled in config!");
             }
