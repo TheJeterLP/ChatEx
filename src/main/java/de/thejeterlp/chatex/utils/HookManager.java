@@ -17,5 +17,10 @@ public class HookManager {
         Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("PermissionsEx");
         return plugin != null && plugin.isEnabled();
     }
+    
+    public static boolean checkPlaceholderAPI() {
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("PlaceholderAPI");
+        return plugin != null && plugin.isEnabled();
+    }
 
 }

@@ -3,9 +3,9 @@ package de.thejeterlp.chatex.utils;
 import de.thejeterlp.chatex.ChatEX;
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import org.bukkit.command.CommandSender;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 /**
  * @author TheJeterLP
@@ -46,22 +46,16 @@ public enum Locales {
         return value;
     }
 
-    public String getString() {
-        return cfg.getString(path).replaceAll("&((?i)[0-9a-fk-or])", "§$1");
-    }
+    public String getString(Player p) {
+        String ret = cfg.getString(path).replaceAll("&((?i)[0-9a-fk-or])", "§$1");
 
-    public void send(CommandSender s) {
-        s.sendMessage(getString());
-    }
-
-    public void send(CommandSender s, Map<String, String> map) {
-        String msg = getString();
-        for (String string : map.keySet()) {
-            msg = msg.replaceAll(string, map.get(string));
+        if (HookManager.checkPlaceholderAPI() && p != null) {
+            ret = PlaceholderAPI.setPlaceholders(p, ret);
         }
-        s.sendMessage(msg);
-    }
 
+        return ret;
+    }
+   
     public static void load() throws IOException {
         localeFolder.mkdirs();
         f = new File(localeFolder, Config.LOCALE.getString() + ".yml");

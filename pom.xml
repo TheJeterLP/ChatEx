@@ -5,7 +5,7 @@
     <artifactId>ChatEx</artifactId>
     <name>ChatEx</name>
     <inceptionYear>2019</inceptionYear>
-    <version>2.2.1</version>
+    <version>2.3.0</version>
     <description>ChatManagement plugin for Bukkit</description>  
 
     <scm>
@@ -59,13 +59,17 @@
             <id>jeter-repo</id>
             <url>http://nexus.jeter.de/repository/releases/</url>
         </repository>  
+        <repository>
+            <id>placeholderapi</id>
+            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
     </repositories>
     
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15.1-R0.1-SNAPSHOT</version>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
         </dependency> 
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -76,6 +80,11 @@
             <groupId>ru.tehkode</groupId>
             <artifactId>PermissionsEx</artifactId>
             <version>1.23</version>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.4</version>
         </dependency>
     </dependencies>
     

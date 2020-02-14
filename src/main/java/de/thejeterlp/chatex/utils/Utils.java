@@ -45,7 +45,6 @@ public class Utils {
     private static final DateFormat dateMinutes = new SimpleDateFormat("mm");
     private static final DateFormat dateSeconds = new SimpleDateFormat("ss");
 
-
     public static String translateColorCodes(String string, Player p) {
         if (string == null) {
             return "";
@@ -196,7 +195,7 @@ public class Utils {
                     month = "December";
                     break;
                 default:
-                    month = Locales.COMMAND_CLEAR_UNKNOWN.getString();
+                    month = Locales.COMMAND_CLEAR_UNKNOWN.getString(null);
                     break;
             }
             message = message.replace("%M", month);
@@ -317,7 +316,9 @@ public class Utils {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("%player", p.getName());
                 map.put("%message", msg);
-                Locales.MESSAGES_AD_NOTIFY.send(op, map);
+
+                String message = Locales.MESSAGES_AD_NOTIFY.getString(p).replaceAll("%player", p.getName()).replaceAll("%message", msg);
+                op.sendMessage(message);
             }
             ChatLogger.writeToAdFile(p, msg);
         }

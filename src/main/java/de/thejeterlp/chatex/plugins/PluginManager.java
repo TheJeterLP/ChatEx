@@ -3,6 +3,7 @@ package de.thejeterlp.chatex.plugins;
 import de.thejeterlp.chatex.ChatEX;
 import de.thejeterlp.chatex.utils.HookManager;
 import de.thejeterlp.chatex.utils.Utils;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
 /**
@@ -31,7 +32,11 @@ public class PluginManager implements PermissionsPlugin {
     @Override
     public String getName() {
         ChatEX.debug("Getting name of plugin...");
-        return handler.getName();
+        if (!HookManager.checkPlaceholderAPI()) {
+            return handler.getName();
+        } else {
+            return handler.getName() + ", PlaceholderAPI";
+        }
     }
 
     @Override
@@ -55,12 +60,20 @@ public class PluginManager implements PermissionsPlugin {
     @Override
     public String getMessageFormat(Player p) {
         ChatEX.debug("Getting message-format from " + p.getName());
-        return Utils.replaceColors(handler.getMessageFormat(p));
+        if (!HookManager.checkPlaceholderAPI()) {
+            return Utils.replaceColors(handler.getMessageFormat(p));
+        } else {
+            return Utils.replaceColors(PlaceholderAPI.setPlaceholders(p, handler.getMessageFormat(p)));
+        }
     }
 
     @Override
     public String getGlobalMessageFormat(Player p) {
         ChatEX.debug("Getting global message-format from " + p.getName());
-        return Utils.replaceColors(handler.getGlobalMessageFormat(p));
+        if (!HookManager.checkPlaceholderAPI()) {
+            return Utils.replaceColors(handler.getGlobalMessageFormat(p));
+        } else {
+            return Utils.replaceColors(PlaceholderAPI.setPlaceholders(p, handler.getGlobalMessageFormat(p)));
+        }
     }
 }

@@ -23,8 +23,8 @@ public class ChatExCommandHandler {
     private final HelpPage helpPage = new HelpPage("chatex");
 
     public ChatExCommandHandler() {
-        helpPage.addPage("reload", Locales.COMMAND_RELOAD_DESCRIPTION.getString());
-        helpPage.addPage("clear", Locales.COMMAND_CLEAR_DESCRIPTION.getString());
+        helpPage.addPage("reload", Locales.COMMAND_RELOAD_DESCRIPTION.getString(null));
+        helpPage.addPage("clear", Locales.COMMAND_CLEAR_DESCRIPTION.getString(null));
         helpPage.prepare();
     }
 
@@ -49,7 +49,7 @@ public class ChatExCommandHandler {
     public CommandResult executeSubReloadConsole(CommandSender sender, CommandArgs args) {
         Bukkit.getPluginManager().disablePlugin(ChatEX.getInstance());
         Bukkit.getPluginManager().enablePlugin(ChatEX.getInstance());
-        sender.sendMessage(Locales.MESSAGES_RELOAD.getString());
+        sender.sendMessage(Locales.MESSAGES_RELOAD.getString(null));
 
         if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
             for (Player p : Bukkit.getOnlinePlayers()) {
@@ -71,13 +71,17 @@ public class ChatExCommandHandler {
         for (int i = 0; i < 25; i++) {
             Bukkit.broadcastMessage("\n");
         }
-        String who = Locales.COMMAND_CLEAR_UNKNOWN.getString();
+        
+        Player clearer = null;
+        
+        String who = Locales.COMMAND_CLEAR_UNKNOWN.getString(null);
         if ((sender instanceof ConsoleCommandSender) || (sender instanceof BlockCommandSender)) {
-            who = Locales.COMMAND_CLEAR_CONSOLE.getString();
+            who = Locales.COMMAND_CLEAR_CONSOLE.getString(null);
         } else if (sender instanceof Player) {
             who = sender.getName();
+            clearer = (Player) sender;
         }
-        Bukkit.broadcastMessage(Locales.MESSAGES_CLEAR.getString() + who);
+        Bukkit.broadcastMessage(Locales.MESSAGES_CLEAR.getString(clearer) + who);
         return CommandResult.SUCCESS;
     }
 

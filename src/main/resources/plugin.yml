@@ -3,7 +3,7 @@ main: de.thejeterlp.chatex.ChatEX
 version: ${project.version}
 author: TheJeterLP
 description: Chat management plugin
-softdepend: [PermissionsEx,Vault]
+softdepend: [PermissionsEx,Vault,PlaceholderAPI]
 permissions:
     chatex.allowchat:
         description: Allows chatting
