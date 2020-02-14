@@ -3,10 +3,11 @@ package de.thejeterlp.chatex;
 import de.thejeterlp.chatex.plugins.PluginManager;
 import de.thejeterlp.chatex.utils.ChatLogger;
 import de.thejeterlp.chatex.utils.Config;
+import de.thejeterlp.chatex.utils.HookManager;
 import de.thejeterlp.chatex.utils.Locales;
 import de.thejeterlp.chatex.utils.Utils;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,6 +36,11 @@ public class ChatListener implements Listener {
         
         if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
             String name = Utils.replacePlayerPlaceholders(e.getPlayer(), Config.TABLIST_FORMAT.getString());
+            
+            if (HookManager.checkPlaceholderAPI()) {
+                name = PlaceholderAPI.setPlaceholders(e.getPlayer(), name);
+            }
+            
             e.getPlayer().setPlayerListName(name);
         }
     }
@@ -59,7 +65,7 @@ public class ChatListener implements Listener {
     
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
-        if (!event.getPlayer().hasPermission("chatex.allowchat")) {            
+        if (!event.getPlayer().hasPermission("chatex.allowchat")) {
             String msg = Locales.COMMAND_RESULT_NO_PERM.getString(event.getPlayer()).replaceAll("%perm", "chatex.allowchat");
             event.getPlayer().sendMessage(msg);
             event.setCancelled(true);
@@ -78,6 +84,18 @@ public class ChatListener implements Listener {
             
             event.setCancelled(true);
             return;
+        }
+        
+        List<String> blocked = Config.BLOCKED_WORDS.getStringList();
+        for (String block : blocked) {
+            if (event.getMessage().toLowerCase().contains(block.toLowerCase())) {
+                ChatEX.debug("Found blocked word " + block);
+                event.setCancelled(true);
+                
+                String msg = Locales.MESSAGES_BLOCKED.getString(event.getPlayer()).replaceAll("%word", block);
+                event.getPlayer().sendMessage(msg);
+                return;
+            }
         }
         
         if (localChat) {

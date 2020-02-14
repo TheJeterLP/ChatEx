@@ -3,6 +3,7 @@ package de.thejeterlp.chatex.utils;
 import de.thejeterlp.chatex.ChatEX;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,6 +26,7 @@ public enum Config {
     ADS_ENABLED("Ads.Enabled", true, "Should we check for ads?"),
     ADS_BYPASS("Ads.Bypass", Arrays.asList("127.0.0.1", "my-domain.com"), "A list with allowed ips or domains."),
     ADS_LOG("Ads.Log", true, "Should the ads be loged in a file?"),
+    BLOCKED_WORDS("BlockedWords", new ArrayList<String>(), "A list of words that should be blocked."),
     CHANGE_TABLIST_NAME("Tablist.Change", true, "Do you want to have the prefixes and suffixes in the tablist?"),
     TABLIST_FORMAT("Tablist.format", "%prefix%displayname%suffix", "The format of the tablist name"),
     CHANGE_JOIN_AND_QUIT("Messages.JoinAndQuit.Enabled", false, "Do you want to change the join and the quit messages?");

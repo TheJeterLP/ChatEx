@@ -68,7 +68,7 @@ public class ChatExCommandHandler {
 
     @BaseCommand(command = "chatex", sender = BaseCommand.Sender.CONSOLE, permission = "chatex.clear", subCommand = "clear")
     public CommandResult executeSubClearConsole(CommandSender sender, CommandArgs args) {
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 50; i++) {
             Bukkit.broadcastMessage("\n");
         }
         
