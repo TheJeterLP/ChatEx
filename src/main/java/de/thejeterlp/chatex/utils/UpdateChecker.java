@@ -32,7 +32,8 @@ public class UpdateChecker {
     private String version;
     private String jenkinsBuildNumber;
 
-    private static final String VERSIONS = "/versions";
+    private static final String VERSIONS = "/updates";
+    private static final String FIELDS = "?fields=title";
     private static final String API_RESOURCE = "https://api.spiget.org/v2/resources/";
 
     public UpdateChecker(JavaPlugin plugin, int id, File file, UpdateType updateType) {
@@ -122,7 +123,7 @@ public class UpdateChecker {
     private void checkUpdate() {
         try {
             plugin.getLogger().info("Checking for update...");
-            URL url = new URL(API_RESOURCE + id + VERSIONS);
+            URL url = new URL(API_RESOURCE + id + VERSIONS + FIELDS);
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.addRequestProperty("User-Agent", USER_AGENT);
