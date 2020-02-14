@@ -6,8 +6,10 @@ import de.thejeterlp.chatex.command.CommandHandler;
 import de.thejeterlp.chatex.command.CommandResult;
 import de.thejeterlp.chatex.command.HelpPage;
 import de.thejeterlp.chatex.utils.Config;
+import de.thejeterlp.chatex.utils.HookManager;
 import de.thejeterlp.chatex.utils.Locales;
 import de.thejeterlp.chatex.utils.Utils;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -53,7 +55,14 @@ public class ChatExCommandHandler {
 
         if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
             for (Player p : Bukkit.getOnlinePlayers()) {
-                String name = Utils.replacePlayerPlaceholders(p, Config.TABLIST_FORMAT.getString());
+                String name = Config.TABLIST_FORMAT.getString();
+
+                if (HookManager.checkPlaceholderAPI()) {
+                    name = PlaceholderAPI.setPlaceholders(p, name);
+                }
+
+                name = Utils.replacePlayerPlaceholders(p, name);
+
                 p.setPlayerListName(name);
             }
         }
@@ -71,9 +80,9 @@ public class ChatExCommandHandler {
         for (int i = 0; i < 50; i++) {
             Bukkit.broadcastMessage("\n");
         }
-        
+
         Player clearer = null;
-        
+
         String who = Locales.COMMAND_CLEAR_UNKNOWN.getString(null);
         if ((sender instanceof ConsoleCommandSender) || (sender instanceof BlockCommandSender)) {
             who = Locales.COMMAND_CLEAR_CONSOLE.getString(null);

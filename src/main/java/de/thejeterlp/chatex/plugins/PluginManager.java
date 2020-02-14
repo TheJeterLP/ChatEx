@@ -63,6 +63,7 @@ public class PluginManager implements PermissionsPlugin {
         if (!HookManager.checkPlaceholderAPI()) {
             return Utils.replaceColors(handler.getMessageFormat(p));
         } else {
+            ChatEX.debug("replacing placeholders! " + Utils.replaceColors(PlaceholderAPI.setPlaceholders(p, handler.getMessageFormat(p))));
             return Utils.replaceColors(PlaceholderAPI.setPlaceholders(p, handler.getMessageFormat(p)));
         }
     }

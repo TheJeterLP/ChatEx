@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
  * @author TheJeterLP
  */
 public enum Locales {
-
+    
     COMMAND_RELOAD_DESCRIPTION("Commands.Reload.Description", "Reloads the plugin and its configuration."),
     COMMAND_CLEAR_DESCRIPTION("Commands.Clear.Description", "Clears the chat."),
     COMMAND_CLEAR_CONSOLE("Commands.Clear.Console", "CONSOLE"),
@@ -27,36 +27,36 @@ public enum Locales {
     PLAYER_FIRST_JOIN("Messages.Player.FirstJoin", "%prefix%displayname%suffix &ejoined the game &6for the first time!"),
     PLAYER_KICK("Messages.Player.Kick", "%faction %prefix%displayname%suffix &ewas kicked from the game!"),
     PLAYER_QUIT("Messages.Player.Quit", "%faction %prefix%displayname%suffix &eleft the game!");
-
+    
     private final String value;
     private final String path;
     private static YamlConfiguration cfg;
     private static final File localeFolder = new File(ChatEX.getInstance().getDataFolder().getAbsolutePath() + File.separator + "locales");
     private static File f;
-
+    
     private Locales(String path, String val) {
         this.path = path;
         this.value = val;
     }
-
+    
     public String getPath() {
         return path;
     }
-
+    
     public String getDefaultValue() {
         return value;
     }
-
+    
     public String getString(Player p) {
         String ret = cfg.getString(path).replaceAll("&((?i)[0-9a-fk-or])", "§$1");
-
+               
         if (HookManager.checkPlaceholderAPI() && p != null) {
             ret = PlaceholderAPI.setPlaceholders(p, ret);
         }
-
+        
         return ret;
     }
-   
+    
     public static void load() throws IOException {
         localeFolder.mkdirs();
         f = new File(localeFolder, Config.LOCALE.getString() + ".yml");
@@ -95,7 +95,7 @@ public enum Locales {
             }
         }
     }
-
+    
     public void set(Object value, boolean save) throws IOException {
         cfg.set(path, value);
         if (save) {
@@ -107,7 +107,7 @@ public enum Locales {
             reload(false);
         }
     }
-
+    
     public static void reload(boolean complete) throws IOException {
         if (!complete) {
             cfg = YamlConfiguration.loadConfiguration(f);
@@ -115,7 +115,7 @@ public enum Locales {
         }
         load();
     }
-
+    
     public static Locales fromPath(String path) {
         for (Locales loc : values()) {
             if (loc.getPath().equalsIgnoreCase(path)) {
