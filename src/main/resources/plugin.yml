@@ -4,7 +4,6 @@ version: ${project.version}
 author: TheJeterLP
 description: Chat management plugin
 softdepend: [PermissionsEx,Vault,PlaceholderAPI]
-api-version: 1.15
 permissions:
     chatex.allowchat:
         description: Allows chatting
