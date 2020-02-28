@@ -55,7 +55,7 @@ public class ChatEX extends JavaPlugin {
             }
 
             getLogger().info("is now enabled!");
-        } catch (IOException e) {
+        } catch (Exception e) {
             getServer().getPluginManager().disablePlugin(this);
             e.printStackTrace();
         }
