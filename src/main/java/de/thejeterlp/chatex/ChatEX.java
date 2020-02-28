@@ -7,6 +7,7 @@ import de.thejeterlp.chatex.plugins.PluginManager;
 import de.thejeterlp.chatex.utils.Config;
 import de.thejeterlp.chatex.utils.UpdateChecker;
 import java.io.File;
+import java.io.IOException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -54,7 +55,7 @@ public class ChatEX extends JavaPlugin {
             }
 
             getLogger().info("is now enabled!");
-        } catch (Exception e) {
+        } catch (IOException e) {
             getServer().getPluginManager().disablePlugin(this);
             e.printStackTrace();
         }
