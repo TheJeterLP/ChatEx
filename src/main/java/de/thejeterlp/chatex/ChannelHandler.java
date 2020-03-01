@@ -21,8 +21,6 @@ public class ChannelHandler implements PluginMessageListener {
         if (!channel.equals("BungeeCord")) {
             return;
         }
-        
-        if
 
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subChannel = in.readUTF();
