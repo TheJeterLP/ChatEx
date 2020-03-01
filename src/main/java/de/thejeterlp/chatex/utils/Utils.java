@@ -125,7 +125,7 @@ public class Utils {
             message = message.replace("%ii", dateMinutes.format(currentDate));
         }
         if (message.contains("%ss")) {
-            message = message.replace("%ss", dateMinutes.format(currentDate));
+            message = message.replace("%ss", dateSeconds.format(currentDate));
         }
 
         if (message.contains("%h")) {

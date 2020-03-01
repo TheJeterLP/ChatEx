@@ -15,6 +15,7 @@ public enum Config {
 
     ENABLE("enable", true, "Should the plugin be enabled?"),
     CHECK_UPDATE("check-for-updates", true, "Should the plugin check for updates by itself?"),
+    BUNGEECORD("bungeecord", false, "If you use bungeecord, players can chat cross-server wide with the range mode."),
     FORMAT("message-format", "%prefix%displayname%suffix: %message", "The standard message-format."),
     GLOBALFORMAT("global-message-format", "&9[%world] %prefix%displayname%suffix: &e%message", "The message-format if ranged-mode is enabled."),
     RANGEMODE("ranged-mode", false, "Should the ranged-mode be enabled?"),

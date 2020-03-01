@@ -37,11 +37,11 @@ public class ChatListener implements Listener {
 
         if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
             String name = Config.TABLIST_FORMAT.getString();
-            
+
             if (HookManager.checkPlaceholderAPI()) {
                 name = PlaceholderAPI.setPlaceholders(e.getPlayer(), name);
             }
-            
+
             name = Utils.replacePlayerPlaceholders(e.getPlayer(), name);
 
             e.getPlayer().setPlayerListName(name);
@@ -77,7 +77,6 @@ public class ChatListener implements Listener {
 
         String format = PluginManager.getInstance().getMessageFormat(event.getPlayer());
         boolean localChat = Config.RANGEMODE.getBoolean();
-        boolean global = false;
         Player player = event.getPlayer();
         String chatMessage = event.getMessage();
 
@@ -100,20 +99,35 @@ public class ChatListener implements Listener {
             }
         }
 
+        boolean global = false;
+
         if (localChat) {
             ChatEX.debug("Local chat is enabled!");
-            if (chatMessage.startsWith("!") && player.hasPermission("chatex.chat.global")) {
-                ChatEX.debug("Global message!");
-                chatMessage = chatMessage.replaceFirst("!", "");
-                format = PluginManager.getInstance().getGlobalMessageFormat(event.getPlayer());
-                global = true;
-            }
-            if (!global) {
+            if (chatMessage.startsWith("!")) {
+                if (player.hasPermission("chatex.chat.global")) {
+                    ChatEX.debug("Global message!");
+                    chatMessage = chatMessage.replaceFirst("!", "");
+                    format = PluginManager.getInstance().getGlobalMessageFormat(event.getPlayer());
+                    global = true;
+                } else {
+                    player.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(player).replaceAll("%perm", "chatex.chat.global"));
+                    event.setCancelled(true);
+                    return;
+                }
+            } else {
                 event.getRecipients().clear();
-                ChatEX.debug("Adding recipients to the message...");
-                event.getRecipients().addAll(Utils.getLocalRecipients(player));
+                ChatEX.debug("Adding recipients to the message " + Utils.getLocalRecipients(player).size());
+                if (Utils.getLocalRecipients(player).size() == 1) {
+                    player.sendMessage(Locales.NO_LISTENING_PLAYERS.getString(player));
+                    event.setCancelled(true);
+                    return;
+                } else {
+                    event.getRecipients().addAll(Utils.getLocalRecipients(player));
+                }
             }
         }
+
+        String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Utils.translateColorCodes(chatMessage, player)));
 
         try {
             format = format.replace("%message", "%2$s");
@@ -136,6 +150,10 @@ public class ChatListener implements Listener {
         event.setMessage(chatMessage);
         ChatEX.debug("Logging chatmessage...");
         ChatLogger.writeToFile(event.getPlayer(), event.getMessage());
+
+        if (global) {
+            ChannelHandler.getInstance().sendMessage(player, msgToSend);
+        }
     }
 
 }

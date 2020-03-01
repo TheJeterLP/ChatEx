@@ -8,6 +8,9 @@ Commands:
 Messages:
   Chat:
     AdDetected: '&4[FEHLER] &7Werbung ist nicht erlaubt! &c(%perm)'
+    AdNotify: "&c%player Hat versucht Werbung zu schreiben: \n&a %message"
+    BlockedWord: '&4[FEHLER] &7Du hast versucht ein verbotenes Wort zu schreiben! &c(%word)'
+    NoOneListens: '&cDich kann niemand hören! Benutze den ranged mode um zu chatten.'
   Commands:
     Reload:
       Success: '&aChatEx wurde neugeladen.'
@@ -17,8 +20,7 @@ Messages:
     NoPermission: '&4[FEHLER] &7Dafür hast du nicht die nötigen Rechte! &c(%perm)'
     WrongUsage: '&c[FEHLER] &7Falsche Benutzung! Benutze &6/%cmd% help&7!'
   Player:
-      Join: '%faction %prefix%displayname%suffix &ehat den Server betreten!'
-      FirstJoin: '%faction %prefix%displayname%suffix &ehat den Server &6das erste Mal &ebetreten!'
-      Quit: '%faction %prefix%displayname%suffix &ehat den Server verlassen!'
-      Kick: '%faction %prefix%displayname%suffix &ewurde vom Server gekickt!'
+      Join: '%prefix%displayname%suffix &ehat den Server betreten!'
+      Quit: '%prefix%displayname%suffix &ehat den Server verlassen!'
+      Kick: '%prefix%displayname%suffix &ewurde vom Server gekickt!'
     
