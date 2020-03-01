@@ -5,7 +5,6 @@ import de.thejeterlp.chatex.utils.ChatLogger;
 import de.thejeterlp.chatex.utils.Config;
 import de.thejeterlp.chatex.utils.Locales;
 import de.thejeterlp.chatex.utils.Utils;
-import java.util.List;
 import java.util.UnknownFormatConversionException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,21 +31,15 @@ public class ChatListener implements Listener {
         String chatMessage = event.getMessage();
 
         if (Utils.checkForAds(chatMessage, player)) {
-            String msg = Locales.MESSAGES_AD.getString(event.getPlayer()).replaceAll("%perm", "chatex.bypassads");
-            event.getPlayer().sendMessage(msg);
+            event.getPlayer().sendMessage(Locales.MESSAGES_AD.getString(null).replaceAll("%perm", "chatex.bypassads"));
             event.setCancelled(true);
             return;
         }
 
-        List<String> blocked = Config.BLOCKED_WORDS.getStringList();
-        for (String block : blocked) {
-            if (event.getMessage().toLowerCase().contains(block.toLowerCase())) {
-                event.setCancelled(true);
-
-                String msg = Locales.MESSAGES_BLOCKED.getString(event.getPlayer()).replaceAll("%word", block);
-                event.getPlayer().sendMessage(msg);
-                return;
-            }
+        if (Utils.checkForBlocked(event.getMessage())) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Locales.MESSAGES_BLOCKED.getString(null));
+            return;
         }
 
         boolean global = false;
@@ -81,21 +74,18 @@ public class ChatListener implements Listener {
             ChannelHandler.getInstance().sendMessage(player, msgToSend);
         }
 
+        format = format.replace("%message", "%2$s");
+        format = Utils.replacePlayerPlaceholders(player, format);
+
         try {
-            format = format.replace("%message", "%2$s");
-            format = Utils.replacePlayerPlaceholders(player, format);
             event.setFormat(format);
         } catch (UnknownFormatConversionException ex) {
-            ChatEX.getInstance().getLogger().severe("Placeholder in format is not allowed!");
-            format = format.replace("%message", "%2$s");
-            format = Utils.replacePlayerPlaceholders(player, format);
-
+            ChatEX.getInstance().getLogger().severe("Placeholder in format is not allowed!");          
             format = format.replaceAll("%\\\\?.*?%", "");
-
             event.setFormat(format);
         }
-        chatMessage = Utils.translateColorCodes(chatMessage, player);
-        event.setMessage(chatMessage);
+        
+        event.setMessage(Utils.translateColorCodes(chatMessage, player));
         ChatLogger.writeToFile(event.getPlayer(), event.getMessage());
     }
 

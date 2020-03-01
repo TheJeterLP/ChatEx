@@ -4,8 +4,8 @@
     <groupId>de.JeterLP</groupId>
     <artifactId>ChatEx</artifactId>
     <name>ChatEx</name>
-    <inceptionYear>2019</inceptionYear>
-    <version>2.4.1</version>
+    <inceptionYear>2020</inceptionYear>
+    <version>2.4.2</version>
     <description>ChatManagement plugin for Bukkit</description>  
 
     <scm>
@@ -35,8 +35,7 @@
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/</directory>
                 <includes>        
-                    <include>*</include>
-                    <include>locales/*</include>
+                    <include>**/*</include>
                 </includes>
             </resource>
         </resources>      
@@ -89,8 +88,8 @@
     </dependencies>
     
     <properties>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target> 
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target> 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
         

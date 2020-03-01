@@ -9,7 +9,7 @@ Messages:
   Chat:
     AdDetected: '&4[FEHLER] &7Werbung ist nicht erlaubt! &c(%perm)'
     AdNotify: "&c%player Hat versucht Werbung zu schreiben: \n&a %message"
-    BlockedWord: '&4[FEHLER] &7Du hast versucht ein verbotenes Wort zu schreiben! &c(%word)'
+    BlockedWord: '&4[FEHLER] &7Du hast versucht ein verbotenes Wort zu schreiben!'
     NoOneListens: '&cDich kann niemand hören! Benutze den ranged mode um zu chatten.'
   Commands:
     Reload:

@@ -4,6 +4,7 @@ import de.thejeterlp.chatex.ChatEX;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,28 +15,52 @@ import org.bukkit.entity.Player;
  */
 public class ChatLogger {
 
+    private static BufferedWriter chatWriter = null;
+    private static BufferedWriter adWriter = null;
+
+    public static void load() {
+        try {
+            File logFolder = new File(ChatEX.getInstance().getDataFolder(), "logs");
+            logFolder.mkdirs();
+
+            File chatLog = new File(logFolder, fileName());
+            if (!chatLog.exists()) {
+                chatLog.createNewFile();
+            }
+            chatWriter = new BufferedWriter(new FileWriter(chatLog, true));
+
+            File adLog = new File(logFolder, "ads.log");
+            if (!adLog.exists()) {
+                adLog.createNewFile();
+            }
+            adWriter = new BufferedWriter(new FileWriter(adLog, true));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void close() {
+        try {
+            if (chatWriter != null) {
+
+                chatWriter.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void writeToFile(Player player, String message) {
-        if (!Config.LOGCHAT.getBoolean()) {
+        if (!Config.LOGCHAT.getBoolean() || chatWriter == null) {
             return;
         }
-        BufferedWriter bw = null;
-        File file = new File(ChatEX.getInstance().getDataFolder().getAbsolutePath() + File.separator + "logs");
-        if (!file.exists()) {
-            file.mkdir();
-        }
+
         try {
-            bw = new BufferedWriter(new FileWriter(file + File.separator + fileName(), true));
-            bw.write(prefix(false) + player.getName() + " (uuid: " + player.getUniqueId() + "): " + message);
-            bw.newLine();
-        } catch (Exception ex) {
-        } finally {
-            try {
-                if (bw != null) {
-                    bw.flush();
-                    bw.close();
-                }
-            } catch (Exception ex) {
-            }
+            chatWriter.write(prefix(false) + player.getName() + " (uuid: " + player.getUniqueId() + "): " + message);
+            chatWriter.newLine();
+            chatWriter.flush();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -43,20 +68,12 @@ public class ChatLogger {
         if (!Config.ADS_LOG.getBoolean()) {
             return;
         }
-        BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new FileWriter(ChatEX.getInstance().getDataFolder().getAbsolutePath() + File.separator + "ads.log", true));
-            bw.write(prefix(true) + player.getName() + " (uuid: " + player.getUniqueId() + "): " + message);
-            bw.newLine();
-        } catch (Exception ex) {
-        } finally {
-            try {
-                if (bw != null) {
-                    bw.flush();
-                    bw.close();
-                }
-            } catch (Exception ex) {
-            }
+            adWriter.write(prefix(true) + player.getName() + " (uuid: " + player.getUniqueId() + "): " + message);
+            adWriter.newLine();
+            adWriter.flush();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 

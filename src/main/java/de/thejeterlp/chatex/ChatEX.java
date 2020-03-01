@@ -2,6 +2,7 @@ package de.thejeterlp.chatex;
 
 import de.thejeterlp.chatex.utils.Locales;
 import de.thejeterlp.chatex.plugins.PluginManager;
+import de.thejeterlp.chatex.utils.ChatLogger;
 import de.thejeterlp.chatex.utils.Config;
 import de.thejeterlp.chatex.utils.UpdateChecker;
 import de.thejeterlp.chatex.utils.UpdateChecker.UpdateType;
@@ -22,6 +23,7 @@ public class ChatEX extends JavaPlugin {
         Config.load();
         Locales.load();
         PluginManager.load();
+        ChatLogger.load();
 
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
@@ -39,6 +41,7 @@ public class ChatEX extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        ChatLogger.close();
         getServer().getScheduler().cancelTasks(this);
         getLogger().info("is now disabled!");
     }

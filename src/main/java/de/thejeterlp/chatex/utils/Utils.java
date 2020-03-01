@@ -268,4 +268,14 @@ public class Utils {
         }
         return found;
     }
+
+    public static boolean checkForBlocked(String msg) {
+        List<String> blocked = Config.BLOCKED_WORDS.getStringList();
+        for (String block : blocked) {
+            if (msg.toLowerCase().contains(block.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
