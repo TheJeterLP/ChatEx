@@ -41,7 +41,6 @@ public class ChatListener implements Listener {
         List<String> blocked = Config.BLOCKED_WORDS.getStringList();
         for (String block : blocked) {
             if (event.getMessage().toLowerCase().contains(block.toLowerCase())) {
-                ChatEX.debug("Found blocked word " + block);
                 event.setCancelled(true);
 
                 String msg = Locales.MESSAGES_BLOCKED.getString(event.getPlayer()).replaceAll("%word", block);
@@ -54,7 +53,6 @@ public class ChatListener implements Listener {
         if (Config.RANGEMODE.getBoolean() || Config.BUNGEECORD.getBoolean()) {
             if (chatMessage.startsWith("!")) {
                 if (player.hasPermission("chatex.chat.global")) {
-                    ChatEX.debug("Global message!");
                     chatMessage = chatMessage.replaceFirst("!", "");
                     format = PluginManager.getInstance().getGlobalMessageFormat(event.getPlayer());
                     global = true;
@@ -67,7 +65,6 @@ public class ChatListener implements Listener {
                 if (Config.RANGEMODE.getBoolean()) {
                     global = false;
                     event.getRecipients().clear();
-                    ChatEX.debug("Adding recipients to the message " + Utils.getLocalRecipients(player).size());
                     if (Utils.getLocalRecipients(player).size() == 1) {
                         player.sendMessage(Locales.NO_LISTENING_PLAYERS.getString(player));
                         event.setCancelled(true);
@@ -87,23 +84,18 @@ public class ChatListener implements Listener {
         try {
             format = format.replace("%message", "%2$s");
             format = Utils.replacePlayerPlaceholders(player, format);
-            ChatEX.debug("Setting format to " + format);
             event.setFormat(format);
         } catch (UnknownFormatConversionException ex) {
             ChatEX.getInstance().getLogger().severe("Placeholder in format is not allowed!");
             format = format.replace("%message", "%2$s");
             format = Utils.replacePlayerPlaceholders(player, format);
-            ChatEX.debug("Current format is " + format);
 
             format = format.replaceAll("%\\\\?.*?%", "");
 
-            ChatEX.debug("After removing all unreplaced placeholders: " + format);
             event.setFormat(format);
         }
         chatMessage = Utils.translateColorCodes(chatMessage, player);
-        ChatEX.debug("Setting message to " + chatMessage);
         event.setMessage(chatMessage);
-        ChatEX.debug("Logging chatmessage...");
         ChatLogger.writeToFile(event.getPlayer(), event.getMessage());
     }
 

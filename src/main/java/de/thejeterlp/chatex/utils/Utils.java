@@ -1,7 +1,6 @@
 package de.thejeterlp.chatex.utils;
 
 import de.thejeterlp.chatex.ChatEX;
-import de.thejeterlp.chatex.ChatListener;
 import de.thejeterlp.chatex.plugins.PluginManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,7 +20,6 @@ import org.bukkit.entity.Player;
  */
 public class Utils {
 
-    private static final Pattern chatColorPattern = Pattern.compile("(?i)&([0-9A-F])");
     private static final Pattern ipPattern = Pattern.compile("((?<![0-9])(?:(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[.,-:; ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))(?![0-9]))");
     private static final Pattern webpattern = Pattern.compile("[-a-zA-Z0-9@:%_\\+.~#?&//=]{2,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?");
 
@@ -197,35 +195,23 @@ public class Utils {
     }
 
     private static boolean checkForIPPattern(String message) {
-        ChatEX.debug("IP: Searching for ip: " + message);
         message = message.replaceAll(" ", "");
         Matcher regexMatcher = ipPattern.matcher(message);
         while (regexMatcher.find()) {
-            ChatEX.debug("IP: Found!");
             if (regexMatcher.group().length() != 0) {
                 String text = regexMatcher.group().trim().replaceAll("http://", "").replaceAll("https://", "").split("/")[0];
-                ChatEX.debug("IP: AdCheck ip: " + text);
-                ChatEX.debug("IP: AdCheck length: " + text.split("\\.").length);
 
                 if (text.split("\\.").length > 4) {
-                    ChatEX.debug("IP: Removing subdomains...");
                     String[] domains = text.split("\\.");
-                    ChatEX.debug("IP: AdCheck 1:" + Arrays.toString(domains));
                     String one = domains[domains.length - 1];
-                    ChatEX.debug("IP: AdCheck 2:" + one);
                     String two = domains[domains.length - 2];
-                    ChatEX.debug("IP: AdCheck 3:" + two);
                     String three = domains[domains.length - 3];
-                    ChatEX.debug("IP: AdCheck 4:" + three);
                     String four = domains[domains.length - 4];
-                    ChatEX.debug("IP: AdCheck 5:" + four);
                     text = one + "." + two + "." + three + "." + four;
-                    ChatEX.debug("AdCheck 6:" + text);
                 }
 
                 if (ipPattern.matcher(text).find()) {
                     if (!Config.ADS_BYPASS.getStringList().contains(regexMatcher.group().trim())) {
-                        ChatEX.debug("IP: Found ad: " + text);
                         return true;
                     }
                 }
@@ -235,31 +221,21 @@ public class Utils {
     }
 
     private static boolean checkForWebPattern(String message) {
-        ChatEX.debug("WEB: Searching for url: " + message);
         message = message.replaceAll(" ", "");
         Matcher regexMatcher = webpattern.matcher(message);
         while (regexMatcher.find()) {
-            ChatEX.debug("WEB: Found!");
             if (regexMatcher.group().length() != 0) {
                 String text = regexMatcher.group().trim().replaceAll("http://", "").replaceAll("https://", "").split("/")[0];
-                ChatEX.debug("WEB: AdCheck url: " + text);
-                ChatEX.debug("WEB: AdCheck length: " + text.split("\\.").length);
 
                 if (text.split("\\.").length > 2) {
-                    ChatEX.debug("WEB: Removing subdomains...");
                     String[] domains = text.split("\\.");
-                    ChatEX.debug("WEB: AdCheck 1:" + Arrays.toString(domains));
                     String toplevel = domains[domains.length - 1];
-                    ChatEX.debug("WEB: AdCheck 2:" + toplevel);
                     String second = domains[domains.length - 2];
-                    ChatEX.debug("WEB: AdCheck 3:" + second);
                     text = second + "." + toplevel;
-                    ChatEX.debug("WEB: AdCheck 4:" + text);
                 }
 
                 if (webpattern.matcher(text).find()) {
                     if (!Config.ADS_BYPASS.getStringList().contains(text)) {
-                        ChatEX.debug("WEB: Found ad: " + text);
                         return true;
                     }
                 }
@@ -269,7 +245,6 @@ public class Utils {
     }
 
     public static boolean checkForAds(String msg, Player p) {
-        ChatEX.debug("Checking for advertising...");
         if (p.hasPermission("chatex.bypassads")) {
             return false;
         }

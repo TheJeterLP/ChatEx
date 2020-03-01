@@ -33,7 +33,7 @@ public enum Locales {
     private final String value;
     private final String path;
     private static YamlConfiguration cfg;
-    private static final File localeFolder = new File(ChatEX.getInstance().getDataFolder().getAbsolutePath() + File.separator + "locales");
+    private static final File localeFolder = new File(ChatEX.getInstance().getDataFolder(), "locales");
     private static File f;
 
     private Locales(String path, String val) {
@@ -95,6 +95,10 @@ public enum Locales {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        }
+
+        if (!new File(localeFolder, Config.LOCALE.getString() + "_readme.txt").exists()) {
+            ChatEX.getInstance().saveResource("locales" + File.separator + Config.LOCALE.getString() + "_readme.txt", true);
         }
     }
 

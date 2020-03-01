@@ -12,12 +12,14 @@ import org.bukkit.entity.Player;
 public class PluginManager implements PermissionsPlugin {
 
     private static PermissionsPlugin handler;
+    private static PluginManager INSTANCE;
 
     public static PermissionsPlugin getInstance() {
-        return ChatEX.getManager();
+        return INSTANCE;
     }
 
-    public PluginManager() {
+    public static void load() {
+        INSTANCE = new PluginManager();
         if (HookManager.checkPEX()) {
             handler = new PermissionsEx();
         } else if (HookManager.checkVault() && Vault.setupChat()) {
@@ -25,9 +27,9 @@ public class PluginManager implements PermissionsPlugin {
         } else {
             handler = new Nothing();
         }
-        ChatEX.getInstance().getLogger().info("Successfully hooked into: " + PluginManager.getInstance().getName());
+        ChatEX.getInstance().getLogger().info("Successfully hooked into: " + handler.getName());
     }
-
+  
     @Override
     public String getName() {
         if (!HookManager.checkPlaceholderAPI()) {

@@ -75,7 +75,6 @@ public class ChannelHandler implements PluginMessageListener {
             out.writeShort(msgbytes.toByteArray().length);
             out.write(msgbytes.toByteArray());
             p.sendPluginMessage(ChatEX.getInstance(), "BungeeCord", out.toByteArray());
-            ChatEX.debug("Sent message in channel BungeeCord:ChatEx with message: " + message);
         }
     }
 
