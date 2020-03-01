@@ -76,7 +76,6 @@ public class ChatListener implements Listener {
         }
 
         String format = PluginManager.getInstance().getMessageFormat(event.getPlayer());
-        boolean localChat = Config.RANGEMODE.getBoolean();
         Player player = event.getPlayer();
         String chatMessage = event.getMessage();
 
@@ -100,9 +99,7 @@ public class ChatListener implements Listener {
         }
 
         boolean global = false;
-
-        if (localChat) {
-            ChatEX.debug("Local chat is enabled!");
+        if (Config.RANGEMODE.getBoolean() || Config.BUNGEECORD.getBoolean()) {
             if (chatMessage.startsWith("!")) {
                 if (player.hasPermission("chatex.chat.global")) {
                     ChatEX.debug("Global message!");
@@ -115,19 +112,25 @@ public class ChatListener implements Listener {
                     return;
                 }
             } else {
-                event.getRecipients().clear();
-                ChatEX.debug("Adding recipients to the message " + Utils.getLocalRecipients(player).size());
-                if (Utils.getLocalRecipients(player).size() == 1) {
-                    player.sendMessage(Locales.NO_LISTENING_PLAYERS.getString(player));
-                    event.setCancelled(true);
-                    return;
-                } else {
-                    event.getRecipients().addAll(Utils.getLocalRecipients(player));
+                if (Config.RANGEMODE.getBoolean()) {
+                    global = false;
+                    event.getRecipients().clear();
+                    ChatEX.debug("Adding recipients to the message " + Utils.getLocalRecipients(player).size());
+                    if (Utils.getLocalRecipients(player).size() == 1) {
+                        player.sendMessage(Locales.NO_LISTENING_PLAYERS.getString(player));
+                        event.setCancelled(true);
+                        return;
+                    } else {
+                        event.getRecipients().addAll(Utils.getLocalRecipients(player));
+                    }
                 }
             }
         }
 
-        String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Utils.translateColorCodes(chatMessage, player)));
+        if (global && Config.BUNGEECORD.getBoolean()) {
+            String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Utils.translateColorCodes(chatMessage, player)));
+            ChannelHandler.getInstance().sendMessage(player, msgToSend);
+        }
 
         try {
             format = format.replace("%message", "%2$s");
@@ -150,10 +153,6 @@ public class ChatListener implements Listener {
         event.setMessage(chatMessage);
         ChatEX.debug("Logging chatmessage...");
         ChatLogger.writeToFile(event.getPlayer(), event.getMessage());
-
-        if (global) {
-            ChannelHandler.getInstance().sendMessage(player, msgToSend);
-        }
     }
 
 }
