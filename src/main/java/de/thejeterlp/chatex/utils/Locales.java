@@ -26,7 +26,9 @@ public enum Locales {
     PLAYER_JOIN("Messages.Player.Join", "%prefix%displayname%suffix &ejoined the game!"),
     PLAYER_KICK("Messages.Player.Kick", "%prefix%displayname%suffix &ewas kicked from the game!"),
     PLAYER_QUIT("Messages.Player.Quit", "%prefix%displayname%suffix &eleft the game!"),
-    NO_LISTENING_PLAYERS("Messages.Chat.NoOneListens", "&cNo players are near you to hear you talking! Use the ranged mode to chat.");
+    NO_LISTENING_PLAYERS("Messages.Chat.NoOneListens", "&cNo players are near you to hear you talking! Use the ranged mode to chat."),
+    UPDATE_FOUND("Messages.UpdateFound", "&a[ChatEx]&7 A new update has been found on SpigotMC. Current version: %oldversion New version: %newversion"),
+    UPDATE_DOWNLOADED("Messages.UpdateDownloaded", "&a[ChatEx]&7 A new update was downloaded and installed from SpigotMC. It will apply on the next server restart.");
 
     private final String value;
     private final String path;

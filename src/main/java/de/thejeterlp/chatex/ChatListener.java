@@ -3,63 +3,20 @@ package de.thejeterlp.chatex;
 import de.thejeterlp.chatex.plugins.PluginManager;
 import de.thejeterlp.chatex.utils.ChatLogger;
 import de.thejeterlp.chatex.utils.Config;
-import de.thejeterlp.chatex.utils.HookManager;
 import de.thejeterlp.chatex.utils.Locales;
 import de.thejeterlp.chatex.utils.Utils;
 import java.util.List;
 import java.util.UnknownFormatConversionException;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
  * @author TheJeterLP
  */
 public class ChatListener implements Listener {
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onJoin(PlayerJoinEvent e) {
-        if (Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
-            String msg = Locales.PLAYER_JOIN.getString(e.getPlayer());
-            e.setJoinMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
-        }
-
-        if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
-            String name = Config.TABLIST_FORMAT.getString();
-
-            if (HookManager.checkPlaceholderAPI()) {
-                name = PlaceholderAPI.setPlaceholders(e.getPlayer(), name);
-            }
-
-            name = Utils.replacePlayerPlaceholders(e.getPlayer(), name);
-
-            e.getPlayer().setPlayerListName(name);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onQuit(final PlayerQuitEvent e) {
-        if (!Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
-            return;
-        }
-        String msg = Locales.PLAYER_QUIT.getString(e.getPlayer());
-        e.setQuitMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onKick(final PlayerKickEvent e) {
-        if (!Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
-            return;
-        }
-        String msg = Locales.PLAYER_KICK.getString(e.getPlayer());
-        e.setLeaveMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
-    }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
@@ -74,7 +31,7 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         String chatMessage = event.getMessage();
 
-        if (Utils.check(chatMessage, player)) {
+        if (Utils.checkForAds(chatMessage, player)) {
             String msg = Locales.MESSAGES_AD.getString(event.getPlayer()).replaceAll("%perm", "chatex.bypassads");
             event.getPlayer().sendMessage(msg);
             event.setCancelled(true);

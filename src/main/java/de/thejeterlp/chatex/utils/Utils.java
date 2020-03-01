@@ -22,21 +22,8 @@ import org.bukkit.entity.Player;
 public class Utils {
 
     private static final Pattern chatColorPattern = Pattern.compile("(?i)&([0-9A-F])");
-    private static final Pattern chatMagicPattern = Pattern.compile("(?i)&([K])");
-    private static final Pattern chatBoldPattern = Pattern.compile("(?i)&([L])");
-    private static final Pattern chatStrikethroughPattern = Pattern.compile("(?i)&([M])");
-    private static final Pattern chatUnderlinePattern = Pattern.compile("(?i)&([N])");
-    private static final Pattern chatItalicPattern = Pattern.compile("(?i)&([O])");
-    private static final Pattern chatResetPattern = Pattern.compile("(?i)&([R])");
     private static final Pattern ipPattern = Pattern.compile("((?<![0-9])(?:(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[.,-:; ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))(?![0-9]))");
     private static final Pattern webpattern = Pattern.compile("[-a-zA-Z0-9@:%_\\+.~#?&//=]{2,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?");
-    private static final String permissionChatColor = "chatex.chat.color";
-    private static final String permissionChatMagic = "chatex.chat.magic";
-    private static final String permissionChatBold = "chatex.chat.bold";
-    private static final String permissionChatStrikethrough = "chatex.chat.strikethrough";
-    private static final String permissionChatUnderline = "chatex.chat.underline";
-    private static final String permissionChatItalic = "chatex.chat.italic";
-    private static final String permissionChatReset = "chatex.chat.reset";
 
     // Time Display Formats
     private static final DateFormat dateMonths = new SimpleDateFormat("MM");
@@ -49,29 +36,11 @@ public class Utils {
         if (string == null) {
             return "";
         }
-        String newstring = string;
-        if (p.hasPermission(permissionChatColor)) {
-            newstring = chatColorPattern.matcher(newstring).replaceAll("\u00A7$1");
+        if (p.hasPermission("chatex.chat.color")) {
+            return replaceColors(string);
+        } else {
+            return string;
         }
-        if (p.hasPermission(permissionChatMagic)) {
-            newstring = chatMagicPattern.matcher(newstring).replaceAll("\u00A7$1");
-        }
-        if (p.hasPermission(permissionChatBold)) {
-            newstring = chatBoldPattern.matcher(newstring).replaceAll("\u00A7$1");
-        }
-        if (p.hasPermission(permissionChatStrikethrough)) {
-            newstring = chatStrikethroughPattern.matcher(newstring).replaceAll("\u00A7$1");
-        }
-        if (p.hasPermission(permissionChatUnderline)) {
-            newstring = chatUnderlinePattern.matcher(newstring).replaceAll("\u00A7$1");
-        }
-        if (p.hasPermission(permissionChatItalic)) {
-            newstring = chatItalicPattern.matcher(newstring).replaceAll("\u00A7$1");
-        }
-        if (p.hasPermission(permissionChatReset)) {
-            newstring = chatResetPattern.matcher(newstring).replaceAll("\u00A7$1");
-        }
-        return newstring;
     }
 
     public static String replaceColors(String message) {
@@ -299,7 +268,7 @@ public class Utils {
         return false;
     }
 
-    public static boolean check(String msg, Player p) {
+    public static boolean checkForAds(String msg, Player p) {
         ChatEX.debug("Checking for advertising...");
         if (p.hasPermission("chatex.bypassads")) {
             return false;

@@ -23,4 +23,6 @@ Messages:
       Join: '%prefix%displayname%suffix &ehat den Server betreten!'
       Quit: '%prefix%displayname%suffix &ehat den Server verlassen!'
       Kick: '%prefix%displayname%suffix &ewurde vom Server gekickt!'
+  UpdateFound: '&a[ChatEx]&7 Ein neues Update wurde veröffentlicht. Aktuelle Version: %oldversion Neue version: %newversion'
+  UpdateDownloaded: '&a[ChatEx]&7 Ein neues Update wurde installiert. Es wird beim nächsten Neustart aktiv.'
     

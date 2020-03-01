@@ -53,8 +53,6 @@ public class UpdateChecker {
     public enum UpdateType {
         // Checks only the version
         VERSION_CHECK,
-        // Downloads without checking the version
-        DOWNLOAD,
         // If updater finds new version automatically it downloads it.
         CHECK_DOWNLOAD
 
@@ -140,29 +138,23 @@ public class UpdateChecker {
             element = object.get("title");
             String name = element.toString().replaceAll("\"", "");
             String[] nameArray = name.split("v");
-                        
+
             version = nameArray[0];
             jenkinsBuildNumber = nameArray[1];
-            
+
             plugin.getLogger().info("Version installed is " + plugin.getDescription().getVersion());
             plugin.getLogger().info("Latest version found online is " + version + " Jenkins Build Number is " + jenkinsBuildNumber);
 
-            if (shouldUpdate(version, plugin.getDescription().getVersion()) && updateType == UpdateType.VERSION_CHECK) {
+            if (shouldUpdate(version, plugin.getDescription().getVersion())) {
                 result = Result.UPDATE_FOUND;
-                plugin.getLogger().info("Update found!");
-            } else if (updateType == UpdateType.DOWNLOAD) {
-                plugin.getLogger().info("Downloading update... version not checked");
-                download();
-            } else if (updateType == UpdateType.CHECK_DOWNLOAD) {
-                if (shouldUpdate(version, plugin.getDescription().getVersion())) {
+                if (updateType == UpdateType.VERSION_CHECK) {
+                    plugin.getLogger().info("Update found!");
+                } else {
                     plugin.getLogger().info("Update found, downloading now...");
                     download();
-                } else {
-                    plugin.getLogger().info("Update not found");
-                    result = Result.NO_UPDATE;
                 }
             } else {
-                plugin.getLogger().info("Update not found");
+                plugin.getLogger().info("No update found.");
                 result = Result.NO_UPDATE;
             }
         } catch (Exception e) {
@@ -212,7 +204,8 @@ public class UpdateChecker {
             while ((grab = in.read(data, 0, grabSize)) >= 0) {
                 fout.write(data, 0, grab);
             }
-        } catch (Exception e) {
+            result = Result.SUCCESS;
+        } catch (IOException e) {
             plugin.getLogger().log(Level.SEVERE, "Updater tried to download the update, but was unsuccessful.");
             e.printStackTrace();
             result = Result.FAILED;
@@ -221,17 +214,11 @@ public class UpdateChecker {
                 if (in != null) {
                     in.close();
                 }
-            } catch (final IOException e) {
-                this.plugin.getLogger().log(Level.SEVERE, null, e);
-                e.printStackTrace();
-            }
-            try {
                 if (fout != null) {
                     fout.close();
                 }
             } catch (final IOException e) {
                 e.printStackTrace();
-                this.plugin.getLogger().log(Level.SEVERE, null, e);
             }
         }
     }

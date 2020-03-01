@@ -14,6 +14,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public enum Config {
 
     CHECK_UPDATE("check-for-updates", true, "Should the plugin check for updates by itself?"),
+    DOWNLOAD_UPDATE("automatic-download-update", true, "Should the plugin download and install new versions by itself?"),
     BUNGEECORD("bungeecord", false, "If you use bungeecord, players can chat cross-server wide with the range mode (! in front of the message)."),
     FORMAT("message-format", "%prefix%displayname%suffix: %message", "The standard message-format."),
     GLOBALFORMAT("global-message-format", "&9[%world] %prefix%displayname%suffix: &e%message", "The message-format if ranged-mode is enabled."),
@@ -26,7 +27,7 @@ public enum Config {
     LOCALE("Locale", "en-EN", "Which language do you want? (You can choose betwenn de-DE, fr-FR, pt-BR and en-EN by default.)"),
     ADS_ENABLED("Ads.Enabled", true, "Should we check for ads?"),
     ADS_BYPASS("Ads.Bypass", Arrays.asList("127.0.0.1", "my-domain.com"), "A list with allowed ips or domains."),
-    ADS_LOG("Ads.Log", true, "Should the ads be loged in a file?"),
+    ADS_LOG("Ads.Log", true, "Should the ads be logged in a file?"),
     BLOCKED_WORDS("BlockedWords", new ArrayList<String>(), "A list of words that should be blocked."),
     CHANGE_TABLIST_NAME("Tablist.Change", true, "Do you want to have the prefixes and suffixes in the tablist?"),
     TABLIST_FORMAT("Tablist.format", "%prefix%displayname%suffix", "The format of the tablist name"),

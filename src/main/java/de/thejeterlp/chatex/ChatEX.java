@@ -5,8 +5,8 @@ import de.thejeterlp.chatex.plugins.PermissionsPlugin;
 import de.thejeterlp.chatex.plugins.PluginManager;
 import de.thejeterlp.chatex.utils.Config;
 import de.thejeterlp.chatex.utils.UpdateChecker;
+import de.thejeterlp.chatex.utils.UpdateChecker.UpdateType;
 import java.io.File;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -21,7 +21,7 @@ public class ChatEX extends JavaPlugin {
     @Override
     public void onEnable() {
         INSTANCE = this;
-        
+
         Config.load();
         Locales.load();
 
@@ -33,14 +33,13 @@ public class ChatEX extends JavaPlugin {
 
         manager = new PluginManager();
 
-        getServer().getPluginManager().registerEvents(new ChatListener(), ChatEX.getInstance());
+        getServer().getPluginManager().registerEvents(new ChatListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getCommand("chatex").setExecutor(new CommandHandler());
 
         if (Config.CHECK_UPDATE.getBoolean()) {
-            getLogger().info("UpdateChecker enabled in config.");
-            updatechecker = new UpdateChecker(this, 71041, this.getFile(), UpdateChecker.UpdateType.CHECK_DOWNLOAD);
-        } else {
-            getLogger().warning("UpdateChecker disabled in config!");
+            UpdateType ud = Config.DOWNLOAD_UPDATE.getBoolean() ? UpdateChecker.UpdateType.CHECK_DOWNLOAD : UpdateChecker.UpdateType.VERSION_CHECK;
+            updatechecker = new UpdateChecker(this, 71041, this.getFile(), ud);
         }
 
         ChannelHandler.load();
