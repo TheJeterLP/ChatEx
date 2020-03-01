@@ -27,6 +27,7 @@ public class PluginManager implements PermissionsPlugin {
             handler = new Nothing();
         }
         ChatEX.debug("Plugin found!");
+        ChatEX.getInstance().getLogger().info("Successfully hooked into: " + PluginManager.getInstance().getName());
     }
 
     @Override

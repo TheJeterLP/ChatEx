@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
  * @author TheJeterLP
  */
 public enum Locales {
-    
+
     COMMAND_RELOAD_DESCRIPTION("Commands.Reload.Description", "Reloads the plugin and its configuration."),
     COMMAND_CLEAR_DESCRIPTION("Commands.Clear.Description", "Clears the chat."),
     COMMAND_CLEAR_CONSOLE("Commands.Clear.Console", "CONSOLE"),
@@ -22,42 +22,42 @@ public enum Locales {
     MESSAGES_BLOCKED("Messages.Chat.BlockedWord", "&4[ERROR] &7You tried to write a word that is blocked! &c(%word)"),
     MESSAGES_AD_NOTIFY("Messages.Chat.AdNotify", "&c%player tried to write an ad in chat. He wrote: \n&a %message"),
     COMMAND_RESULT_NO_PERM("Messages.CommandResult.NoPermission", "&4[ERROR] &7You don't have permission for this! &c(%perm)"),
-    COMMAND_RESULT_WRONG_USAGE("Messages.CommandResult.WrongUsage", "&c[ERROR] &7Wrong usage! Please type &6/%cmd% help&7!"),
+    COMMAND_RESULT_WRONG_USAGE("Messages.CommandResult.WrongUsage", "&c[ERROR] &7Wrong usage! Please type &6/%cmd help&7!"),
     PLAYER_JOIN("Messages.Player.Join", "%prefix%displayname%suffix &ejoined the game!"),
     PLAYER_KICK("Messages.Player.Kick", "%prefix%displayname%suffix &ewas kicked from the game!"),
     PLAYER_QUIT("Messages.Player.Quit", "%prefix%displayname%suffix &eleft the game!"),
     NO_LISTENING_PLAYERS("Messages.Chat.NoOneListens", "&cNo players are near you to hear you talking! Use the ranged mode to chat.");
-    
+
     private final String value;
     private final String path;
     private static YamlConfiguration cfg;
     private static final File localeFolder = new File(ChatEX.getInstance().getDataFolder().getAbsolutePath() + File.separator + "locales");
     private static File f;
-    
+
     private Locales(String path, String val) {
         this.path = path;
         this.value = val;
     }
-    
+
     public String getPath() {
         return path;
     }
-    
+
     public String getDefaultValue() {
         return value;
     }
-    
+
     public String getString(Player p) {
         String ret = cfg.getString(path).replaceAll("&((?i)[0-9a-fk-or])", "§$1");
-               
+
         if (HookManager.checkPlaceholderAPI() && p != null) {
             ret = PlaceholderAPI.setPlaceholders(p, ret);
         }
-        
+
         return ret;
     }
-    
-    public static void load() throws IOException {
+
+    public static void load() {
         localeFolder.mkdirs();
         f = new File(localeFolder, Config.LOCALE.getString() + ".yml");
         if (!f.exists()) {
@@ -70,12 +70,12 @@ public enum Locales {
                 reload(false);
             } catch (IllegalArgumentException ex) {
                 reload(false);
-                for (Locales c : values()) {
-                    if (!cfg.contains(c.getPath())) {
-                        c.set(c.getDefaultValue(), false);
-                    }
-                }
                 try {
+                    for (Locales c : values()) {
+                        if (!cfg.contains(c.getPath())) {
+                            c.set(c.getDefaultValue(), false);
+                        }
+                    }
                     cfg.save(f);
                 } catch (IOException ioex) {
                     ioex.printStackTrace();
@@ -83,19 +83,19 @@ public enum Locales {
             }
         } else {
             reload(false);
-            for (Locales c : values()) {
-                if (!cfg.contains(c.getPath())) {
-                    c.set(c.getDefaultValue(), false);
-                }
-            }
             try {
+                for (Locales c : values()) {
+                    if (!cfg.contains(c.getPath())) {
+                        c.set(c.getDefaultValue(), false);
+                    }
+                }
                 cfg.save(f);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
     }
-    
+
     public void set(Object value, boolean save) throws IOException {
         cfg.set(path, value);
         if (save) {
@@ -107,15 +107,15 @@ public enum Locales {
             reload(false);
         }
     }
-    
-    public static void reload(boolean complete) throws IOException {
+
+    public static void reload(boolean complete) {
         if (!complete) {
             cfg = YamlConfiguration.loadConfiguration(f);
             return;
         }
         load();
     }
-    
+
     public static Locales fromPath(String path) {
         for (Locales loc : values()) {
             if (loc.getPath().equalsIgnoreCase(path)) {

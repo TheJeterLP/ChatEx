@@ -13,7 +13,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
  */
 public enum Config {
 
-    ENABLE("enable", true, "Should the plugin be enabled?"),
     CHECK_UPDATE("check-for-updates", true, "Should the plugin check for updates by itself?"),
     BUNGEECORD("bungeecord", false, "If you use bungeecord, players can chat cross-server wide with the range mode (! in front of the message)."),
     FORMAT("message-format", "%prefix%displayname%suffix: %message", "The standard message-format."),

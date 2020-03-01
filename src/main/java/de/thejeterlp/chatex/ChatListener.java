@@ -9,7 +9,6 @@ import de.thejeterlp.chatex.utils.Utils;
 import java.util.List;
 import java.util.UnknownFormatConversionException;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -23,10 +22,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
  * @author TheJeterLP
  */
 public class ChatListener implements Listener {
-
-    public void register() {
-        Bukkit.getServer().getPluginManager().registerEvents(this, ChatEX.getInstance());
-    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
