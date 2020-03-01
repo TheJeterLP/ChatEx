@@ -95,11 +95,7 @@ public enum Locales {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        }
-
-        if (!new File(localeFolder, Config.LOCALE.getString() + "_readme.txt").exists()) {
-            ChatEX.getInstance().saveResource("locales" + File.separator + Config.LOCALE.getString() + "_readme.txt", true);
-        }
+        }        
     }
 
     public void set(Object value, boolean save) throws IOException {

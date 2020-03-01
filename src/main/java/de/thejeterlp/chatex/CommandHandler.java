@@ -21,7 +21,7 @@ public class CommandHandler implements CommandExecutor {
             sender.sendMessage("§aChatEx plugin by " + ChatEX.getInstance().getDescription().getAuthors());
             return true;
         } else if (args.length > 1) {
-            sender.sendMessage(Locales.COMMAND_RESULT_WRONG_USAGE.getString(null).replaceAll("%cmd", "/chatex"));
+            sender.sendMessage(Locales.COMMAND_RESULT_WRONG_USAGE.getString(null).replaceAll("%cmd", command.getName()));
             return true;
         } else {
             if (args[0].equalsIgnoreCase("reload")) {
@@ -69,6 +69,10 @@ public class CommandHandler implements CommandExecutor {
                     sender.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(null).replaceAll("%perm", "chatex.clear"));
                     return true;
                 }
+            } else if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?")) {
+                sender.sendMessage("§a/" + command.getName() + " reload - " + Locales.COMMAND_RELOAD_DESCRIPTION.getString(null));
+                sender.sendMessage("§a/" + command.getName() + " clear - " + Locales.COMMAND_CLEAR_DESCRIPTION.getString(null));
+                return true;
             } else {
                 sender.sendMessage(Locales.COMMAND_RESULT_WRONG_USAGE.getString(null).replaceAll("%cmd", "/chatex"));
                 return true;

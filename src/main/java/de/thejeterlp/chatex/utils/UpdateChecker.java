@@ -204,6 +204,7 @@ public class UpdateChecker {
             while ((grab = in.read(data, 0, grabSize)) >= 0) {
                 fout.write(data, 0, grab);
             }
+            plugin.getLogger().info("Download done.");
             result = Result.SUCCESS;
         } catch (IOException e) {
             plugin.getLogger().log(Level.SEVERE, "Updater tried to download the update, but was unsuccessful.");
