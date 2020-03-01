@@ -1,6 +1,6 @@
-package de.thejeterlp.chatex.plugins;
+package de.jeter.chatex.plugins;
 
-import de.thejeterlp.chatex.utils.Config;
+import de.jeter.chatex.utils.Config;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

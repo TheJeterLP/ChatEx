@@ -1,7 +1,7 @@
-package de.thejeterlp.chatex.utils;
+package de.jeter.chatex.utils;
 
-import de.thejeterlp.chatex.ChatEX;
-import de.thejeterlp.chatex.plugins.PluginManager;
+import de.jeter.chatex.ChatEx;
+import de.jeter.chatex.plugins.PluginManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -253,7 +253,7 @@ public class Utils {
         }
         boolean found = checkForIPPattern(msg) || checkForWebPattern(msg);
         if (found) {
-            for (Player op : ChatEX.getInstance().getServer().getOnlinePlayers()) {
+            for (Player op : ChatEx.getInstance().getServer().getOnlinePlayers()) {
                 if (!op.hasPermission("chatex.notifyad")) {
                     continue;
                 }

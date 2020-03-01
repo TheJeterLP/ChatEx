@@ -1,4 +1,4 @@
-package de.thejeterlp.chatex.utils;
+package de.jeter.chatex.utils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

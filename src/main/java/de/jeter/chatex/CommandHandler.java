@@ -1,9 +1,9 @@
-package de.thejeterlp.chatex;
+package de.jeter.chatex;
 
-import de.thejeterlp.chatex.utils.Config;
-import de.thejeterlp.chatex.utils.HookManager;
-import de.thejeterlp.chatex.utils.Locales;
-import de.thejeterlp.chatex.utils.Utils;
+import de.jeter.chatex.utils.Config;
+import de.jeter.chatex.utils.HookManager;
+import de.jeter.chatex.utils.Locales;
+import de.jeter.chatex.utils.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
@@ -18,7 +18,7 @@ public class CommandHandler implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage("§aChatEx plugin by " + ChatEX.getInstance().getDescription().getAuthors());
+            sender.sendMessage("§aChatEx plugin by " + ChatEx.getInstance().getDescription().getAuthors());
             return true;
         } else if (args.length > 1) {
             sender.sendMessage(Locales.COMMAND_RESULT_WRONG_USAGE.getString(null).replaceAll("%cmd", command.getName()));
@@ -26,8 +26,8 @@ public class CommandHandler implements CommandExecutor {
         } else {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("chatex.reload")) {
-                    Bukkit.getPluginManager().disablePlugin(ChatEX.getInstance());
-                    Bukkit.getPluginManager().enablePlugin(ChatEX.getInstance());
+                    Bukkit.getPluginManager().disablePlugin(ChatEx.getInstance());
+                    Bukkit.getPluginManager().enablePlugin(ChatEx.getInstance());
                     sender.sendMessage(Locales.MESSAGES_RELOAD.getString(null));
 
                     if (Config.CHANGE_TABLIST_NAME.getBoolean()) {

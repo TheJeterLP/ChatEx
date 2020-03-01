@@ -1,6 +1,6 @@
-package de.thejeterlp.chatex.plugins;
+package de.jeter.chatex.plugins;
 
-import de.thejeterlp.chatex.utils.Config;
+import de.jeter.chatex.utils.Config;
 import org.bukkit.entity.Player;
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionUser;

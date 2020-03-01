@@ -1,8 +1,8 @@
-package de.thejeterlp.chatex.plugins;
+package de.jeter.chatex.plugins;
 
-import de.thejeterlp.chatex.ChatEX;
-import de.thejeterlp.chatex.utils.HookManager;
-import de.thejeterlp.chatex.utils.Utils;
+import de.jeter.chatex.ChatEx;
+import de.jeter.chatex.utils.HookManager;
+import de.jeter.chatex.utils.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
@@ -27,7 +27,7 @@ public class PluginManager implements PermissionsPlugin {
         } else {
             handler = new Nothing();
         }
-        ChatEX.getInstance().getLogger().info("Successfully hooked into: " + handler.getName());
+        ChatEx.getInstance().getLogger().info("Successfully hooked into: " + handler.getName());
     }
   
     @Override

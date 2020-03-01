@@ -1,6 +1,6 @@
-package de.thejeterlp.chatex.utils;
+package de.jeter.chatex.utils;
 
-import de.thejeterlp.chatex.ChatEX;
+import de.jeter.chatex.ChatEx;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -20,7 +20,7 @@ public class ChatLogger {
 
     public static void load() {
         try {
-            File logFolder = new File(ChatEX.getInstance().getDataFolder(), "logs");
+            File logFolder = new File(ChatEx.getInstance().getDataFolder(), "logs");
             logFolder.mkdirs();
 
             File chatLog = new File(logFolder, fileName());

@@ -1,10 +1,10 @@
-package de.thejeterlp.chatex;
+package de.jeter.chatex;
 
-import de.thejeterlp.chatex.plugins.PluginManager;
-import de.thejeterlp.chatex.utils.ChatLogger;
-import de.thejeterlp.chatex.utils.Config;
-import de.thejeterlp.chatex.utils.Locales;
-import de.thejeterlp.chatex.utils.Utils;
+import de.jeter.chatex.plugins.PluginManager;
+import de.jeter.chatex.utils.ChatLogger;
+import de.jeter.chatex.utils.Config;
+import de.jeter.chatex.utils.Locales;
+import de.jeter.chatex.utils.Utils;
 import java.util.UnknownFormatConversionException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -80,7 +80,7 @@ public class ChatListener implements Listener {
         try {
             event.setFormat(format);
         } catch (UnknownFormatConversionException ex) {
-            ChatEX.getInstance().getLogger().severe("Placeholder in format is not allowed!");          
+            ChatEx.getInstance().getLogger().severe("Placeholder in format is not allowed!");          
             format = format.replaceAll("%\\\\?.*?%", "");
             event.setFormat(format);
         }

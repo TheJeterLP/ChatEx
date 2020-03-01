@@ -1,9 +1,9 @@
-package de.thejeterlp.chatex;
+package de.jeter.chatex;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import de.thejeterlp.chatex.utils.Config;
+import de.jeter.chatex.utils.Config;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -40,7 +40,7 @@ public class ChannelHandler implements PluginMessageListener {
                 msg = "null";
             }
 
-            ChatEX.getInstance().getServer().broadcastMessage(msg);
+            ChatEx.getInstance().getServer().broadcastMessage(msg);
         }
     }
 
@@ -51,8 +51,8 @@ public class ChannelHandler implements PluginMessageListener {
     public static void load() {
         if (Config.BUNGEECORD.getBoolean()) {
             INSTANCE = new ChannelHandler();
-            ChatEX.getInstance().getServer().getMessenger().registerOutgoingPluginChannel(ChatEX.getInstance(), "BungeeCord");
-            ChatEX.getInstance().getServer().getMessenger().registerIncomingPluginChannel(ChatEX.getInstance(), "BungeeCord", INSTANCE);
+            ChatEx.getInstance().getServer().getMessenger().registerOutgoingPluginChannel(ChatEx.getInstance(), "BungeeCord");
+            ChatEx.getInstance().getServer().getMessenger().registerIncomingPluginChannel(ChatEx.getInstance(), "BungeeCord", INSTANCE);
         }
     }
 
@@ -74,7 +74,7 @@ public class ChannelHandler implements PluginMessageListener {
 
             out.writeShort(msgbytes.toByteArray().length);
             out.write(msgbytes.toByteArray());
-            p.sendPluginMessage(ChatEX.getInstance(), "BungeeCord", out.toByteArray());
+            p.sendPluginMessage(ChatEx.getInstance(), "BungeeCord", out.toByteArray());
         }
     }
 

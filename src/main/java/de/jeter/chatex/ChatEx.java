@@ -1,19 +1,19 @@
-package de.thejeterlp.chatex;
+package de.jeter.chatex;
 
-import de.thejeterlp.chatex.utils.Locales;
-import de.thejeterlp.chatex.plugins.PluginManager;
-import de.thejeterlp.chatex.utils.ChatLogger;
-import de.thejeterlp.chatex.utils.Config;
-import de.thejeterlp.chatex.utils.UpdateChecker;
-import de.thejeterlp.chatex.utils.UpdateChecker.UpdateType;
+import de.jeter.chatex.utils.Locales;
+import de.jeter.chatex.plugins.PluginManager;
+import de.jeter.chatex.utils.ChatLogger;
+import de.jeter.chatex.utils.Config;
+import de.jeter.chatex.utils.UpdateChecker;
+import de.jeter.chatex.utils.UpdateChecker.UpdateType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author TheJeterLP
  */
-public class ChatEX extends JavaPlugin {
+public class ChatEx extends JavaPlugin {
 
-    private static ChatEX INSTANCE;
+    private static ChatEx INSTANCE;
     private UpdateChecker updatechecker = null;
 
     @Override
@@ -46,7 +46,7 @@ public class ChatEX extends JavaPlugin {
         getLogger().info("is now disabled!");
     }
 
-    public static ChatEX getInstance() {
+    public static ChatEx getInstance() {
         return INSTANCE;
     }
 

@@ -1,6 +1,6 @@
-package de.thejeterlp.chatex.utils;
+package de.jeter.chatex.utils;
 
-import de.thejeterlp.chatex.ChatEX;
+import de.jeter.chatex.ChatEx;
 import java.io.File;
 import java.io.IOException;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -33,7 +33,7 @@ public enum Locales {
     private final String value;
     private final String path;
     private static YamlConfiguration cfg;
-    private static final File localeFolder = new File(ChatEX.getInstance().getDataFolder(), "locales");
+    private static final File localeFolder = new File(ChatEx.getInstance().getDataFolder(), "locales");
     private static File f;
 
     private Locales(String path, String val) {
@@ -64,8 +64,8 @@ public enum Locales {
         f = new File(localeFolder, Config.LOCALE.getString() + ".yml");
         if (!f.exists()) {
             try {
-                ChatEX.getInstance().saveResource("locales" + File.separator + Config.LOCALE.getString() + ".yml", true);
-                File locale = new File(ChatEX.getInstance().getDataFolder(), Config.LOCALE.getString() + ".yml");
+                ChatEx.getInstance().saveResource("locales" + File.separator + Config.LOCALE.getString() + ".yml", true);
+                File locale = new File(ChatEx.getInstance().getDataFolder(), Config.LOCALE.getString() + ".yml");
                 if (locale.exists()) {
                     locale.delete();
                 }

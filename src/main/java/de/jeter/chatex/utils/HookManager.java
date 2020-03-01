@@ -1,4 +1,4 @@
-package de.thejeterlp.chatex.utils;
+package de.jeter.chatex.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;

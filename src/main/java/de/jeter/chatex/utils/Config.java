@@ -1,6 +1,6 @@
-package de.thejeterlp.chatex.utils;
+package de.jeter.chatex.utils;
 
-import de.thejeterlp.chatex.ChatEX;
+import de.jeter.chatex.ChatEx;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public enum Config {
     private final String path;
     private final String description;
     private static YamlConfiguration cfg;
-    private static final File f = new File(ChatEX.getInstance().getDataFolder(), "config.yml");
+    private static final File f = new File(ChatEx.getInstance().getDataFolder(), "config.yml");
 
     private Config(String path, Object val, String description) {
         this.path = path;
@@ -73,7 +73,7 @@ public enum Config {
     }
 
     public static void load() {
-        ChatEX.getInstance().getDataFolder().mkdirs();
+        ChatEx.getInstance().getDataFolder().mkdirs();
         reload(false);
         String header = "";
         for (Config c : values()) {

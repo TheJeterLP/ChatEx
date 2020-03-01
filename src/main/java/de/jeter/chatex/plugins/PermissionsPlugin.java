@@ -1,4 +1,4 @@
-package de.thejeterlp.chatex.plugins;
+package de.jeter.chatex.plugins;
 
 import org.bukkit.entity.Player;
 

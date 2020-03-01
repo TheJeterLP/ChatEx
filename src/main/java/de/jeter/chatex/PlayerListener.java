@@ -1,10 +1,10 @@
-package de.thejeterlp.chatex;
+package de.jeter.chatex;
 
-import de.thejeterlp.chatex.utils.Config;
-import de.thejeterlp.chatex.utils.HookManager;
-import de.thejeterlp.chatex.utils.Locales;
-import de.thejeterlp.chatex.utils.UpdateChecker;
-import de.thejeterlp.chatex.utils.Utils;
+import de.jeter.chatex.utils.Config;
+import de.jeter.chatex.utils.HookManager;
+import de.jeter.chatex.utils.Locales;
+import de.jeter.chatex.utils.UpdateChecker;
+import de.jeter.chatex.utils.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,10 +34,10 @@ public class PlayerListener implements Listener {
             e.getPlayer().setPlayerListName(name);
         }
         
-        if (Config.CHECK_UPDATE.getBoolean() && e.getPlayer().hasPermission("chatex.notifyupdate") && ChatEX.getInstance().getUpdateChecker() != null) {
-            if (ChatEX.getInstance().getUpdateChecker().getResult() == UpdateChecker.Result.UPDATE_FOUND) {
-                e.getPlayer().sendMessage(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEX.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEX.getInstance().getUpdateChecker().getVersion()));
-            } else if (ChatEX.getInstance().getUpdateChecker().getResult() == UpdateChecker.Result.SUCCESS) {
+        if (Config.CHECK_UPDATE.getBoolean() && e.getPlayer().hasPermission("chatex.notifyupdate") && ChatEx.getInstance().getUpdateChecker() != null) {
+            if (ChatEx.getInstance().getUpdateChecker().getResult() == UpdateChecker.Result.UPDATE_FOUND) {
+                e.getPlayer().sendMessage(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEx.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEx.getInstance().getUpdateChecker().getVersion()));
+            } else if (ChatEx.getInstance().getUpdateChecker().getResult() == UpdateChecker.Result.SUCCESS) {
                 e.getPlayer().sendMessage(Locales.UPDATE_DOWNLOADED.getString(null));
             }
         }
