@@ -5,7 +5,6 @@ import de.jeter.chatex.plugins.PluginManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,14 +30,7 @@ public class Utils {
     private static final DateFormat dateSeconds = new SimpleDateFormat("ss");
 
     public static String translateColorCodes(String string, Player p) {
-        if (string == null) {
-            return "";
-        }
-        if (p.hasPermission("chatex.chat.color")) {
-            return replaceColors(string);
-        } else {
-            return string;
-        }
+        return p.hasPermission("chatex.chat.color") ? replaceColors(string) : string;
     }
 
     public static String replaceColors(String message) {
@@ -63,7 +55,7 @@ public class Utils {
         result = result.replace("%displayname", player.getDisplayName());
         result = result.replace("%prefix", PluginManager.getInstance().getPrefix(player));
         result = result.replace("%suffix", PluginManager.getInstance().getSuffix(player));
-        result = result.replace("%player", player.getDisplayName());
+        result = result.replace("%player", player.getName());
         result = result.replace("%world", player.getWorld().getName());
         result = result.replace("%group", PluginManager.getInstance().getGroupNames(player)[0]);
         result = replaceTime(result);

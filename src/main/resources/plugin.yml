@@ -1,5 +1,5 @@
 name: ${project.name}
-main: de.jeter.chatex.ChatEX
+main: de.jeter.chatex.ChatEx
 version: ${project.version}
 author: Jeter
 description: Chat management plugin
