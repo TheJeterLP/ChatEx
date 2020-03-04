@@ -1,6 +1,7 @@
 package de.jeter.chatex;
 
 import de.jeter.chatex.plugins.PluginManager;
+import de.jeter.chatex.utils.AntiSpamManager;
 import de.jeter.chatex.utils.ChatLogger;
 import de.jeter.chatex.utils.Config;
 import de.jeter.chatex.utils.Locales;
@@ -25,6 +26,13 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
             return;
         }
+
+        if (!AntiSpamManager.isAllowed(event.getPlayer())) {
+            event.getPlayer().sendMessage(Locales.ANTI_SPAM_DENIED.getString(event.getPlayer()).replaceAll("%time%", AntiSpamManager.getRemaingSeconds(event.getPlayer()) + ""));
+            event.setCancelled(true);
+            return;
+        } 
+        AntiSpamManager.put(event.getPlayer());
 
         String format = PluginManager.getInstance().getMessageFormat(event.getPlayer());
         Player player = event.getPlayer();
@@ -80,11 +88,11 @@ public class ChatListener implements Listener {
         try {
             event.setFormat(format);
         } catch (UnknownFormatConversionException ex) {
-            ChatEx.getInstance().getLogger().severe("Placeholder in format is not allowed!");          
+            ChatEx.getInstance().getLogger().severe("Placeholder in format is not allowed!");
             format = format.replaceAll("%\\\\?.*?%", "");
             event.setFormat(format);
         }
-        
+
         event.setMessage(Utils.translateColorCodes(chatMessage, player));
         ChatLogger.writeToFile(event.getPlayer(), event.getMessage());
     }

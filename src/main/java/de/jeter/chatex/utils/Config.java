@@ -27,10 +27,12 @@ public enum Config {
     ADS_ENABLED("Ads.Enabled", true, "Should we check for ads?"),
     ADS_BYPASS("Ads.Bypass", Arrays.asList("127.0.0.1", "my-domain.com"), "A list with allowed ips or domains."),
     ADS_LOG("Ads.Log", true, "Should the ads be logged in a file?"),
-    BLOCKED_WORDS("BlockedWords", Arrays.asList("shit"), "A list of words that should be blocked."),
+    ANTISPAM_SECONDS("AntiSpam.Seconds", 5, "The delay between player messages to prevent spam"),
+    ANTISPAM_ENABLED("AntiSpam.Enable", true, "Should antispam be enabled?"),
+    BLOCKED_WORDS("BlockedWords", Arrays.asList("shit", "@everyone"), "A list of words that should be blocked."),
     CHANGE_TABLIST_NAME("Tablist.Change", true, "Do you want to have the prefixes and suffixes in the tablist?"),
     TABLIST_FORMAT("Tablist.format", "%prefix%player%suffix", "The format of the tablist name"),
-    CHANGE_JOIN_AND_QUIT("Messages.JoinAndQuit.Enabled", false, "Do you want to change the join and the quit messages?");
+    CHANGE_JOIN_AND_QUIT("Messages.JoinAndQuit.Enabled", false, "Do you want to change the join and the quit messages?");   
 
     private final Object value;
     private final String path;

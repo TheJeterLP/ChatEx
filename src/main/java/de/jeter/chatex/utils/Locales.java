@@ -23,6 +23,7 @@ public enum Locales {
     MESSAGES_AD_NOTIFY("Messages.Chat.AdNotify", "&c%player tried to write an ad in chat. He wrote: \n&a %message"),
     COMMAND_RESULT_NO_PERM("Messages.CommandResult.NoPermission", "&4[ERROR] &7You don't have permission for this! &c(%perm)"),
     COMMAND_RESULT_WRONG_USAGE("Messages.CommandResult.WrongUsage", "&c[ERROR] &7Wrong usage! Please type &6/%cmd help&7!"),
+    ANTI_SPAM_DENIED("Messages.AntiSpam.Denied", "&e[AntiSpam] &7You are not allowed to spam! Please wait another &e%time% &7seconds!"),
     PLAYER_JOIN("Messages.Player.Join", "%prefix%displayname%suffix &ejoined the game!"),
     PLAYER_KICK("Messages.Player.Kick", "%prefix%displayname%suffix &ewas kicked from the game!"),
     PLAYER_QUIT("Messages.Player.Quit", "%prefix%displayname%suffix &eleft the game!"),
