@@ -40,17 +40,15 @@ public class Utils {
     public static List<Player> getLocalRecipients(Player sender) {
         Location playerLocation = sender.getLocation();
         List<Player> recipients = new ArrayList<>();
-        if (Config.RANGE.getInt() != -1) {
-            double squaredDistance = Math.pow(Config.RANGE.getInt(), 2);
-            for (Player recipient : sender.getWorld().getPlayers()) {
-                if (playerLocation.distanceSquared(recipient.getLocation()) > squaredDistance) {
-                    continue;
-                }
-                recipients.add(recipient);
+
+        double squaredDistance = Math.pow(Config.RANGE.getInt(), 2);
+        for (Player recipient : sender.getWorld().getPlayers()) {
+            if (Config.RANGE.getInt() > 0 && (playerLocation.distanceSquared(recipient.getLocation()) > squaredDistance)) {
+                continue;
             }
-        } else {
-            recipients.addAll(sender.getWorld().getPlayers());
+            recipients.add(recipient);
         }
+
         return recipients;
     }
 
