@@ -7,6 +7,7 @@ import de.jeter.chatex.utils.Config;
 import de.jeter.chatex.utils.Locales;
 import de.jeter.chatex.utils.Utils;
 import java.util.UnknownFormatConversionException;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -66,7 +67,7 @@ public class ChatListener implements Listener {
                 if (Config.RANGEMODE.getBoolean()) {
                     global = false;
                     event.getRecipients().clear();
-                    if (Utils.getLocalRecipients(player).size() == 1) {
+                    if (Utils.getLocalRecipients(player).size() == 1 && Bukkit.getServer().getOnlinePlayers().size() > 1) {
                         player.sendMessage(Locales.NO_LISTENING_PLAYERS.getString(player));
                         event.setCancelled(true);
                         return;
