@@ -44,7 +44,7 @@ public class UpdateChecker {
         this.file = file;
         this.updateType = updateType;
         this.USER_AGENT = plugin.getName() + " UpdateChecker";
-        this.downloadLink = "https://jenkins.jeter.de/job/" + plugin.getName() + "/%build%/artifact/target/" + file.getName();
+        this.downloadLink = "https://jenkins.jeter.de/job/" + plugin.getName() + "/%build%/artifact/target/ChatEx.jar";
 
         thread = new Thread(new UpdaterRunnable());
         thread.start();
