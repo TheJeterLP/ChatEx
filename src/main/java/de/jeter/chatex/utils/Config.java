@@ -18,6 +18,7 @@ public enum Config {
     FORMAT("message-format", "%prefix%player%suffix: %message", "The standard message-format."),
     GLOBALFORMAT("global-message-format", "&9[%world] %prefix%player%suffix: &e%message", "The message-format if ranged-mode is enabled."),
     RANGEMODE("ranged-mode", false, "Should the ranged-mode be enabled?"),
+    SHOW_NO_RECEIVER_MSG("show-no-players-near", true, "Should we check if any player would receiver your chat message?"),
     RANGE("chat-range", 100, "The range to talk to other players. Set to -1 to enable world-wide-chat"),
     MULTIPREFIXES("multi-prefixes", false, "Should the multi-prefixes be enabled?"),
     MULTISUFFIXES("multi-suffixes", false, "Should the multi-suffixes be enabled?"),

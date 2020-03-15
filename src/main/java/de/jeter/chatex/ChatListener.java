@@ -67,7 +67,7 @@ public class ChatListener implements Listener {
                 if (Config.RANGEMODE.getBoolean()) {
                     global = false;
                     event.getRecipients().clear();
-                    if (Utils.getLocalRecipients(player).size() == 1 && Bukkit.getServer().getOnlinePlayers().size() > 1) {
+                    if (Utils.getLocalRecipients(player).size() == 1 && Config.SHOW_NO_RECEIVER_MSG.getBoolean()) {
                         player.sendMessage(Locales.NO_LISTENING_PLAYERS.getString(player));
                         event.setCancelled(true);
                         return;
