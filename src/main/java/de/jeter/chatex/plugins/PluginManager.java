@@ -20,16 +20,14 @@ public class PluginManager implements PermissionsPlugin {
 
     public static void load() {
         INSTANCE = new PluginManager();
-        if (HookManager.checkPEX()) {
-            handler = new PermissionsEx();
-        } else if (HookManager.checkVault() && Vault.setupChat()) {
+        if (HookManager.checkVault() && Vault.setupChat()) {
             handler = new Vault();
         } else {
             handler = new Nothing();
         }
         ChatEx.getInstance().getLogger().info("Successfully hooked into: " + handler.getName());
     }
-  
+
     @Override
     public String getName() {
         if (!HookManager.checkPlaceholderAPI()) {

@@ -4,10 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -20,46 +16,24 @@ public class UpdateChecker {
     private final String USER_AGENT;
 
     private final JavaPlugin plugin;
-    private final File updateFolder;
-    private final File file;
     private final int id;
     private final Thread thread;
-    private final String downloadLink;
 
-    private final UpdateType updateType;
     private Result result = Result.SUCCESS;
-
     private String version;
-    private String jenkinsBuildNumber;
-
     private static final String VERSIONS = "/updates";
     private static final String FIELDS = "?fields=title";
     private static final String API_RESOURCE = "https://api.spiget.org/v2/resources/";
 
-    public UpdateChecker(JavaPlugin plugin, int id, File file, UpdateType updateType) {
+    public UpdateChecker(JavaPlugin plugin, int id) {
         this.plugin = plugin;
-        this.updateFolder = plugin.getServer().getUpdateFolderFile();
-        this.updateFolder.mkdirs();
         this.id = id;
-        this.file = file;
-        this.updateType = updateType;
         this.USER_AGENT = plugin.getName() + " UpdateChecker";
-        this.downloadLink = "https://jenkins.jeter.de/job/" + plugin.getName() + "/%build%/artifact/target/ChatEx.jar";
-
         thread = new Thread(new UpdaterRunnable());
         thread.start();
     }
 
-    public enum UpdateType {
-        // Checks only the version
-        VERSION_CHECK,
-        // If updater finds new version automatically it downloads it.
-        CHECK_DOWNLOAD
-
-    }
-
     public enum Result {
-
         UPDATE_FOUND,
         NO_UPDATE,
         SUCCESS,
@@ -140,19 +114,13 @@ public class UpdateChecker {
             String[] nameArray = name.split("v");
 
             version = nameArray[0];
-            jenkinsBuildNumber = nameArray[1];
 
             plugin.getLogger().info("Version installed is " + plugin.getDescription().getVersion());
-            plugin.getLogger().info("Latest version found online is " + version + " Jenkins Build Number is " + jenkinsBuildNumber);
+            plugin.getLogger().info("Latest version found online is " + version);
 
             if (shouldUpdate(version, plugin.getDescription().getVersion())) {
                 result = Result.UPDATE_FOUND;
-                if (updateType == UpdateType.VERSION_CHECK) {
-                    plugin.getLogger().info("Update found!");
-                } else {
-                    plugin.getLogger().info("Update found, downloading now...");
-                    download();
-                }
+                plugin.getLogger().info("Update found!");
             } else {
                 plugin.getLogger().info("No update found.");
                 result = Result.NO_UPDATE;
@@ -176,51 +144,6 @@ public class UpdateChecker {
         } catch (NumberFormatException ex) {
             ex.printStackTrace();
             return !newVersion.equalsIgnoreCase(oldVersion);
-        }
-    }
-
-    /**
-     * Downloads the file
-     */
-    private void download() {
-        BufferedInputStream in = null;
-        FileOutputStream fout = null;
-
-        try {
-            URL url = new URL(downloadLink.replaceAll("%build%", jenkinsBuildNumber));
-
-            plugin.getLogger().info("Downloading update from " + url.toExternalForm());
-
-            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
-            httpConnection.setRequestProperty("User-Agent", plugin.getName() + " auto-updater");
-
-            in = new BufferedInputStream(httpConnection.getInputStream());
-            fout = new FileOutputStream(new File(updateFolder, file.getName()));
-
-            int grabSize = 2048;
-
-            byte[] data = new byte[grabSize];
-            int grab;
-            while ((grab = in.read(data, 0, grabSize)) >= 0) {
-                fout.write(data, 0, grab);
-            }
-            plugin.getLogger().info("Download done.");
-            result = Result.SUCCESS;
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.SEVERE, "Updater tried to download the update, but was unsuccessful.");
-            e.printStackTrace();
-            result = Result.FAILED;
-        } finally {
-            try {
-                if (in != null) {
-                    in.close();
-                }
-                if (fout != null) {
-                    fout.close();
-                }
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 

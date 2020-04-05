@@ -5,7 +5,6 @@ import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.ChatLogger;
 import de.jeter.chatex.utils.Config;
 import de.jeter.chatex.utils.UpdateChecker;
-import de.jeter.chatex.utils.UpdateChecker.UpdateType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -30,8 +29,7 @@ public class ChatEx extends JavaPlugin {
         getCommand("chatex").setExecutor(new CommandHandler());
 
         if (Config.CHECK_UPDATE.getBoolean()) {
-            UpdateType ud = Config.DOWNLOAD_UPDATE.getBoolean() ? UpdateChecker.UpdateType.CHECK_DOWNLOAD : UpdateChecker.UpdateType.VERSION_CHECK;
-            updatechecker = new UpdateChecker(this, 71041, this.getFile(), ud);
+            updatechecker = new UpdateChecker(this, 71041);
         }
 
         ChannelHandler.load();

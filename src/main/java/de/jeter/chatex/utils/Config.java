@@ -13,15 +13,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public enum Config {
 
     CHECK_UPDATE("check-for-updates", true, "Should the plugin check for updates by itself?"),
-    DOWNLOAD_UPDATE("automatic-download-update", true, "Should the plugin download and install new versions by itself?"),
     BUNGEECORD("bungeecord", false, "If you use bungeecord, players can chat cross-server wide with the range mode (! in front of the message)."),
     FORMAT("message-format", "%prefix%player%suffix: %message", "The standard message-format."),
     GLOBALFORMAT("global-message-format", "&9[%world] %prefix%player%suffix: &e%message", "The message-format if ranged-mode is enabled."),
+    MULTIPREFIXES("multi-prefixes", false, "Should the multi-prefixes be enabled?"),
+    MULTISUFFIXES("multi-suffixes", false, "Should the multi-suffixes be enabled?"),
     RANGEMODE("ranged-mode", false, "Should the ranged-mode be enabled?"),
     SHOW_NO_RECEIVER_MSG("show-no-players-near", true, "Should we check if any player would receiver your chat message?"),
     RANGE("chat-range", 100, "The range to talk to other players. Set to -1 to enable world-wide-chat"),
-    MULTIPREFIXES("multi-prefixes", false, "Should the multi-prefixes be enabled?"),
-    MULTISUFFIXES("multi-suffixes", false, "Should the multi-suffixes be enabled?"),
     LOGCHAT("logChat", false, "Should the chat be logged?"),
     LOCALE("Locale", "en-EN", "Which language do you want? (You can choose betwenn de-DE, fr-FR, pt-BR and en-EN by default.)"),
     ADS_ENABLED("Ads.Enabled", true, "Should we check for ads?"),
