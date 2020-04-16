@@ -59,7 +59,7 @@ public class Utils {
         result = result.replace("%suffix", PluginManager.getInstance().getSuffix(player));
         result = result.replace("%player", player.getName());
         result = result.replace("%world", player.getWorld().getName());
-        result = result.replace("%group", PluginManager.getInstance().getGroupNames(player)[0]);
+        result = result.replace("%group", PluginManager.getInstance().getGroupNames(player).length > 0 ? PluginManager.getInstance().getGroupNames(player)[0] : "none");
         result = replaceTime(result);
         result = replaceColors(result);
         return result;

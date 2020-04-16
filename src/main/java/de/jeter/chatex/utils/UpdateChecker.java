@@ -19,7 +19,7 @@ public class UpdateChecker {
     private final int id;
     private final Thread thread;
 
-    private Result result = Result.SUCCESS;
+    private Result result = Result.NO_UPDATE;
     private String version;
     private static final String VERSIONS = "/updates";
     private static final String FIELDS = "?fields=title";
@@ -36,7 +36,6 @@ public class UpdateChecker {
     public enum Result {
         UPDATE_FOUND,
         NO_UPDATE,
-        SUCCESS,
         FAILED,
         BAD_ID
     }
@@ -110,10 +109,7 @@ public class UpdateChecker {
 
             JsonObject object = element.getAsJsonObject();
             element = object.get("title");
-            String name = element.toString().replaceAll("\"", "");
-            String[] nameArray = name.split("v");
-
-            version = nameArray[0];
+            version = element.toString().replaceAll("\"", "");
 
             plugin.getLogger().info("Version installed is " + plugin.getDescription().getVersion());
             plugin.getLogger().info("Latest version found online is " + version);

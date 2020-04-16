@@ -37,9 +37,7 @@ public class PlayerListener implements Listener {
         if (Config.CHECK_UPDATE.getBoolean() && e.getPlayer().hasPermission("chatex.notifyupdate") && ChatEx.getInstance().getUpdateChecker() != null) {
             if (ChatEx.getInstance().getUpdateChecker().getResult() == UpdateChecker.Result.UPDATE_FOUND) {
                 e.getPlayer().sendMessage(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEx.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEx.getInstance().getUpdateChecker().getVersion()));
-            } else if (ChatEx.getInstance().getUpdateChecker().getResult() == UpdateChecker.Result.SUCCESS) {
-                e.getPlayer().sendMessage(Locales.UPDATE_DOWNLOADED.getString(null));
-            }
+            } 
         }
     }
     

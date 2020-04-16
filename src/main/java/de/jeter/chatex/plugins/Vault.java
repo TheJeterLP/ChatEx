@@ -55,7 +55,7 @@ public class Vault implements PermissionsPlugin {
 
     @Override
     public String[] getGroupNames(Player p) {
-        return chat.getPlayerGroups(p.getWorld().getName(), p);
+        return chat.getPlayerGroups(p);
     }
 
     @Override

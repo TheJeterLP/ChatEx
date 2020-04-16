@@ -7,7 +7,6 @@ import de.jeter.chatex.utils.Config;
 import de.jeter.chatex.utils.Locales;
 import de.jeter.chatex.utils.Utils;
 import java.util.UnknownFormatConversionException;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
