@@ -134,8 +134,8 @@ public class UpdateChecker {
      */
     private boolean shouldUpdate(String newVersion, String oldVersion) {
         try {
-            int oldV = Integer.valueOf(oldVersion.replaceAll("\\.", ""));
-            int newV = Integer.valueOf(newVersion.replaceAll("\\.", ""));
+            float oldV = Float.valueOf(oldVersion.replaceAll("\\.", "").replace("v", "."));
+            float newV = Float.valueOf(newVersion.replaceAll("\\.", "").replace("v", "."));
             return oldV < newV;
         } catch (NumberFormatException ex) {
             ex.printStackTrace();
