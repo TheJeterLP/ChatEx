@@ -21,7 +21,7 @@ public class UpdateChecker {
 
     private Result result = Result.NO_UPDATE;
     private String version;
-    private static final String VERSIONS = "/updates";
+    private static final String VERSIONS = "/versions/latest";
     private static final String FIELDS = "?fields=title";
     private static final String API_RESOURCE = "https://api.spiget.org/v2/resources/";
 
@@ -94,7 +94,7 @@ public class UpdateChecker {
     private void checkUpdate() {
         try {
             plugin.getLogger().info("Checking for update...");
-            URL url = new URL(API_RESOURCE + id + VERSIONS + FIELDS);
+            URL url = new URL(API_RESOURCE + id + VERSIONS);
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.addRequestProperty("User-Agent", USER_AGENT);
@@ -102,13 +102,9 @@ public class UpdateChecker {
             InputStream inputStream = connection.getInputStream();
             InputStreamReader reader = new InputStreamReader(inputStream);
 
-            JsonElement element = new JsonParser().parse(reader);
-            JsonArray jsonArray = element.getAsJsonArray();
-
-            element = jsonArray.get(jsonArray.size() - 1);
-
+            JsonElement element = new JsonParser().parse(reader);                        
             JsonObject object = element.getAsJsonObject();
-            element = object.get("title");
+            element = object.get("name");
             version = element.toString().replaceAll("\"", "");
 
             plugin.getLogger().info("Version installed is " + plugin.getDescription().getVersion());
