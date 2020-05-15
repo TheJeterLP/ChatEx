@@ -1,11 +1,8 @@
 package de.jeter.chatex;
 
 import de.jeter.chatex.plugins.PluginManager;
-import de.jeter.chatex.utils.AntiSpamManager;
-import de.jeter.chatex.utils.ChatLogger;
-import de.jeter.chatex.utils.Config;
-import de.jeter.chatex.utils.Locales;
-import de.jeter.chatex.utils.Utils;
+import de.jeter.chatex.utils.*;
+
 import java.util.UnknownFormatConversionException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,7 +35,7 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         String chatMessage = event.getMessage();
 
-        if (Utils.checkForAds(chatMessage, player)) {
+        if (AntiAdManager.checkForAds(chatMessage, player)) {
             event.getPlayer().sendMessage(Locales.MESSAGES_AD.getString(null).replaceAll("%perm", "chatex.bypassads"));
             event.setCancelled(true);
             return;

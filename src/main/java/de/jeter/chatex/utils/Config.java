@@ -26,6 +26,11 @@ public enum Config {
     LOCALE("Locale", "en-EN", "Which language do you want? (You can choose betwenn de-DE, fr-FR, pt-BR and en-EN by default.)"),
     ADS_ENABLED("Ads.Enabled", true, "Should we check for ads?"),
     ADS_BYPASS("Ads.Bypass", Arrays.asList("127.0.0.1", "my-domain.com"), "A list with allowed ips or domains."),
+    ADS_THRESHOLD("Ads.Threshold.Block", 0.25,"The threshold required to cancel a message, stacks per message  error = error+(error over length) "),
+    ADS_REDUCE_THRESHOLD("Ads.Threshold.ReduceThreshold", 0.1,"How much threshold is removed per message"),
+    ADS_MAX_LENGTH("Ads.Threshold.MaxLinkLength", 10, "What the max detected link length is smaller = less detections, bigger = messages get blocked faster but more false positives"),
+    ADS_CLEAR_THRESHOLD("Ads.Threshold.Clear", true,"Should the threshold be reseted after a message was blocked?(If disabled players cant write after a violation)"),
+    ADS_BLOCK_FOR("Ads.Threshold.BlockFor",30,"If Ads.Threshold.Clear is enabled for how long should a player be muted?"),
     ADS_LOG("Ads.Log", true, "Should the ads be logged in a file?"),
     ANTISPAM_SECONDS("AntiSpam.Seconds", 5, "The delay between player messages to prevent spam"),
     ANTISPAM_ENABLED("AntiSpam.Enable", true, "Should antispam be enabled?"),
@@ -65,7 +70,7 @@ public enum Config {
     public double getDouble() {
         return cfg.getDouble(path);
     }
-    
+
     public int getInt() {
         return cfg.getInt(path);
     }
