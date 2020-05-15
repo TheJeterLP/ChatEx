@@ -244,6 +244,9 @@ public class Utils {
                 LogHelper.debug("TopLevel domain matches! " + toplevel);
 
                 if (webpattern.matcher(text).find()) {
+                    if (!Config.ADS_BYPASS.getStringList().contains(text)) {
+                        return true;
+                    }
                     return true;
                 }
             }
