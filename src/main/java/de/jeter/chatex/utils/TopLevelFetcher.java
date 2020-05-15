@@ -46,7 +46,7 @@ public class TopLevelFetcher {
     }
 
     public static boolean isTLD(String tld) {
-        return TLD.contains(tld.toLowerCase().replaceAll(".", ""));
+        return TLD.contains(tld.toLowerCase());
     }
 
 }
