@@ -4,7 +4,6 @@ import de.jeter.chatex.utils.Locales;
 import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.ChatLogger;
 import de.jeter.chatex.utils.Config;
-import de.jeter.chatex.utils.TopLevelFetcher;
 import de.jeter.chatex.utils.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,8 +23,6 @@ public class ChatEx extends JavaPlugin {
         Locales.load();
         PluginManager.load();
         ChatLogger.load();
-        
-        TopLevelFetcher.setup();
 
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);

@@ -236,12 +236,7 @@ public class Utils {
                     toplevel = domains[domains.length - 1];
                 }
 
-                if (!TopLevelFetcher.isTLD(toplevel.toLowerCase())) {
-                    LogHelper.debug(toplevel + " is not a valid toplevel domain.");
-                    continue;
-                }
-
-                LogHelper.debug("TopLevel domain matches! " + toplevel);
+                LogHelper.debug("TopLevel domain is: " + toplevel);
 
                 if (webpattern.matcher(text).find()) {
                     if (!Config.ADS_BYPASS.getStringList().contains(text)) {
