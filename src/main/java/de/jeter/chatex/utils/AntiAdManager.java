@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 public class AntiAdManager {
     private static Map<UUID, Double> uuidErrorMap = new HashMap<>();
-    private static Map<UUID, Long> uuidLongMutedMap = new HashMap<>();
     private static final Pattern ipPattern = Pattern.compile("((?<![0-9])(?:(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[.,-:; ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))(?![0-9]))");
     private static final Pattern webpattern = Pattern.compile("[-a-zA-Z0-9@:%_\\+.~#?&//=]{2,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?");
 
@@ -79,13 +78,6 @@ public class AntiAdManager {
         if (!Config.ADS_ENABLED.getBoolean()) {
             return false;
         }
-        if(uuidLongMutedMap.containsKey(p.getUniqueId())){
-            if(uuidLongMutedMap.get(p.getUniqueId())<System.currentTimeMillis()){
-                uuidLongMutedMap.remove(p.getUniqueId());
-            }else{
-                return true;
-            }
-        }
         if (!uuidErrorMap.containsKey(p.getUniqueId()) || uuidErrorMap.get(p.getUniqueId()) < 0) {
             uuidErrorMap.put(p.getUniqueId(), 0d);
         }
@@ -93,10 +85,7 @@ public class AntiAdManager {
         uuidErrorMap.put(p.getUniqueId(), uuidErrorMap.get(p.getUniqueId()) + error);
         boolean canceled = uuidErrorMap.get(p.getUniqueId()) > Config.ADS_THRESHOLD.getDouble();
         if (canceled) {
-            if (Config.ADS_CLEAR_THRESHOLD.getBoolean()) {
-                uuidErrorMap.put(p.getUniqueId(), 0d);
-                uuidLongMutedMap.put(p.getUniqueId(), System.currentTimeMillis()+(Config.ADS_BLOCK_FOR.getInt()*1000));
-            }
+            uuidErrorMap.put(p.getUniqueId(), Config.ADS_THRESHOLD.getDouble());
             for (Player op : ChatEx.getInstance().getServer().getOnlinePlayers()) {
                 if (!op.hasPermission("chatex.notifyad")) {
                     continue;
