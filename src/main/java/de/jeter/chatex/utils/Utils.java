@@ -18,7 +18,7 @@ import org.bukkit.entity.Player;
  * @author TheJeterLP
  */
 public class Utils {
-
+    
     private static final Pattern ipPattern = Pattern.compile("((?<![0-9])(?:(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[.,-:; ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))(?![0-9]))");
     private static final Pattern webpattern = Pattern.compile("[-a-zA-Z0-9@:%_\\+.~#?&//=]{2,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?");
 
@@ -28,19 +28,19 @@ public class Utils {
     private static final DateFormat dateHours24 = new SimpleDateFormat("HH");
     private static final DateFormat dateMinutes = new SimpleDateFormat("mm");
     private static final DateFormat dateSeconds = new SimpleDateFormat("ss");
-
+    
     public static String translateColorCodes(String string, Player p) {
         return p.hasPermission("chatex.chat.color") ? replaceColors(string) : string;
     }
-
+    
     public static String replaceColors(String message) {
         return message.replaceAll("&((?i)[0-9a-fk-or])", "§$1");
     }
-
+    
     public static List<Player> getLocalRecipients(Player sender) {
         Location playerLocation = sender.getLocation();
         List<Player> recipients = new ArrayList<>();
-
+        
         double squaredDistance = Math.pow(Config.RANGE.getInt(), 2);
         for (Player recipient : sender.getWorld().getPlayers()) {
             if (Config.RANGE.getInt() > 0 && (playerLocation.distanceSquared(recipient.getLocation()) > squaredDistance)) {
@@ -48,10 +48,10 @@ public class Utils {
             }
             recipients.add(recipient);
         }
-
+        
         return recipients;
     }
-
+    
     public static String replacePlayerPlaceholders(Player player, String format) {
         String result = format;
         result = result.replace("%displayname", player.getDisplayName());
@@ -64,7 +64,7 @@ public class Utils {
         result = replaceColors(result);
         return result;
     }
-
+    
     private static String replaceTime(String message) {
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();
@@ -88,7 +88,7 @@ public class Utils {
         if (message.contains("%ss")) {
             message = message.replace("%ss", dateSeconds.format(currentDate));
         }
-
+        
         if (message.contains("%h")) {
             final String hour = String.valueOf(calendar.get(Calendar.HOUR));
             message = message.replace("%h", hour);
@@ -161,40 +161,40 @@ public class Utils {
             }
             message = message.replace("%M", month);
         }
-
+        
         if (message.contains("%y")) {
             final String year = String.valueOf(calendar.get(Calendar.YEAR));
             message = message.replace("%m", year);
         }
-
+        
         if (message.contains("%Y")) {
             int year = calendar.get(Calendar.YEAR);
             String year_new = String.valueOf(year);
             year_new = year_new.replace("19", "").replace("20", "");
             message = message.replace("%Y", year_new);
         }
-
+        
         if (message.contains("%d")) {
             final String day = String.valueOf(calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH));
             message = message.replace("%d", day);
         }
-
+        
         if (message.contains("%D")) {
             final String day = String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
             message = message.replace("%D", day);
         }
-
+        
         message = replaceColors(message);
         return message;
     }
-
+    
     private static boolean checkForIPPattern(String message) {
         message = message.replaceAll(" ", "");
         Matcher regexMatcher = ipPattern.matcher(message);
         while (regexMatcher.find()) {
             if (regexMatcher.group().length() != 0) {
                 String text = regexMatcher.group().trim().replaceAll("http://", "").replaceAll("https://", "").split("/")[0];
-
+                
                 if (text.split("\\.").length > 4) {
                     String[] domains = text.split("\\.");
                     String one = domains[domains.length - 1];
@@ -203,7 +203,7 @@ public class Utils {
                     String four = domains[domains.length - 4];
                     text = one + "." + two + "." + three + "." + four;
                 }
-
+                
                 if (ipPattern.matcher(text).find()) {
                     if (!Config.ADS_BYPASS.getStringList().contains(regexMatcher.group().trim())) {
                         return true;
@@ -213,21 +213,31 @@ public class Utils {
         }
         return false;
     }
-
+    
     private static boolean checkForWebPattern(String message) {
         message = message.replaceAll(" ", "");
         Matcher regexMatcher = webpattern.matcher(message);
         while (regexMatcher.find()) {
+            
+            LogHelper.debug("WebPattern matches " + message);
+            
             if (regexMatcher.group().length() != 0) {
                 String text = regexMatcher.group().trim().replaceAll("http://", "").replaceAll("https://", "").split("/")[0];
-
+                
                 if (text.split("\\.").length > 2) {
                     String[] domains = text.split("\\.");
                     String toplevel = domains[domains.length - 1];
+                    
+                    if (!TopLevelFetcher.isTLD(toplevel)) {
+                        continue;
+                    }
+                    
+                    LogHelper.debug("TopLevel domain matches!");
+                    
                     String second = domains[domains.length - 2];
                     text = second + "." + toplevel;
                 }
-
+                
                 if (webpattern.matcher(text).find()) {
                     if (!Config.ADS_BYPASS.getStringList().contains(text)) {
                         return true;
@@ -237,7 +247,7 @@ public class Utils {
         }
         return false;
     }
-
+    
     public static boolean checkForAds(String msg, Player p) {
         if (p.hasPermission("chatex.bypassads")) {
             return false;
@@ -254,7 +264,7 @@ public class Utils {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("%player", p.getName());
                 map.put("%message", msg);
-
+                
                 String message = Locales.MESSAGES_AD_NOTIFY.getString(p).replaceAll("%player", p.getName()).replaceAll("%message", msg);
                 op.sendMessage(message);
             }
@@ -262,7 +272,7 @@ public class Utils {
         }
         return found;
     }
-
+    
     public static boolean checkForBlocked(String msg) {
         List<String> blocked = Config.BLOCKED_WORDS.getStringList();
         for (String block : blocked) {
