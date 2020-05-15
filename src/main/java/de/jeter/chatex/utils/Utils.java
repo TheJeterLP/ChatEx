@@ -182,7 +182,7 @@ public class Utils {
         message = replaceColors(message);
         return message;
     }
-
+  
     public static boolean checkForBlocked(String msg) {
         List<String> blocked = Config.BLOCKED_WORDS.getStringList();
         for (String block : blocked) {
