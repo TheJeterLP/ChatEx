@@ -1,6 +1,5 @@
 package de.jeter.chatex.utils;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -22,7 +21,6 @@ public class UpdateChecker {
     private Result result = Result.NO_UPDATE;
     private String version;
     private static final String VERSIONS = "/versions/latest";
-    private static final String FIELDS = "?fields=title";
     private static final String API_RESOURCE = "https://api.spiget.org/v2/resources/";
 
     public UpdateChecker(JavaPlugin plugin, int id) {
