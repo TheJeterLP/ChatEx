@@ -11,11 +11,10 @@ import java.util.regex.Pattern;
 
 public class AntiAdManager {
     private static Map<UUID, Double> uuidErrorMap = new HashMap<>();
-    private static final Pattern ipPattern = Pattern.compile("(\\d{1,3}([.:\\-, ])?){4}");//Pattern.compile("((?<![0-9])(?:(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[.,-:; ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))(?![0-9]))");
-    //private static final Pattern webpattern = Pattern.compile("[-a-zA-Z0-9@:%_\\+.~#?&//=]{2,256}\\.[a-z]{2,"+Config.ADS_MAX_LENGTH.getInt()+"}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?");
+    private static final Pattern ipPattern = Pattern.compile("(\\d{1,3}([.:\\-, ])?){4}");
     private static final Pattern webpattern = Pattern.compile("((([a-zA-Z0-9_-]{2," + Config.ADS_MAX_LENGTH.getInt() + "}\\.)*)?[a-zA-Z0-9_-]{2," + Config.ADS_MAX_LENGTH.getInt() + "}\\.[a-zA-Z0-9_-]{2," + Config.ADS_MAX_LENGTH.getInt() + "})");
 
-    //replace any spaces in the range of ADS_MAX_LENGTH near . or , | removes () to prevent example(.)com
+    //replace any spaces in the range of ADS_MAX_LENGTH near . or , removes () and [] to prevent example(.)com
     private static final String urlCompactorPatternString = "[\\(\\)\\]\\[]|(\\s(?=.{0," + Config.ADS_MAX_LENGTH.getInt() + "}[,\\.]))|((?<=[,\\.].{0,3})\\s*)";
 
     //Ips are clear
@@ -40,7 +39,6 @@ public class AntiAdManager {
     public static double checkForWebPattern(String message) {
         double messageLength = message.length();
         double error = 0;
-        System.out.println(message);
         if (message.contains(",") || message.contains(".")) {
             message = message.replaceAll(",", ".");
             message = message.replaceAll(urlCompactorPatternString, "");
@@ -48,18 +46,11 @@ public class AntiAdManager {
             while (regexMatcher.find()) {
                 if (regexMatcher.group().length() != 0) {
                     String text = regexMatcher.group().trim().replaceAll("http://", "").replaceAll("https://", "").split("/")[0];
-
-                   /*if (text.split("\\.").length > 2) {
-                        String[] domains = text.split("\\.");
-                        String toplevel = domains[domains.length - 1];
-                        String second = domains[domains.length - 2];
-                        text = second + "." + toplevel;
-                    }*/
                     if (webpattern.matcher(text).find()) {
                         if (!Config.ADS_BYPASS.getStringList().contains(text)) {
-                            error+=text.length();
-                            if(DomainDictionary.containsTopLevelEnding(text)){
-                                error*=4;
+                            error += text.length();
+                            if (DomainDictionary.containsTopLevelEnding(text)) {
+                                error *= 4;
                             }
                         }
                     }
@@ -68,7 +59,6 @@ public class AntiAdManager {
             }
             error = error > 0 ? error / messageLength : 0;
         }
-        System.out.println(error);
         return error;
     }
 
