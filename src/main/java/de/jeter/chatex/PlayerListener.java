@@ -30,7 +30,6 @@ public class PlayerListener implements Listener {
             }
             
             name = Utils.replacePlayerPlaceholders(e.getPlayer(), name);
-            
             e.getPlayer().setPlayerListName(name);
         }
         
