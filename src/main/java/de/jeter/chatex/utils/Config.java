@@ -26,7 +26,7 @@ public enum Config {
     LOCALE("Locale", "en-EN", "Which language do you want? (You can choose betwenn de-DE, fr-FR, pt-BR and en-EN by default.)"),
     ADS_ENABLED("Ads.Enabled", true, "Should we check for ads?"),
     ADS_BYPASS("Ads.Bypass", Arrays.asList("127.0.0.1", "my-domain.com"), "A list with allowed ips or domains."),
-    ADS_THRESHOLD("Ads.Threshold.Block", 0.25,"The threshold required to cancel a message, stacks per message  error = error+(error over length) "),
+    ADS_THRESHOLD("Ads.Threshold.Block", 0.3,"The threshold required to cancel a message, stacks per message  error = error+(error over length) "),
     ADS_REDUCE_THRESHOLD("Ads.Threshold.ReduceThreshold", 0.1,"How much threshold is removed per message"),
     ADS_MAX_LENGTH("Ads.Threshold.MaxLinkLength", 10, "What the max detected link length is smaller = less detections, bigger = messages get blocked faster but more false positives"),
     ADS_LOG("Ads.Log", true, "Should the ads be logged in a file?"),
