@@ -12,10 +12,10 @@ import java.util.regex.Pattern;
 public class AntiAdManager {
     private static Map<UUID, Double> uuidErrorMap = new HashMap<>();
     private static final Pattern ipPattern = Pattern.compile("(\\d{1,3}([.:\\-, ])?){4}");
-    private static final Pattern webpattern = Pattern.compile("((([a-zA-Z0-9_-]{2," + Config.ADS_MAX_LENGTH.getInt() + "}\\.)*)?[a-zA-Z0-9_-]{2," + Config.ADS_MAX_LENGTH.getInt() + "}\\.[a-zA-Z0-9_-]{2," + Config.ADS_MAX_LENGTH.getInt() + "})");
+    private static final Pattern webPattern = Pattern.compile("((([a-zA-Z0-9_-]{2,256}\\.)*)?[a-zA-Z0-9_-]{2,256}\\.[a-zA-Z0-9_-]{2,256})(\\/[-a-zA-Z0-9@:%_\\\\+~#?&\\/=]*)?");
 
     //replace any spaces in the range of ADS_MAX_LENGTH near . or , removes () and [] to prevent example(.)com
-    private static final String urlCompactorPatternString = "[\\(\\)\\]\\[]|(\\s(?=.{0," + Config.ADS_MAX_LENGTH.getInt() + "}[,\\.]))|((?<=[,\\.].{0,3})\\s*)";
+    private static final String urlCompactorPatternString = "[\\(\\)\\]\\[]|([\\s:\\/](?=.{0," + Config.ADS_MAX_LENGTH.getInt() + "}[,\\.]))|((?<=[,\\.].{0,4})\\s*)";
 
     //Ips are clear
     private static boolean checkForIPPattern(String message) {
@@ -36,23 +36,21 @@ public class AntiAdManager {
         return false;
     }
 
-    public static double checkForWebPattern(String message) {
+    private static double checkForWebPattern(String message) {
         double messageLength = message.length();
         double error = 0;
         if (message.contains(",") || message.contains(".")) {
             message = message.replaceAll(",", ".");
             message = message.replaceAll(urlCompactorPatternString, "");
-            Matcher regexMatcher = webpattern.matcher(message);
+            Matcher regexMatcher = webPattern.matcher(message);
             while (regexMatcher.find()) {
                 if (regexMatcher.group().length() != 0) {
-                    String text = regexMatcher.group().trim().replaceAll("http://", "").replaceAll("https://", "").split("/")[0];
-                    if (webpattern.matcher(text).find()) {
-                        if (!Config.ADS_BYPASS.getStringList().contains(text)) {
+                    String text = regexMatcher.group().trim();
+                    if (!textContainsBypassable(text)) {
                             error += text.length();
                             if (DomainDictionary.containsTopLevelEnding(text)) {
                                 error *= 4;
                             }
-                        }
                     }
 
                 }
@@ -60,6 +58,16 @@ public class AntiAdManager {
             error = error > 0 ? error / messageLength : 0;
         }
         return error;
+    }
+
+    private static boolean textContainsBypassable(String text){
+        text = text.toLowerCase();
+        for(String string : Config.ADS_BYPASS.getStringList()){
+            if(text.contains(string)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean checkForAds(String msg, Player p) {
@@ -81,9 +89,6 @@ public class AntiAdManager {
                 if (!op.hasPermission("chatex.notifyad")) {
                     continue;
                 }
-                HashMap<String, String> map = new HashMap<>();
-                map.put("%player", p.getName());
-                map.put("%message", msg);
 
                 String message = Locales.MESSAGES_AD_NOTIFY.getString(p).replaceAll("%player", p.getName()).replaceAll("%message", msg);
                 op.sendMessage(message);
