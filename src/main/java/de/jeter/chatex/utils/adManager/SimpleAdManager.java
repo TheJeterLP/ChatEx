@@ -4,9 +4,9 @@ import de.jeter.chatex.ChatEx;
 import de.jeter.chatex.utils.ChatLogger;
 import de.jeter.chatex.utils.Config;
 import de.jeter.chatex.utils.Locales;
+import de.jeter.chatex.utils.Utils;
 import org.bukkit.entity.Player;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +31,7 @@ public class SimpleAdManager implements AdManager {
                 }
 
                 if (ipPattern.matcher(text).find()) {
-                    if (!Config.ADS_BYPASS.getStringList().contains(regexMatcher.group().trim())) {
+                    if (!Utils.checkForBlocked(regexMatcher.group().trim())) {
                         return true;
                     }
                 }
@@ -55,7 +55,7 @@ public class SimpleAdManager implements AdManager {
                 }
 
                 if (webpattern.matcher(text).find()) {
-                    if (!Config.ADS_BYPASS.getStringList().contains(text)) {
+                    if (!Utils.checkForBlocked(message)) {
                         return true;
                     }
                 }
@@ -84,15 +84,5 @@ public class SimpleAdManager implements AdManager {
             ChatLogger.writeToAdFile(p, msg);
         }
         return found;
-    }
-
-    public static boolean checkForBlocked(String msg) {
-        List<String> blocked = Config.BLOCKED_WORDS.getStringList();
-        for (String block : blocked) {
-            if (msg.toLowerCase().contains(block.toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
     }
 }

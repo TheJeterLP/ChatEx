@@ -1,10 +1,7 @@
 package de.jeter.chatex.utils.adManager;
 
 import de.jeter.chatex.ChatEx;
-import de.jeter.chatex.utils.ChatLogger;
-import de.jeter.chatex.utils.Config;
-import de.jeter.chatex.utils.DomainDictionary;
-import de.jeter.chatex.utils.Locales;
+import de.jeter.chatex.utils.*;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -31,7 +28,7 @@ public class SmartAdManager implements AdManager {
                 String text = regexMatcher.group().trim().replaceAll("http://", "").replaceAll("https://", "").split("/")[0];
 
                 if (ipPattern.matcher(text).find()) {
-                    if (!Config.ADS_BYPASS.getStringList().contains(regexMatcher.group().trim())) {
+                    if (!Utils.checkForBlocked(regexMatcher.group().trim())) {
                         return true;
                     }
                 }
@@ -50,7 +47,7 @@ public class SmartAdManager implements AdManager {
             while (regexMatcher.find()) {
                 if (regexMatcher.group().length() != 0) {
                     String text = regexMatcher.group().trim();
-                    if (!textContainsBypassable(text)) {
+                    if (!Utils.checkForBlocked(text)) {
                             error += text.length();
                             if (DomainDictionary.containsTopLevelEnding(text)) {
                                 error *= 4;
@@ -62,16 +59,6 @@ public class SmartAdManager implements AdManager {
             error = error > 0 ? error / messageLength : 0;
         }
         return error;
-    }
-
-    private static boolean textContainsBypassable(String text){
-        text = text.toLowerCase();
-        for(String string : Config.ADS_BYPASS.getStringList()){
-            if(text.contains(string)){
-                return true;
-            }
-        }
-        return false;
     }
 
     public boolean checkForAds(String msg, Player p) {
