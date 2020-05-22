@@ -4,6 +4,10 @@ import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.*;
 
 import java.util.UnknownFormatConversionException;
+
+import de.jeter.chatex.utils.adManager.AdManager;
+import de.jeter.chatex.utils.adManager.SimpleAdManager;
+import de.jeter.chatex.utils.adManager.SmartAdManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,7 +18,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  * @author TheJeterLP
  */
 public class ChatListener implements Listener {
-
+    private AdManager adManager = Config.ADS_SMART_MANAGER.getBoolean() ? new SmartAdManager() : new SimpleAdManager();
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
         if (!event.getPlayer().hasPermission("chatex.allowchat")) {
@@ -35,7 +39,7 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         String chatMessage = event.getMessage();
 
-        if (AntiAdManager.checkForAds(chatMessage, player)) {
+        if (adManager.checkForAds(chatMessage, player)) {
             event.getPlayer().sendMessage(Locales.MESSAGES_AD.getString(null).replaceAll("%perm", "chatex.bypassads"));
             event.setCancelled(true);
             return;

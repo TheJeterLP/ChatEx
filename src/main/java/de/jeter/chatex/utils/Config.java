@@ -24,6 +24,7 @@ public enum Config {
     LOGCHAT("logChat", false, "Should the chat be logged?"),
     DEBUG("debug", false, "Should the debug log be enabled?"),
     LOCALE("Locale", "en-EN", "Which language do you want? (You can choose betwenn de-DE, fr-FR, pt-BR and en-EN by default.)"),
+    ADS_SMART_MANAGER("Ads.SmartMananager", true, "Should the \"Smart Manager\" be used? (For more information read: https://github.com/TheJeterLP/ChatEx/wiki/Ad-Manager)"),
     ADS_ENABLED("Ads.Enabled", true, "Should we check for ads?"),
     ADS_BYPASS("Ads.Bypass", Arrays.asList("127.0.0.1", "my-domain.com"), "A list with allowed ips or domains."),
     ADS_THRESHOLD("Ads.Threshold.Block", 0.3,"The threshold required to cancel a message, stacks per message  error = error+(error over length) "),

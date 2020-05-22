@@ -1,6 +1,10 @@
-package de.jeter.chatex.utils;
+package de.jeter.chatex.utils.adManager;
 
 import de.jeter.chatex.ChatEx;
+import de.jeter.chatex.utils.ChatLogger;
+import de.jeter.chatex.utils.Config;
+import de.jeter.chatex.utils.DomainDictionary;
+import de.jeter.chatex.utils.Locales;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -9,7 +13,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AntiAdManager {
+public class SmartAdManager implements AdManager {
     private static Map<UUID, Double> uuidErrorMap = new HashMap<>();
     private static final Pattern ipPattern = Pattern.compile("(\\d{1,3}([.:\\-, ])?){4}");
     private static final Pattern webPattern = Pattern.compile("((([a-zA-Z0-9_-]{2,256}\\.)*)?[a-zA-Z0-9_-]{2,256}\\.[a-zA-Z0-9_-]{2,256})(\\/[-a-zA-Z0-9@:%_\\\\+~#?&\\/=]*)?");
@@ -70,7 +74,7 @@ public class AntiAdManager {
         return false;
     }
 
-    public static boolean checkForAds(String msg, Player p) {
+    public boolean checkForAds(String msg, Player p) {
         if (p.hasPermission("chatex.bypassads")) {
             return false;
         }
