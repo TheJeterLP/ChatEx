@@ -25,12 +25,16 @@ public enum Config {
     DEBUG("debug", false, "Should the debug log be enabled?"),
     LOCALE("Locale", "en-EN", "Which language do you want? (You can choose betwenn de-DE, fr-FR, pt-BR and en-EN by default.)"),
     ADS_ENABLED("Ads.Enabled", true, "Should we check for ads?"),
-    ADS_SMART_MANAGER("Ads.SmartManager", true, "Should the \"Smart Manager\" be used? (For more information read: https://github.com/TheJeterLP/ChatEx/wiki/Ad-Manager)"),
     ADS_BYPASS("Ads.Bypass", Arrays.asList("127.0.0.1", "my-domain.com"), "A list with allowed ips or domains."),
+    ADS_LOG("Ads.Log", true, "Should the ads be logged in a file?"),
+    ADS_SMART_MANAGER("Ads.SmartManager", true, "Should the \"Smart Manager\" be used? (For more information read: https://github.com/TheJeterLP/ChatEx/wiki/Ad-Manager)"),
+    ADS_SMART_DOMAIN_ENDINGS("Ads.SmartConfig.DomainEndings", Arrays.asList(
+            "com", "net", "org", "de", "icu", "uk", "ru", "me", "info", "top", "xyz", "tk", "cn", "ga", "cf", "nl", "eu"
+    ),"The endings the SmartManager applies the multiplier to."),
+    ADS_SMART_MULTIPLIER("Ads.SmartConfig.Multiplier",4,"If a domain pattern contains an ending from Ads.SmartConfig.DomainEndings the score get multiplied by this number."),
     ADS_THRESHOLD("Ads.Threshold.Block", 0.3,"The threshold required to cancel a message."),
     ADS_REDUCE_THRESHOLD("Ads.Threshold.ReduceThreshold", 0.1,"How much threshold is removed per message"),
     ADS_MAX_LENGTH("Ads.Threshold.MaxLinkLength", 10, "What the max detected link length is (For more information read: https://github.com/TheJeterLP/ChatEx/wiki/Ad-Manager)"),
-    ADS_LOG("Ads.Log", true, "Should the ads be logged in a file?"),
     ANTISPAM_SECONDS("AntiSpam.Seconds", 5, "The delay between player messages to prevent spam"),
     ANTISPAM_ENABLED("AntiSpam.Enable", true, "Should antispam be enabled?"),
     BLOCKED_WORDS("BlockedWords", Arrays.asList("shit", "@everyone"), "A list of words that should be blocked."),

@@ -50,7 +50,7 @@ public class SmartAdManager implements AdManager {
                     if (!Utils.checkForBlocked(text)) {
                             error += text.length();
                             if (DomainDictionary.containsTopLevelEnding(text)) {
-                                error *= 4;
+                                error *= Config.ADS_SMART_MULTIPLIER.getInt();
                             }
                     }
 

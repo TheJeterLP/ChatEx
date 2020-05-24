@@ -7,18 +7,16 @@ public class DomainDictionary {
     public static boolean containsTopLevelEnding(String checkString){
         String[] parts = checkString.split("\\.");
         String ending = parts[parts.length-1];
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
         for(char Character : ending.toCharArray()){
-            stringBuffer.append(Character);
-            if(endingSet.contains(stringBuffer.toString())){
+            stringBuilder.append(Character);
+            if(endingSet.contains(stringBuilder.toString())){
                 return true;
             }
         }
         return false;
     }
-    private static final HashSet<String> endingSet = new HashSet<>(Arrays.asList(
-            "com", "net", "org", "de", "icu", "uk", "ru", "me", "info", "top", "xyz", "tk", "cn", "ga", "cf", "nl"
-    ));
+    private static final HashSet<String> endingSet = new HashSet<>(Config.ADS_SMART_DOMAIN_ENDINGS.getStringList());
 
 
 }
