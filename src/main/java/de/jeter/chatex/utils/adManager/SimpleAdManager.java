@@ -31,7 +31,7 @@ public class SimpleAdManager implements AdManager {
                 }
 
                 if (ipPattern.matcher(text).find()) {
-                    if (!Utils.checkForBlocked(regexMatcher.group().trim())) {
+                    if (!Utils.checkForBypassString(regexMatcher.group().trim())) {
                         return true;
                     }
                 }

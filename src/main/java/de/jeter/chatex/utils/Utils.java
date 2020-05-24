@@ -191,4 +191,13 @@ public class Utils {
         }
         return false;
     }
+
+    public static boolean checkForBypassString(String message){
+        for (String block : Config.ADS_BYPASS.getStringList()) {
+            if (message.toLowerCase().contains(block.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
