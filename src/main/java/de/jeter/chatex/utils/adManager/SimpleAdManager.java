@@ -55,7 +55,7 @@ public class SimpleAdManager implements AdManager {
                 }
 
                 if (webpattern.matcher(text).find()) {
-                    if (!Utils.checkForBlocked(message)) {
+                    if (!Utils.checkForBypassString(message)) {
                         return true;
                     }
                 }

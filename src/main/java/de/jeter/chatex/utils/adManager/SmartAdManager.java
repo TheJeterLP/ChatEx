@@ -28,7 +28,7 @@ public class SmartAdManager implements AdManager {
                 String text = regexMatcher.group().trim().replaceAll("http://", "").replaceAll("https://", "").split("/")[0];
 
                 if (ipPattern.matcher(text).find()) {
-                    if (!Utils.checkForBlocked(regexMatcher.group().trim())) {
+                    if (!Utils.checkForBypassString(regexMatcher.group().trim())) {
                         return true;
                     }
                 }
