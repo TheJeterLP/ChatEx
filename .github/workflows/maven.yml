@@ -20,5 +20,18 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Cache Maven Packages
+      uses: actions/cache@v1
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
     - name: Build with Maven
-      run: mvn clean install
+      run: mvn -B package --file pom.xml
+    - name: Archive jar
+      run: mkdir staging && cp target/*.jar staging
+    - name: upload jar
+      uses: actions/upload-artifact@v1
+      with:
+        name: Package
+        path: staging  
