@@ -35,7 +35,7 @@ jobs:
       - name: upload jar
         uses: actions/upload-artifact@v1
         with:
-          name: ChatEx
+          name: ChatEx ${{ github.event.commits[0].message }}  
           path: staging       
       - name: Create Release
         id: create_release
