@@ -42,8 +42,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ChatEx ${{ github.ref }}
+          tag_name: ${{ env.version }}
+          release_name: ChatEx ${{ env.version }}
+          commitish: ${{ env.commitish }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
