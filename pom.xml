@@ -5,7 +5,7 @@
     <artifactId>ChatEx</artifactId>
     <name>ChatEx</name>
     <inceptionYear>2020</inceptionYear>
-    <version>2.4.5</version>
+    <version>2.4.6</version>
     <description>ChatManagement plugin for Bukkit</description>  
 
     <scm>
@@ -25,7 +25,7 @@
                 <directory>${basedir}/src/main/resources/</directory>
                 <includes>        
                     <include>**/*</include>
-                </includes>
+                </includes> 
             </resource>
         </resources>      
     </build>
