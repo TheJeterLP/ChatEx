@@ -35,26 +35,16 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: ChatEx
-          path: staging  
-      - id: artifact-version
-        uses: fleskesvor/actions-test/actions/create-artifact-version@master
-      - name: Test artifact version
-        run: |
-          echo "VERSION: ${VERSION}"
-          echo "COMMIT MESSAGE: ${MESSAGE}"
-          git log -1
-        env:
-          VERSION: ${{ steps.artifact-version.outputs.version }}
-          MESSAGE: ${{ github.event.commits[0].message }}  
+          path: staging       
       - name: Create Release
         id: create_release
         uses: fleskesvor/actions-test/actions/create-artifact-version@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.version }}
-          release_name: ChatEx ${{ env.version }}
-          commitish: ${{ env.commitish }}
+          tag_name: ${{ steps.artifact-version.outputs.version }}
+          release_name: ${{ steps.artifact-version.outputs.version }}
+          body: ${{ github.event.commits[0].message }}  
           draft: false
           prerelease: false
       - name: Upload Release Asset
