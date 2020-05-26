@@ -6,11 +6,12 @@ name: Create main release
 # events but only for the master branch
 on:
   push:
-    tags: 
-      - 'v*'
+    branches:
+      - master
 
 jobs:
   build:
+    if: "contains(github.event.head_commit.message, 'v*')"
     name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
