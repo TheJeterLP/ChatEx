@@ -42,8 +42,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.artifact-version.outputs.version }}
-          release_name: ${{ steps.artifact-version.outputs.version }}
+          tag_name: ${{ github.event.commits[0].message }}  
+          release_name: ${{ github.event.commits[0].message }}  
           body: ${{ github.event.commits[0].message }}  
           draft: false
           prerelease: false
