@@ -6,7 +6,6 @@ name: Create main release
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
     tags: 
       - 'v*'
 
@@ -36,9 +35,19 @@ jobs:
         with:
           name: ChatEx
           path: staging  
+      - id: artifact-version
+        uses: fleskesvor/actions-test/actions/create-artifact-version@master
+      - name: Test artifact version
+        run: |
+          echo "VERSION: ${VERSION}"
+          echo "COMMIT MESSAGE: ${MESSAGE}"
+          git log -1
+        env:
+          VERSION: ${{ steps.artifact-version.outputs.version }}
+          MESSAGE: ${{ github.event.commits[0].message }}  
       - name: Create Release
         id: create_release
-        uses: fleskesvor/create-release@feature/support-target-commitish
+        uses: fleskesvor/actions-test/actions/create-artifact-version@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
