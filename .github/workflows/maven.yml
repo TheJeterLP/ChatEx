@@ -33,5 +33,5 @@ jobs:
     - name: upload jar
       uses: actions/upload-artifact@v1
       with:
-        name: Package
+        name: artifact
         path: staging  
