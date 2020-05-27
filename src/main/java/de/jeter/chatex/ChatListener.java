@@ -1,5 +1,7 @@
 package de.jeter.chatex;
 
+import de.jeter.chatex.api.events.MessageBlockedByAntiSpamManagerEvent;
+import de.jeter.chatex.events.DefaultEventManager;
 import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.*;
 import de.jeter.chatex.utils.adManager.AdManager;
@@ -29,8 +31,12 @@ public class ChatListener implements Listener {
         }
 
         if (!AntiSpamManager.isAllowed(event.getPlayer())) {
-            event.getPlayer().sendMessage(Locales.ANTI_SPAM_DENIED.getString(event.getPlayer()).replaceAll("%time%", AntiSpamManager.getRemaingSeconds(event.getPlayer()) + ""));
-            event.setCancelled(true);
+            String message = Locales.ANTI_SPAM_DENIED.getString(event.getPlayer()).replaceAll("%time%", AntiSpamManager.getRemaingSeconds(event.getPlayer()) + "");
+            long remainingTime = AntiSpamManager.getRemaingSeconds(event.getPlayer());
+            event.getPlayer().sendMessage(message);
+            MessageBlockedByAntiSpamManagerEvent messageBlockedByAntiSpamManagerEvent = new MessageBlockedByAntiSpamManagerEvent(event.getPlayer(),message, event.getMessage(),remainingTime);
+            DefaultEventManager.getInstance().handleEvent(messageBlockedByAntiSpamManagerEvent);
+            event.setCancelled(messageBlockedByAntiSpamManagerEvent.isCancelled());
             return;
         }
         AntiSpamManager.put(event.getPlayer());
