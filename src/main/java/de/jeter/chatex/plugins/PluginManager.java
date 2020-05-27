@@ -40,15 +40,15 @@ public class PluginManager implements PermissionsPlugin {
             handler = new Nothing();
         }
         ChatEx.getInstance().getLogger().info("Successfully hooked into: " + handler.getName());
+
+        if (HookManager.checkPlaceholderAPI()) {
+            ChatEx.getInstance().getLogger().info("Hooked into PlaceholderAPI");
+        }
     }
 
     @Override
     public String getName() {
-        if (!HookManager.checkPlaceholderAPI()) {
-            return handler.getName();
-        } else {
-            return handler.getName() + ", PlaceholderAPI";
-        }
+        return handler.getName();
     }
 
     @Override
