@@ -62,7 +62,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        if (Utils.checkForBlocked(event.getMessage())) {
+        if (Utils.checkForBlocked(chatMessage)) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Locales.MESSAGES_BLOCKED.getString(null));
             return;
@@ -73,7 +73,7 @@ public class ChatListener implements Listener {
             if (chatMessage.startsWith("!")) {
                 if (player.hasPermission("chatex.chat.global")) {
                     chatMessage = chatMessage.replaceFirst("!", "");
-                    format = PluginManager.getInstance().getGlobalMessageFormat(event.getPlayer());
+                    format = PluginManager.getInstance().getGlobalMessageFormat(player);
                     global = true;
                 } else {
                     player.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(player).replaceAll("%perm", "chatex.chat.global"));
@@ -111,7 +111,7 @@ public class ChatListener implements Listener {
         }
 
         event.setMessage(Utils.translateColorCodes(chatMessage, player));
-        ChatLogger.writeToFile(event.getPlayer(), event.getMessage());
+        ChatLogger.writeToFile(player, chatMessage);
     }
 
 }
