@@ -1,4 +1,6 @@
 package de.jeter.chatex.api.events;
 
-public abstract class ChatExEvent {
+import org.bukkit.event.Cancellable;
+
+public abstract class ChatExEvent implements Cancellable {
 }

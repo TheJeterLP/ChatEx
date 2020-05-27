@@ -1,6 +1,7 @@
 package de.jeter.chatex;
 
-import de.jeter.chatex.api.events.MessageBlockedByAntiSpamManagerEvent;
+import de.jeter.chatex.api.events.MessageBlockedByAdManagerEvent;
+import de.jeter.chatex.api.events.MessageBlockedBySpamManagerEvent;
 import de.jeter.chatex.api.events.DefaultEventManager;
 import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.*;
@@ -33,10 +34,10 @@ public class ChatListener implements Listener {
         if (!AntiSpamManager.isAllowed(event.getPlayer())) {
             String message = Locales.ANTI_SPAM_DENIED.getString(event.getPlayer()).replaceAll("%time%", AntiSpamManager.getRemaingSeconds(event.getPlayer()) + "");
             long remainingTime = AntiSpamManager.getRemaingSeconds(event.getPlayer());
-            event.getPlayer().sendMessage(message);
-            MessageBlockedByAntiSpamManagerEvent messageBlockedByAntiSpamManagerEvent = new MessageBlockedByAntiSpamManagerEvent(event.getPlayer(),message, event.getMessage(),remainingTime);
-            DefaultEventManager.getInstance().handleEvent(messageBlockedByAntiSpamManagerEvent);
-            event.setCancelled(messageBlockedByAntiSpamManagerEvent.isCancelled());
+            MessageBlockedBySpamManagerEvent messageBlockedBySpamManagerEvent = new MessageBlockedBySpamManagerEvent(event.getPlayer(),message, event.getMessage(),remainingTime);
+            DefaultEventManager.getInstance().handleEvent(messageBlockedBySpamManagerEvent);
+            event.getPlayer().sendMessage(messageBlockedBySpamManagerEvent.getPluginMessage());
+            event.setCancelled(!messageBlockedBySpamManagerEvent.isCancelled());
             return;
         }
         AntiSpamManager.put(event.getPlayer());
@@ -46,8 +47,11 @@ public class ChatListener implements Listener {
         String chatMessage = event.getMessage();
 
         if (adManager.checkForAds(chatMessage, player)) {
-            event.getPlayer().sendMessage(Locales.MESSAGES_AD.getString(null).replaceAll("%perm", "chatex.bypassads"));
-            event.setCancelled(true);
+            String message = Locales.MESSAGES_AD.getString(null).replaceAll("%perm", "chatex.bypassads");
+            MessageBlockedByAdManagerEvent messageBlockedByAdManagerEvent = new MessageBlockedByAdManagerEvent(player, chatMessage, message);
+            DefaultEventManager.getInstance().handleEvent(messageBlockedByAdManagerEvent);
+            event.getPlayer().sendMessage(messageBlockedByAdManagerEvent.getPluginMessage());
+            event.setCancelled(!messageBlockedByAdManagerEvent.isCancelled());
             return;
         }
 

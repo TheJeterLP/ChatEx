@@ -1,19 +1,18 @@
 package de.jeter.chatex.api.events;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 
-public class MessageBlockedByAntiSpamManagerEvent extends ChatExEvent implements Cancellable {
+public class MessageBlockedBySpamManagerEvent extends ChatExEvent {
     private Player player;
     private String message;
     private long remainingTime;
-    private String playerMessage;
+    private String pluginMessage;
     private boolean canceled = true;
 
-    public MessageBlockedByAntiSpamManagerEvent(Player player, String message, String playerMessage, long remaining) {
+    public MessageBlockedBySpamManagerEvent(Player player, String message, String pluginMessage, long remaining) {
         this.player = player;
         this.message = message;
-        this.playerMessage = playerMessage;
+        this.pluginMessage = pluginMessage;
         this.remainingTime = remaining;
     }
 
@@ -25,27 +24,30 @@ public class MessageBlockedByAntiSpamManagerEvent extends ChatExEvent implements
     }
 
     /**
-     * @return Return the message which the player will receive.
+     * @return the message which the player would have written.
      */
+
     public String getMessage() {
         return message;
     }
 
-
-    /**
-     * @param message the message which the player will receive.
-     */
     public void setMessage(String message) {
         this.message = message;
     }
 
     /**
-     * @return the message which the player would have written.
+     * @return Return the message which the player will receive.
      */
-    public String getPlayerMessage() {
-        return playerMessage;
+    public String getPluginMessage() {
+        return pluginMessage;
     }
 
+    /**
+     * @param pluginMessage the message the player will receive
+     */
+    public void setPluginMessage(String pluginMessage) {
+        this.pluginMessage = pluginMessage;
+    }
 
     /**
      * @return the remaining time a player is muted
