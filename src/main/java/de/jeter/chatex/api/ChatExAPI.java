@@ -1,7 +1,7 @@
 package de.jeter.chatex.api;
 
 import de.jeter.chatex.api.events.EventManager;
-import de.jeter.chatex.events.DefaultEventManager;
+import de.jeter.chatex.api.events.DefaultEventManager;
 
 public class ChatExAPI {
     public ChatExAPI() {

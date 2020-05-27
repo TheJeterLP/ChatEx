@@ -1,10 +1,4 @@
-package de.jeter.chatex.events;
-
-import de.jeter.chatex.api.events.EventManager;
-import de.jeter.chatex.api.events.ChatExEvent;
-import de.jeter.chatex.api.events.ChatExEventHandler;
-import de.jeter.chatex.api.events.ChatExListener;
-import de.jeter.chatex.api.events.RegisteredEvent;
+package de.jeter.chatex.api.events;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;

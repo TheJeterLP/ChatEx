@@ -1,7 +1,7 @@
 package de.jeter.chatex;
 
 import de.jeter.chatex.api.events.MessageBlockedByAntiSpamManagerEvent;
-import de.jeter.chatex.events.DefaultEventManager;
+import de.jeter.chatex.api.events.DefaultEventManager;
 import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.*;
 import de.jeter.chatex.utils.adManager.AdManager;
