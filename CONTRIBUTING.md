@@ -57,17 +57,12 @@ So always prefix your commit message with one of these tags:
 * [MOD] : You have modified something in the existing code
 * [ADD] : You've added something new to the code
 * [FIX] : Fixed a problem/bug
-* [OPTIMIZATION] : Some optimization done in the code
+* [OPTIMIZATION] or [OPT] : Some optimization done in the code
 * [DEV] : Something only related to development
-* [DEBUG] : Related to help the debugging.
-* [IGNORE] : Related to the .gitignore file
+* [DEBUG] or [DEB] : Related to help the debugging.
+* [IGNORE] or [IGN] : Related to the .gitignore file
+* [REMOVE] or [REM] : Related to removing files/code.
 
 If you have already commited something, but want to add another commit, 
 just type ```git commit -amend```
 BUT: Only use this if you did not push already. If you pushed already, you need to make a new commit.
-
-Used IDEs
-------------
-* [NetBeans](https://netbeans.org) (used by TheJeterLP)
-  * Built-in Maven support
-  * Built-in Git support
