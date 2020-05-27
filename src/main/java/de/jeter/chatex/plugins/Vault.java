@@ -89,16 +89,12 @@ public class Vault implements PermissionsPlugin {
     }
 
     protected static boolean setupChat() {
-        try {
-            RegisteredServiceProvider<Chat> chatProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-            if (chatProvider != null) {
-                chatProvider.getProvider();
-                chat = chatProvider.getProvider();
-                return chat.isEnabled();
-            }
-            return false;
-        } catch (Throwable e) {
-            return false;
+        RegisteredServiceProvider<Chat> chatProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        if (chatProvider != null) {
+            chatProvider.getProvider();
+            chat = chatProvider.getProvider();
+            return chat.isEnabled();
         }
+        return false;
     }
 }

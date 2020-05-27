@@ -21,6 +21,9 @@ package de.jeter.chatex.utils;
 import java.util.HashSet;
 
 public class DomainDictionary {
+    
+    private static final HashSet<String> endingSet = new HashSet<>(Config.ADS_SMART_DOMAIN_ENDINGS.getStringList());
+    
     public static boolean containsTopLevelEnding(String checkString) {
         String[] parts = checkString.split("\\.");
         String ending = parts[parts.length - 1];
@@ -33,8 +36,5 @@ public class DomainDictionary {
         }
         return false;
     }
-
-    private static final HashSet<String> endingSet = new HashSet<>(Config.ADS_SMART_DOMAIN_ENDINGS.getStringList());
-
 
 }

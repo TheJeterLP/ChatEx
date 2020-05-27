@@ -67,6 +67,11 @@ public class Utils {
             return format;
         }
         String result = format;
+
+        if (HookManager.checkPlaceholderAPI()) {
+            result = PlaceholderAPI.setPlaceholders(player, result);
+        }
+
         result = result.replace("%displayname", player.getDisplayName());
         result = result.replace("%prefix", PluginManager.getInstance().getPrefix(player));
         result = result.replace("%suffix", PluginManager.getInstance().getSuffix(player));
@@ -75,10 +80,6 @@ public class Utils {
         result = result.replace("%group", PluginManager.getInstance().getGroupNames(player).length > 0 ? PluginManager.getInstance().getGroupNames(player)[0] : "none");
         result = replaceTime(result);
         result = replaceColors(result);
-
-        if (HookManager.checkPlaceholderAPI()) {
-            result = PlaceholderAPI.setPlaceholders(player, result);
-        }
 
         return result;
     }
