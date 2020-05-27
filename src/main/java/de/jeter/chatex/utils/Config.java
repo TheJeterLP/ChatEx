@@ -1,11 +1,12 @@
 package de.jeter.chatex.utils;
 
 import de.jeter.chatex.ChatEx;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
  * @author TheJeterLP
@@ -30,17 +31,17 @@ public enum Config {
     ADS_SMART_MANAGER("Ads.SmartManager", true, "Should the \"Smart Manager\" be used? (For more information read: https://github.com/TheJeterLP/ChatEx/wiki/Ad-Manager)"),
     ADS_SMART_DOMAIN_ENDINGS("Ads.SmartConfig.DomainEndings", Arrays.asList(
             "com", "net", "org", "de", "icu", "uk", "ru", "me", "info", "top", "xyz", "tk", "cn", "ga", "cf", "nl", "eu"
-    ),"The endings the SmartManager applies the multiplier to."),
-    ADS_SMART_MULTIPLIER("Ads.SmartConfig.Multiplier",4,"If a domain pattern contains an ending from Ads.SmartConfig.DomainEndings the score get multiplied by this number."),
-    ADS_THRESHOLD("Ads.Threshold.Block", 0.3,"The threshold required to cancel a message."),
-    ADS_REDUCE_THRESHOLD("Ads.Threshold.ReduceThreshold", 0.1,"How much threshold is removed per message"),
+    ), "The endings the SmartManager applies the multiplier to."),
+    ADS_SMART_MULTIPLIER("Ads.SmartConfig.Multiplier", 4, "If a domain pattern contains an ending from Ads.SmartConfig.DomainEndings the score get multiplied by this number."),
+    ADS_THRESHOLD("Ads.Threshold.Block", 0.3, "The threshold required to cancel a message."),
+    ADS_REDUCE_THRESHOLD("Ads.Threshold.ReduceThreshold", 0.1, "How much threshold is removed per message"),
     ADS_MAX_LENGTH("Ads.Threshold.MaxLinkLength", 10, "What the max detected link length is (For more information read: https://github.com/TheJeterLP/ChatEx/wiki/Ad-Manager)"),
     ANTISPAM_SECONDS("AntiSpam.Seconds", 5, "The delay between player messages to prevent spam"),
     ANTISPAM_ENABLED("AntiSpam.Enable", true, "Should antispam be enabled?"),
     BLOCKED_WORDS("BlockedWords", Arrays.asList("shit", "@everyone"), "A list of words that should be blocked."),
     CHANGE_TABLIST_NAME("Tablist.Change", true, "Do you want to have the prefixes and suffixes in the tablist?"),
     TABLIST_FORMAT("Tablist.format", "%prefix%player%suffix", "The format of the tablist name"),
-    CHANGE_JOIN_AND_QUIT("Messages.JoinAndQuit.Enabled", false, "Do you want to change the join and the quit messages?");   
+    CHANGE_JOIN_AND_QUIT("Messages.JoinAndQuit.Enabled", false, "Do you want to change the join and the quit messages?");
 
     private final Object value;
     private final String path;
@@ -48,7 +49,7 @@ public enum Config {
     private static YamlConfiguration cfg;
     private static final File f = new File(ChatEx.getInstance().getDataFolder(), "config.yml");
 
-    private Config(String path, Object val, String description) {
+    Config(String path, Object val, String description) {
         this.path = path;
         this.value = val;
         this.description = description;
@@ -89,14 +90,14 @@ public enum Config {
     public static void load() {
         ChatEx.getInstance().getDataFolder().mkdirs();
         reload(false);
-        String header = "";
+        StringBuilder header = new StringBuilder();
         for (Config c : values()) {
-            header += c.getPath() + ": " + c.getDescription() + System.lineSeparator();
+            header.append(c.getPath()).append(": ").append(c.getDescription()).append(System.lineSeparator());
             if (!cfg.contains(c.getPath())) {
                 c.set(c.getDefaultValue(), false);
             }
         }
-        cfg.options().header(header);
+        cfg.options().header(header.toString());
         try {
             cfg.save(f);
         } catch (IOException ex) {

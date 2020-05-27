@@ -2,9 +2,6 @@ package de.jeter.chatex;
 
 import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.*;
-
-import java.util.UnknownFormatConversionException;
-
 import de.jeter.chatex.utils.adManager.AdManager;
 import de.jeter.chatex.utils.adManager.SimpleAdManager;
 import de.jeter.chatex.utils.adManager.SmartAdManager;
@@ -14,11 +11,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.UnknownFormatConversionException;
+
 /**
  * @author TheJeterLP
  */
 public class ChatListener implements Listener {
     private AdManager adManager = Config.ADS_SMART_MANAGER.getBoolean() ? new SmartAdManager() : new SimpleAdManager();
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
         if (!event.getPlayer().hasPermission("chatex.allowchat")) {
@@ -32,7 +32,7 @@ public class ChatListener implements Listener {
             event.getPlayer().sendMessage(Locales.ANTI_SPAM_DENIED.getString(event.getPlayer()).replaceAll("%time%", AntiSpamManager.getRemaingSeconds(event.getPlayer()) + ""));
             event.setCancelled(true);
             return;
-        } 
+        }
         AntiSpamManager.put(event.getPlayer());
 
         String format = PluginManager.getInstance().getMessageFormat(event.getPlayer());
@@ -65,7 +65,6 @@ public class ChatListener implements Listener {
                 }
             } else {
                 if (Config.RANGEMODE.getBoolean()) {
-                    global = false;
                     event.getRecipients().clear();
                     if (Utils.getLocalRecipients(player).size() == 1 && Config.SHOW_NO_RECEIVER_MSG.getBoolean()) {
                         player.sendMessage(Locales.NO_LISTENING_PLAYERS.getString(player));

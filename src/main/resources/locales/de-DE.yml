@@ -20,9 +20,9 @@ Messages:
     NoPermission: '&4[FEHLER] &7Dafür hast du nicht die nötigen Rechte! &c(%perm)'
     WrongUsage: '&c[FEHLER] &7Falsche Benutzung! Benutze &6/%cmd help&7!'
   Player:
-      Join: '%prefix%displayname%suffix &ehat den Server betreten!'
-      Quit: '%prefix%displayname%suffix &ehat den Server verlassen!'
-      Kick: '%prefix%displayname%suffix &ewurde vom Server gekickt!'
+    Join: '%prefix%displayname%suffix &ehat den Server betreten!'
+    Quit: '%prefix%displayname%suffix &ehat den Server verlassen!'
+    Kick: '%prefix%displayname%suffix &ewurde vom Server gekickt!'
   UpdateFound: '&a[ChatEx]&7 Ein neues Update wurde veröffentlicht. Aktuelle Version: %oldversion Neue version: %newversion'
   UpdateDownloaded: '&a[ChatEx]&7 Ein neues Update wurde installiert. Es wird beim nächsten Neustart aktiv.'
     

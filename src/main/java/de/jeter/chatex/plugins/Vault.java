@@ -18,19 +18,19 @@ public class Vault implements PermissionsPlugin {
         if (!Config.MULTIPREFIXES.getBoolean()) {
             return chat.getPlayerPrefix(p.getWorld().getName(), p);
         }
-        String finalPrefix = "";
+        StringBuilder finalPrefix = new StringBuilder();
         int i = 0;
         for (String group : chat.getPlayerGroups(p)) {
             String groupPrefix = chat.getGroupPrefix(p.getWorld(), group);
             if (groupPrefix != null && !groupPrefix.isEmpty()) {
                 if (i > 1) {
-                    finalPrefix += " ";
+                    finalPrefix.append(" ");
                 }
-                finalPrefix += groupPrefix;
+                finalPrefix.append(groupPrefix);
                 i++;
             }
         }
-        return finalPrefix;
+        return finalPrefix.toString();
     }
 
     @Override
@@ -38,19 +38,19 @@ public class Vault implements PermissionsPlugin {
         if (!Config.MULTIPREFIXES.getBoolean()) {
             return chat.getPlayerSuffix(p.getWorld().getName(), p);
         }
-        String finalSuffix = "";
+        StringBuilder finalSuffix = new StringBuilder();
         int i = 0;
         for (String group : chat.getPlayerGroups(p)) {
             String groupSuffix = chat.getGroupSuffix(p.getWorld(), group);
             if (groupSuffix != null && !groupSuffix.isEmpty()) {
                 if (i > 1) {
-                    finalSuffix += " ";
+                    finalSuffix.append(" ");
                 }
                 i++;
-                finalSuffix += groupSuffix;
+                finalSuffix.append(groupSuffix);
             }
         }
-        return finalSuffix;
+        return finalSuffix.toString();
     }
 
     @Override
@@ -76,9 +76,10 @@ public class Vault implements PermissionsPlugin {
     protected static boolean setupChat() {
         try {
             RegisteredServiceProvider<Chat> chatProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-            if (chatProvider != null && chatProvider.getProvider() != null) {
+            if (chatProvider != null) {
+                chatProvider.getProvider();
                 chat = chatProvider.getProvider();
-                return chat != null && chat.isEnabled();
+                return chat.isEnabled();
             }
             return false;
         } catch (Throwable e) {

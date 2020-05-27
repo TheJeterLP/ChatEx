@@ -1,9 +1,9 @@
 package de.jeter.chatex;
 
-import de.jeter.chatex.utils.Locales;
 import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.ChatLogger;
 import de.jeter.chatex.utils.Config;
+import de.jeter.chatex.utils.Locales;
 import de.jeter.chatex.utils.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 

@@ -181,7 +181,7 @@ public class Utils {
         message = replaceColors(message);
         return message;
     }
-  
+
     public static boolean checkForBlocked(String msg) {
         List<String> blocked = Config.BLOCKED_WORDS.getStringList();
         for (String block : blocked) {
@@ -192,7 +192,7 @@ public class Utils {
         return false;
     }
 
-    public static boolean checkForBypassString(String message){
+    public static boolean checkForBypassString(String message) {
         for (String block : Config.ADS_BYPASS.getStringList()) {
             if (message.toLowerCase().contains(block.toLowerCase())) {
                 return true;

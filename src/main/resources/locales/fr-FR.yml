@@ -17,7 +17,7 @@ Messages:
     NoPermission: '&4[ERREUR] &7Vous n'avez pas la permission ! &c(%perm%)'
     WrongUsage: '&c[ERREUR] &7Mauvaise utilisation ! Tapez &6/%cmd% help&7!'
   Player:
-      Join: '%faction %prefix%displayname%suffix &ea rejoint la partie !'
-      FirstJoin: '%faction %prefix%displayname%suffix &ea rejoint la partie &6pour la première fois !'
-      Quit: '%faction %prefix%displayname%suffix &ea quitté la partie !'
-      Kick: '%faction %prefix%displayname%suffix &ea été expulsé de la partie !'
+    Join: '%faction %prefix%displayname%suffix &ea rejoint la partie !'
+    FirstJoin: '%faction %prefix%displayname%suffix &ea rejoint la partie &6pour la première fois !'
+    Quit: '%faction %prefix%displayname%suffix &ea quitté la partie !'
+    Kick: '%faction %prefix%displayname%suffix &ea été expulsé de la partie !'

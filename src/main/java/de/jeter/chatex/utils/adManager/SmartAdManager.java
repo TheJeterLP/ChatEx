@@ -48,10 +48,10 @@ public class SmartAdManager implements AdManager {
                 if (regexMatcher.group().length() != 0) {
                     String text = regexMatcher.group().trim();
                     if (!Utils.checkForBypassString(text)) {
-                            error += text.length();
-                            if (DomainDictionary.containsTopLevelEnding(text)) {
-                                error *= Config.ADS_SMART_MULTIPLIER.getInt();
-                            }
+                        error += text.length();
+                        if (DomainDictionary.containsTopLevelEnding(text)) {
+                            error *= Config.ADS_SMART_MULTIPLIER.getInt();
+                        }
                     }
 
                 }

@@ -5,15 +5,15 @@
     <artifactId>ChatEx</artifactId>
     <name>ChatEx</name>
     <inceptionYear>2020</inceptionYear>
-    <version>2.4.6</version> 
-    <description>ChatManagement plugin for Bukkit</description>  
+    <version>2.4.6</version>
+    <description>ChatManagement plugin for Bukkit</description>
 
     <scm>
         <connection>scm:git:git@github.com:TheJeterLP/ChatEx.git</connection>
         <url>scm:git:git@github.com:TheJeterLP/ChatEx.git</url>
         <developerConnection>scm:git:git@github.com:TheJeterLP/ChatEx.git</developerConnection>
     </scm>
-           
+
     <build>
         <defaultGoal>clean install</defaultGoal>
         <finalName>${project.name}</finalName>
@@ -23,13 +23,13 @@
                 <targetPath>.</targetPath>
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/</directory>
-                <includes>        
+                <includes>
                     <include>**/*</include>
-                </includes>  
+                </includes>
             </resource>
-        </resources>      
+        </resources>
     </build>
-    
+
     <repositories>
         <repository>
             <id>spigot-repo</id>
@@ -44,7 +44,7 @@
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
     </repositories>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -63,11 +63,11 @@
             <version>2.10.4</version>
         </dependency>
     </dependencies>
-    
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target> 
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-        
+
 </project>

@@ -1,19 +1,16 @@
 package de.jeter.chatex.utils;
 
+import org.bukkit.entity.Player;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import org.bukkit.entity.Player;
 
 public class AntiSpamManager {
 
     private static final Map<Player, Long> map = new HashMap<>();
 
     public static void put(Player chatter) {
-        if (map.containsKey(chatter)) {
-            map.remove(chatter);
-        }
-
         map.put(chatter, System.currentTimeMillis());
     }
 

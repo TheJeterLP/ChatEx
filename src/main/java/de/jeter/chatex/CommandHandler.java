@@ -6,11 +6,7 @@ import de.jeter.chatex.utils.Locales;
 import de.jeter.chatex.utils.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.command.BlockCommandSender;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
 public class CommandHandler implements CommandExecutor {
@@ -43,11 +39,10 @@ public class CommandHandler implements CommandExecutor {
                             p.setPlayerListName(name);
                         }
                     }
-                    return true;
                 } else {
                     sender.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(null).replaceAll("%perm", "chatex.reload"));
-                    return true;
                 }
+                return true;
             } else if (args[0].equalsIgnoreCase("clear")) {
                 if (sender.hasPermission("chatex.clear")) {
                     for (int i = 0; i < 50; i++) {
@@ -64,11 +59,10 @@ public class CommandHandler implements CommandExecutor {
                         clearer = (Player) sender;
                     }
                     Bukkit.broadcastMessage(Locales.MESSAGES_CLEAR.getString(clearer) + who);
-                    return true;
                 } else {
                     sender.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(null).replaceAll("%perm", "chatex.clear"));
-                    return true;
                 }
+                return true;
             } else if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?")) {
                 sender.sendMessage("§a/" + command.getName() + " reload - " + Locales.COMMAND_RELOAD_DESCRIPTION.getString(null));
                 sender.sendMessage("§a/" + command.getName() + " clear - " + Locales.COMMAND_CLEAR_DESCRIPTION.getString(null));

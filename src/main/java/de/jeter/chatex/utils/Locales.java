@@ -1,11 +1,12 @@
 package de.jeter.chatex.utils;
 
 import de.jeter.chatex.ChatEx;
-import java.io.File;
-import java.io.IOException;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author TheJeterLP
@@ -37,7 +38,7 @@ public enum Locales {
     private static final File localeFolder = new File(ChatEx.getInstance().getDataFolder(), "locales");
     private static File f;
 
-    private Locales(String path, String val) {
+    Locales(String path, String val) {
         this.path = path;
         this.value = val;
     }
@@ -96,10 +97,10 @@ public enum Locales {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        }        
+        }
     }
 
-    public void set(Object value, boolean save) throws IOException {
+    public void set(Object value, boolean save) {
         cfg.set(path, value);
         if (save) {
             try {
