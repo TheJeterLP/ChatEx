@@ -62,6 +62,7 @@ So always prefix your commit message with one of these tags:
 * [DEBUG] or [DEB] : Related to help the debugging.
 * [IGNORE] or [IGN] : Related to the .gitignore file
 * [REMOVE] or [REM] : Related to removing files/code.
+* [MPR] : Merge Pull Requests
 
 If you have already commited something, but want to add another commit, 
 just type ```git commit -amend```
