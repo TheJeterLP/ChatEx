@@ -1,8 +1,10 @@
 package de.jeter.chatex.api.events;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
 public class MessageBlockedBySpamManagerEvent extends ChatExEvent {
+    private static final HandlerList handlers = new HandlerList();
     private Player player;
     private String message;
     private long remainingTime;
@@ -65,4 +67,13 @@ public class MessageBlockedBySpamManagerEvent extends ChatExEvent {
     public void setCancelled(boolean b) {
         canceled = b;
     }
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
 }

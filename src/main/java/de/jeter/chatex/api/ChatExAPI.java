@@ -1,17 +1,11 @@
 package de.jeter.chatex.api;
 
-import de.jeter.chatex.api.events.DefaultEventManager;
-import de.jeter.chatex.api.events.EventManager;
 import de.jeter.chatex.plugins.PluginManager;
 import org.bukkit.entity.Player;
 
 public class ChatExAPI {
     public String getPermissionHandlerName() {
         return PluginManager.getInstance().getName();
-    }
-
-    public EventManager getEventManager() {
-        return DefaultEventManager.getInstance();
     }
 
     public String getPrefix(Player p) {

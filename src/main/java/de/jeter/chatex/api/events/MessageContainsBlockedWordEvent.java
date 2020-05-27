@@ -1,8 +1,10 @@
 package de.jeter.chatex.api.events;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
 public class MessageContainsBlockedWordEvent extends ChatExEvent {
+    private static final HandlerList handlers = new HandlerList();
     private Player player;
     private String message;
     private String pluginMessage;
@@ -55,6 +57,14 @@ public class MessageContainsBlockedWordEvent extends ChatExEvent {
     @Override
     public boolean isCancelled() {
         return false;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
 }

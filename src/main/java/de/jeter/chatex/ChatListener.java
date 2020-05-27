@@ -2,13 +2,13 @@ package de.jeter.chatex;
 
 import de.jeter.chatex.api.events.MessageBlockedByAdManagerEvent;
 import de.jeter.chatex.api.events.MessageBlockedBySpamManagerEvent;
-import de.jeter.chatex.api.events.DefaultEventManager;
 import de.jeter.chatex.api.events.MessageContainsBlockedWordEvent;
 import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.*;
 import de.jeter.chatex.utils.adManager.AdManager;
 import de.jeter.chatex.utils.adManager.SimpleAdManager;
 import de.jeter.chatex.utils.adManager.SmartAdManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,7 +36,7 @@ public class ChatListener implements Listener {
             String message = Locales.ANTI_SPAM_DENIED.getString(event.getPlayer()).replaceAll("%time%", AntiSpamManager.getRemaingSeconds(event.getPlayer()) + "");
             long remainingTime = AntiSpamManager.getRemaingSeconds(event.getPlayer());
             MessageBlockedBySpamManagerEvent messageBlockedBySpamManagerEvent = new MessageBlockedBySpamManagerEvent(event.getPlayer(),message, event.getMessage(),remainingTime);
-            DefaultEventManager.getInstance().handleEvent(messageBlockedBySpamManagerEvent);
+            Bukkit.getPluginManager().callEvent(messageBlockedBySpamManagerEvent);
             event.getPlayer().sendMessage(messageBlockedBySpamManagerEvent.getPluginMessage());
             event.setCancelled(!messageBlockedBySpamManagerEvent.isCancelled());
             return;
@@ -50,7 +50,7 @@ public class ChatListener implements Listener {
         if (adManager.checkForAds(chatMessage, player)) {
             String message = Locales.MESSAGES_AD.getString(null).replaceAll("%perm", "chatex.bypassads");
             MessageBlockedByAdManagerEvent messageBlockedByAdManagerEvent = new MessageBlockedByAdManagerEvent(player, chatMessage, message);
-            DefaultEventManager.getInstance().handleEvent(messageBlockedByAdManagerEvent);
+            Bukkit.getPluginManager().callEvent(messageBlockedByAdManagerEvent);
             event.getPlayer().sendMessage(messageBlockedByAdManagerEvent.getPluginMessage());
             event.setCancelled(!messageBlockedByAdManagerEvent.isCancelled());
             return;
@@ -59,7 +59,7 @@ public class ChatListener implements Listener {
         if (Utils.checkForBlocked(event.getMessage())) {
             String message = Locales.MESSAGES_BLOCKED.getString(null);
             MessageContainsBlockedWordEvent messageContainsBlockedWordEvent = new MessageContainsBlockedWordEvent(player, chatMessage, message);
-            DefaultEventManager.getInstance().handleEvent(messageContainsBlockedWordEvent);
+            Bukkit.getPluginManager().callEvent(messageContainsBlockedWordEvent);
             event.setCancelled(!messageContainsBlockedWordEvent.isCancelled());
             event.getPlayer().sendMessage(messageContainsBlockedWordEvent.getPluginMessage());
             return;
