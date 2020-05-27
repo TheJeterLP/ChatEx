@@ -15,7 +15,7 @@ public class DefaultEventManager implements EventManager {
     public static DefaultEventManager getInstance() {
         return instance;
     }
-    
+
     public void registerEvents(ChatExListener chatExListener) {
         for (Method method : chatExListener.getClass().getDeclaredMethods()) {
             ChatExEventHandler cEEH = method.getAnnotation(ChatExEventHandler.class);
@@ -28,7 +28,7 @@ public class DefaultEventManager implements EventManager {
             if (!eventClassMap.containsKey(eventClass)) {
                 eventClassMap.put(eventClass, new HashSet<>());
             }
-            ChatExEventHandler chatExEventHandler = method.getAnnotation(ChatExEventHandler.class);
+
             eventClassMap.get(eventClass).add(new RegisteredEvent(chatExListener, method));
         }
     }

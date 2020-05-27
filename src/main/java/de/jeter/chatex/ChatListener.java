@@ -3,6 +3,7 @@ package de.jeter.chatex;
 import de.jeter.chatex.api.events.MessageBlockedByAdManagerEvent;
 import de.jeter.chatex.api.events.MessageBlockedBySpamManagerEvent;
 import de.jeter.chatex.api.events.DefaultEventManager;
+import de.jeter.chatex.api.events.MessageContainsBlockedWordEvent;
 import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.*;
 import de.jeter.chatex.utils.adManager.AdManager;
@@ -56,8 +57,11 @@ public class ChatListener implements Listener {
         }
 
         if (Utils.checkForBlocked(event.getMessage())) {
-            event.setCancelled(true);
-            event.getPlayer().sendMessage(Locales.MESSAGES_BLOCKED.getString(null));
+            String message = Locales.MESSAGES_BLOCKED.getString(null);
+            MessageContainsBlockedWordEvent messageContainsBlockedWordEvent = new MessageContainsBlockedWordEvent(player, chatMessage, message);
+            DefaultEventManager.getInstance().handleEvent(messageContainsBlockedWordEvent);
+            event.setCancelled(!messageContainsBlockedWordEvent.isCancelled());
+            event.getPlayer().sendMessage(messageContainsBlockedWordEvent.getPluginMessage());
             return;
         }
 
