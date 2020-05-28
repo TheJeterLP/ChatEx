@@ -8,9 +8,9 @@ import java.util.concurrent.TimeUnit;
 
 public class AntiSpamManager {
 
-    private static final Map<Player, Long> map = new HashMap<>();
-    private static AntiSpamManager instance;
-    public static void put(Player chatter) {
+    private final Map<Player, Long> map = new HashMap<>();
+    private static AntiSpamManager instance = new AntiSpamManager();
+    public void put(Player chatter) {
         map.put(chatter, System.currentTimeMillis());
     }
 

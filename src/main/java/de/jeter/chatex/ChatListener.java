@@ -44,7 +44,7 @@ public class ChatListener implements Listener {
                 return;
             }
         }
-        AntiSpamManager.put(event.getPlayer());
+        AntiSpamManager.getInstance().put(event.getPlayer());
 
         String format = PluginManager.getInstance().getMessageFormat(event.getPlayer());
         Player player = event.getPlayer();
