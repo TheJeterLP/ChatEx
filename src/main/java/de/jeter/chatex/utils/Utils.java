@@ -1,3 +1,21 @@
+/*
+ * This file is part of ChatEx
+ * Copyright (C) 2020 ChatEx Team
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
 package de.jeter.chatex.utils;
 
 import de.jeter.chatex.plugins.PluginManager;
@@ -10,10 +28,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import me.clip.placeholderapi.PlaceholderAPI;
 
-/**
- * @author TheJeterLP
- */
 public class Utils {
 
     // Time Display Formats
@@ -47,7 +63,15 @@ public class Utils {
     }
 
     public static String replacePlayerPlaceholders(Player player, String format) {
+        if (player == null) {
+            return format;
+        }
         String result = format;
+
+        if (HookManager.checkPlaceholderAPI()) {
+            result = PlaceholderAPI.setPlaceholders(player, result);
+        }
+
         result = result.replace("%displayname", player.getDisplayName());
         result = result.replace("%prefix", PluginManager.getInstance().getPrefix(player));
         result = result.replace("%suffix", PluginManager.getInstance().getSuffix(player));
@@ -56,6 +80,7 @@ public class Utils {
         result = result.replace("%group", PluginManager.getInstance().getGroupNames(player).length > 0 ? PluginManager.getInstance().getGroupNames(player)[0] : "none");
         result = replaceTime(result);
         result = replaceColors(result);
+
         return result;
     }
 
@@ -200,4 +225,5 @@ public class Utils {
         }
         return false;
     }
+
 }

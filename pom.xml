@@ -5,8 +5,9 @@
     <artifactId>ChatEx</artifactId>
     <name>ChatEx</name>
     <inceptionYear>2020</inceptionYear>
-    <version>2.5.0-api-SNAPSHOT</version>
-    <description>ChatManagement plugin for Bukkit</description>
+
+    <version>2.5.0-SNAPSHOT</version> 
+    <description>ChatManagement plugin for Bukkit</description>  
 
     <scm>
         <connection>scm:git:git@github.com:TheJeterLP/ChatEx.git</connection>

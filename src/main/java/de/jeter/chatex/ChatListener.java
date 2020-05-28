@@ -1,3 +1,21 @@
+/*
+ * This file is part of ChatEx
+ * Copyright (C) 2020 ChatEx Team
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
 package de.jeter.chatex;
 
 import de.jeter.chatex.api.events.MessageBlockedByAdManagerEvent;
@@ -10,23 +28,22 @@ import de.jeter.chatex.utils.adManager.AdManager;
 import de.jeter.chatex.utils.adManager.SimpleAdManager;
 import de.jeter.chatex.utils.adManager.SmartAdManager;
 import org.bukkit.Bukkit;
+import java.util.UnknownFormatConversionException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.UnknownFormatConversionException;
-
-/**
- * @author TheJeterLP
- */
 public class ChatListener implements Listener {
-    private AdManager adManager = Config.ADS_SMART_MANAGER.getBoolean() ? new SmartAdManager() : new SimpleAdManager();
+    
+    private final AdManager adManager = Config.ADS_SMART_MANAGER.getBoolean() ? new SmartAdManager() : new SimpleAdManager();
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
-        if (!event.getPlayer().hasPermission("chatex.allowchat")) {
+        Player player = event.getPlayer();
+        
+        if (!player.hasPermission("chatex.allowchat")) {
             String msg = Locales.COMMAND_RESULT_NO_PERM.getString(event.getPlayer()).replaceAll("%perm", "chatex.allowchat");
             event.getPlayer().sendMessage(msg);
             event.setCancelled(true);
@@ -48,6 +65,7 @@ public class ChatListener implements Listener {
 
         String format = PluginManager.getInstance().getMessageFormat(event.getPlayer());
         Player player = event.getPlayer();
+
         String chatMessage = event.getMessage();
 
         if (adManager.checkForAds(chatMessage, player)) {
@@ -78,7 +96,7 @@ public class ChatListener implements Listener {
             if (chatMessage.startsWith("!")) {
                 if (player.hasPermission("chatex.chat.global")) {
                     chatMessage = chatMessage.replaceFirst("!", "");
-                    format = PluginManager.getInstance().getGlobalMessageFormat(event.getPlayer());
+                    format = PluginManager.getInstance().getGlobalMessageFormat(player);
                     global = true;
                 } else {
                     player.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(player).replaceAll("%perm", "chatex.chat.global"));
@@ -120,7 +138,7 @@ public class ChatListener implements Listener {
         }
 
         event.setMessage(Utils.translateColorCodes(chatMessage, player));
-        ChatLogger.writeToFile(event.getPlayer(), event.getMessage());
+        ChatLogger.writeToFile(player, chatMessage);
     }
 
 }
