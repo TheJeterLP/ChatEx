@@ -10,6 +10,12 @@ public class MessageContainsBlockedWordEvent extends ChatExEvent {
     private String pluginMessage;
     private boolean canceled = true;
 
+    /**
+     *
+     * @param player the player which fired the event
+     * @param message the message of the player
+     * @param pluginMessage the message which the plugin sends to the player.
+     */
     public MessageContainsBlockedWordEvent(Player player, String message, String pluginMessage) {
         this.player = player;
         this.message = message;
@@ -30,6 +36,10 @@ public class MessageContainsBlockedWordEvent extends ChatExEvent {
         return message;
     }
 
+    /**
+     *
+     * @param message set the message which the player writes.
+     */
     public void setMessage(String message) {
         this.message = message;
     }

@@ -39,7 +39,9 @@ public class ChatListener implements Listener {
             Bukkit.getPluginManager().callEvent(messageBlockedBySpamManagerEvent);
             event.getPlayer().sendMessage(messageBlockedBySpamManagerEvent.getPluginMessage());
             event.setCancelled(!messageBlockedBySpamManagerEvent.isCancelled());
-            return;
+            if(!messageBlockedBySpamManagerEvent.isCancelled()){
+                return;
+            }
         }
         AntiSpamManager.put(event.getPlayer());
 
@@ -52,8 +54,11 @@ public class ChatListener implements Listener {
             MessageBlockedByAdManagerEvent messageBlockedByAdManagerEvent = new MessageBlockedByAdManagerEvent(player, chatMessage, message);
             Bukkit.getPluginManager().callEvent(messageBlockedByAdManagerEvent);
             event.getPlayer().sendMessage(messageBlockedByAdManagerEvent.getPluginMessage());
+            event.setMessage(messageBlockedByAdManagerEvent.getMessage());
             event.setCancelled(!messageBlockedByAdManagerEvent.isCancelled());
-            return;
+            if(!messageBlockedByAdManagerEvent.isCancelled()){
+                return;
+            }
         }
 
         if (Utils.checkForBlocked(event.getMessage())) {
@@ -62,7 +67,9 @@ public class ChatListener implements Listener {
             Bukkit.getPluginManager().callEvent(messageContainsBlockedWordEvent);
             event.setCancelled(!messageContainsBlockedWordEvent.isCancelled());
             event.getPlayer().sendMessage(messageContainsBlockedWordEvent.getPluginMessage());
-            return;
+            if(!messageContainsBlockedWordEvent.isCancelled()){
+                return;
+            }
         }
 
         boolean global = false;

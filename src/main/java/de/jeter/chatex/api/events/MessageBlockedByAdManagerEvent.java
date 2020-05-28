@@ -10,6 +10,12 @@ public class MessageBlockedByAdManagerEvent extends ChatExEvent {
     private String message;
     private String pluginMessage;
 
+    /**
+     *
+     * @param player the player which fired the event
+     * @param message the message of the player
+     * @param pluginMessage the message which the plugin sends to the player.
+     */
     public MessageBlockedByAdManagerEvent(Player player, String message, String pluginMessage) {
         this.player = player;
         this.message = message;
@@ -44,6 +50,10 @@ public class MessageBlockedByAdManagerEvent extends ChatExEvent {
         this.pluginMessage = pluginMessage;
     }
 
+    /**
+     *
+     * @param message set the message which the player writes.
+     */
     public void setMessage(String message) {
         this.message = message;
     }
