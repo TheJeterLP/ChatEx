@@ -3,6 +3,7 @@ package de.jeter.chatex;
 import de.jeter.chatex.api.events.MessageBlockedByAdManagerEvent;
 import de.jeter.chatex.api.events.MessageBlockedBySpamManagerEvent;
 import de.jeter.chatex.api.events.MessageContainsBlockedWordEvent;
+import de.jeter.chatex.api.events.PlayerUsesRangeModeEvent;
 import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.*;
 import de.jeter.chatex.utils.adManager.AdManager;
@@ -99,8 +100,12 @@ public class ChatListener implements Listener {
         }
 
         if (global && Config.BUNGEECORD.getBoolean()) {
-            String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Utils.translateColorCodes(chatMessage, player)));
-            ChannelHandler.getInstance().sendMessage(player, msgToSend);
+            PlayerUsesRangeModeEvent playerUsesRangeModeEvent = new PlayerUsesRangeModeEvent(player, chatMessage);
+            Bukkit.getPluginManager().callEvent(playerUsesRangeModeEvent);
+            if(!playerUsesRangeModeEvent.isCancelled()){
+                String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Utils.translateColorCodes(playerUsesRangeModeEvent.getMessage(), player)));
+                ChannelHandler.getInstance().sendMessage(player, msgToSend);
+            }
         }
 
         format = format.replace("%message", "%2$s");
