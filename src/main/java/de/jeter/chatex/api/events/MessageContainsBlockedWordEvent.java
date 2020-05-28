@@ -8,7 +8,7 @@ public class MessageContainsBlockedWordEvent extends ChatExEvent {
     private Player player;
     private String message;
     private String pluginMessage;
-    private boolean canceled = true;
+    private boolean canceled = false;
 
     /**
      *

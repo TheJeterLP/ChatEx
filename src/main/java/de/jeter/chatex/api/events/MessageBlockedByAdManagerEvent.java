@@ -5,7 +5,7 @@ import org.bukkit.event.HandlerList;
 
 public class MessageBlockedByAdManagerEvent extends ChatExEvent {
     private static final HandlerList handlers = new HandlerList();
-    private boolean canceled;
+    private boolean canceled = false;
     private Player player;
     private String message;
     private String pluginMessage;

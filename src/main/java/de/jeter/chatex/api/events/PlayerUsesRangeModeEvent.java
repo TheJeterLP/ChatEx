@@ -7,6 +7,7 @@ public class PlayerUsesRangeModeEvent extends ChatExEvent {
     private static final HandlerList handlers = new HandlerList();
     private String message;
     private Player player;
+    private boolean canceled = false;
 
     public PlayerUsesRangeModeEvent(Player player, String message){
         this.player = player;
@@ -37,16 +38,16 @@ public class PlayerUsesRangeModeEvent extends ChatExEvent {
 
     @Override
     public HandlerList getHandlers() {
-        return null;
+        return handlers;
     }
 
     @Override
     public boolean isCancelled() {
-        return false;
+        return canceled;
     }
 
     @Override
     public void setCancelled(boolean b) {
-
+        canceled = b;
     }
 }

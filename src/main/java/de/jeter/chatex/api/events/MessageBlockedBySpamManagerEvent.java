@@ -9,7 +9,7 @@ public class MessageBlockedBySpamManagerEvent extends ChatExEvent {
     private String message;
     private long remainingTime;
     private String pluginMessage;
-    private boolean canceled = true;
+    private boolean canceled = false;
 
     /**
      *
