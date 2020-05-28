@@ -1,11 +1,16 @@
 package de.jeter.chatex.api;
 
 import de.jeter.chatex.plugins.PluginManager;
+import de.jeter.chatex.utils.AntiSpamManager;
 import org.bukkit.entity.Player;
 
 public class ChatExAPI {
     public String getPermissionHandlerName() {
         return PluginManager.getInstance().getName();
+    }
+
+    public AntiSpamManager getAntiSpamManager(){
+        return AntiSpamManager.getInstance();
     }
 
     public String getPrefix(Player p) {

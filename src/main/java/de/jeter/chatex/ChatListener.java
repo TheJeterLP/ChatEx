@@ -32,9 +32,9 @@ public class ChatListener implements Listener {
             return;
         }
 
-        if (!AntiSpamManager.isAllowed(event.getPlayer())) {
-            String message = Locales.ANTI_SPAM_DENIED.getString(event.getPlayer()).replaceAll("%time%", AntiSpamManager.getRemaingSeconds(event.getPlayer()) + "");
-            long remainingTime = AntiSpamManager.getRemaingSeconds(event.getPlayer());
+        if (!AntiSpamManager.getInstance().isAllowed(event.getPlayer())) {
+            long remainingTime = AntiSpamManager.getInstance().getRemaingSeconds(event.getPlayer());
+            String message = Locales.ANTI_SPAM_DENIED.getString(event.getPlayer()).replaceAll("%time%", remainingTime + "");
             MessageBlockedBySpamManagerEvent messageBlockedBySpamManagerEvent = new MessageBlockedBySpamManagerEvent(event.getPlayer(),message, event.getMessage(),remainingTime);
             Bukkit.getPluginManager().callEvent(messageBlockedBySpamManagerEvent);
             event.getPlayer().sendMessage(messageBlockedBySpamManagerEvent.getPluginMessage());
