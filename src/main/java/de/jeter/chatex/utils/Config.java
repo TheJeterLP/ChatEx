@@ -1,17 +1,17 @@
 /*
  * This file is part of ChatEx
  * Copyright (C) 2020 ChatEx Team
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -35,6 +35,7 @@ public enum Config {
     MULTIPREFIXES("multi-prefixes", false, "Should the multi-prefixes be enabled?"),
     MULTISUFFIXES("multi-suffixes", false, "Should the multi-suffixes be enabled?"),
     RANGEMODE("ranged-mode", false, "Should the ranged-mode be enabled?"),
+    RANGEPREFIX("ranged-prefix", "!", "The Prefix to use for Range Mode"),
     SHOW_NO_RECEIVER_MSG("show-no-players-near", true, "Should we check if any player would receiver your chat message?"),
     RANGE("chat-range", 100, "The range to talk to other players. Set to -1 to enable world-wide-chat"),
     LOGCHAT("logChat", false, "Should the chat be logged?"),

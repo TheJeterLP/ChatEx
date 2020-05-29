@@ -1,17 +1,17 @@
 /*
  * This file is part of ChatEx
  * Copyright (C) 2020 ChatEx Team
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -28,73 +28,77 @@ import de.jeter.chatex.utils.adManager.AdManager;
 import de.jeter.chatex.utils.adManager.SimpleAdManager;
 import de.jeter.chatex.utils.adManager.SmartAdManager;
 import org.bukkit.Bukkit;
-import java.util.UnknownFormatConversionException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.UnknownFormatConversionException;
+import java.util.regex.Pattern;
+
 public class ChatListener implements Listener {
-    
+
     private final AdManager adManager = Config.ADS_SMART_MANAGER.getBoolean() ? new SmartAdManager() : new SimpleAdManager();
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        
+
         if (!player.hasPermission("chatex.allowchat")) {
-            String msg = Locales.COMMAND_RESULT_NO_PERM.getString(event.getPlayer()).replaceAll("%perm", "chatex.allowchat");
-            event.getPlayer().sendMessage(msg);
+            String msg = Locales.COMMAND_RESULT_NO_PERM.getString(player).replaceAll("%perm", "chatex.allowchat");
+            player.sendMessage(msg);
             event.setCancelled(true);
             return;
         }
 
-        if (!AntiSpamManager.getInstance().isAllowed(event.getPlayer())) {
-            long remainingTime = AntiSpamManager.getInstance().getRemaingSeconds(event.getPlayer());
-            String message = Locales.ANTI_SPAM_DENIED.getString(event.getPlayer()).replaceAll("%time%", remainingTime + "");
-            MessageBlockedBySpamManagerEvent messageBlockedBySpamManagerEvent = new MessageBlockedBySpamManagerEvent(event.getPlayer(),event.getMessage(), message,remainingTime);
+        String format = PluginManager.getInstance().getMessageFormat(event.getPlayer());
+        String chatMessage = event.getMessage();
+
+        if (!AntiSpamManager.getInstance().isAllowed(player)) {
+            long remainingTime = AntiSpamManager.getInstance().getRemaingSeconds(player);
+            String message = Locales.ANTI_SPAM_DENIED.getString(player).replaceAll("%time%", remainingTime + "");
+            MessageBlockedBySpamManagerEvent messageBlockedBySpamManagerEvent = new MessageBlockedBySpamManagerEvent(player, chatMessage, message, remainingTime);
             Bukkit.getPluginManager().callEvent(messageBlockedBySpamManagerEvent);
             event.setCancelled(!messageBlockedBySpamManagerEvent.isCancelled());
-            if(!messageBlockedBySpamManagerEvent.isCancelled()){
-                event.getPlayer().sendMessage(messageBlockedBySpamManagerEvent.getPluginMessage());
+            if (!messageBlockedBySpamManagerEvent.isCancelled()) {
+                player.sendMessage(messageBlockedBySpamManagerEvent.getPluginMessage());
                 return;
             }
+            chatMessage = messageBlockedBySpamManagerEvent.getMessage();
         }
-        AntiSpamManager.getInstance().put(event.getPlayer());
+        AntiSpamManager.getInstance().put(player);
 
-        String format = PluginManager.getInstance().getMessageFormat(event.getPlayer());
 
-        String chatMessage = event.getMessage();
 
         if (adManager.checkForAds(chatMessage, player)) {
             String message = Locales.MESSAGES_AD.getString(null).replaceAll("%perm", "chatex.bypassads");
             MessageBlockedByAdManagerEvent messageBlockedByAdManagerEvent = new MessageBlockedByAdManagerEvent(player, chatMessage, message);
             Bukkit.getPluginManager().callEvent(messageBlockedByAdManagerEvent);
-            event.setMessage(messageBlockedByAdManagerEvent.getMessage());
+            chatMessage = messageBlockedByAdManagerEvent.getMessage();
             event.setCancelled(!messageBlockedByAdManagerEvent.isCancelled());
-            if(!messageBlockedByAdManagerEvent.isCancelled()){
-                event.getPlayer().sendMessage(messageBlockedByAdManagerEvent.getPluginMessage());
+            if (!messageBlockedByAdManagerEvent.isCancelled()) {
+                player.sendMessage(messageBlockedByAdManagerEvent.getPluginMessage());
                 return;
             }
         }
 
-        if (Utils.checkForBlocked(event.getMessage())) {
+        if (Utils.checkForBlocked(chatMessage)) {
             String message = Locales.MESSAGES_BLOCKED.getString(null);
             MessageContainsBlockedWordEvent messageContainsBlockedWordEvent = new MessageContainsBlockedWordEvent(player, chatMessage, message);
             Bukkit.getPluginManager().callEvent(messageContainsBlockedWordEvent);
             event.setCancelled(!messageContainsBlockedWordEvent.isCancelled());
-            if(!messageContainsBlockedWordEvent.isCancelled()){
-                event.getPlayer().sendMessage(messageContainsBlockedWordEvent.getPluginMessage());
+            if (!messageContainsBlockedWordEvent.isCancelled()) {
+                player.sendMessage(messageContainsBlockedWordEvent.getPluginMessage());
                 return;
             }
         }
 
         boolean global = false;
         if (Config.RANGEMODE.getBoolean() || Config.BUNGEECORD.getBoolean()) {
-            if (chatMessage.startsWith("!")) {
+            if (chatMessage.startsWith(Config.RANGEPREFIX.getString())) {
                 if (player.hasPermission("chatex.chat.global")) {
-                    chatMessage = chatMessage.replaceFirst("!", "");
+                    chatMessage = chatMessage.replaceFirst(Pattern.quote(Config.RANGEPREFIX.getString()), "");
                     format = PluginManager.getInstance().getGlobalMessageFormat(player);
                     global = true;
                 } else {
@@ -119,7 +123,7 @@ public class ChatListener implements Listener {
         if (global && Config.BUNGEECORD.getBoolean()) {
             PlayerUsesRangeModeEvent playerUsesRangeModeEvent = new PlayerUsesRangeModeEvent(player, chatMessage);
             Bukkit.getPluginManager().callEvent(playerUsesRangeModeEvent);
-            if(!playerUsesRangeModeEvent.isCancelled()){
+            if (!playerUsesRangeModeEvent.isCancelled()) {
                 String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Utils.translateColorCodes(playerUsesRangeModeEvent.getMessage(), player)));
                 ChannelHandler.getInstance().sendMessage(player, msgToSend);
             }
