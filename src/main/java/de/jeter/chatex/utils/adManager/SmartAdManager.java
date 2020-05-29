@@ -68,7 +68,9 @@ public class SmartAdManager implements AdManager {
                     if (!Utils.checkForBypassString(text)) {
                         error += text.length();
                         if (DomainDictionary.containsTopLevelEnding(text)) {
-                            error *= Config.ADS_SMART_MULTIPLIER.getInt();
+                            error *= Config.ADS_SMART_MULTIPLIER.getDouble();
+                        }else{
+                            error *= Config.ADS_SMART_UN_MULTIPLIER.getDouble();
                         }
                     }
 
