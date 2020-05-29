@@ -34,11 +34,11 @@ public class SmartAdManager implements AdManager {
     private static final Pattern webPattern = Pattern.compile("((([a-zA-Z0-9_-]{2,256}\\.)*)?[a-zA-Z0-9_-]{2,256}\\.[a-zA-Z0-9_-]{2,256})(\\/[-a-zA-Z0-9@:%_\\\\+~#?&\\/=]*)?");
 
     //replace any spaces in the range of ADS_MAX_LENGTH near . or , removes () and [] to prevent example(.)com
-    private static final String urlCompactorPatternString = "[\\(\\)\\]\\[]|([\\s:\\/](?=.{0," + Config.ADS_MAX_LENGTH.getInt() + "}[,\\.]))|((?<=[,\\.].{0,4})\\s*)";
+    private static final String urlCompactorPatternString = "[\\(\\)\\]\\[]|([\\s:\\/](?=.{0," + Config.ADS_MAX_LENGTH.getInt() + "}[\\.]))|((?<=[\\.].{0,4})\\s*)";
 
     //Ips are clear
     private static boolean checkForIPPattern(String message) {
-        message = message.replaceAll(",", ".");
+
         message = message.replaceAll(" ", "");
         Matcher regexMatcher = ipPattern.matcher(message);
         while (regexMatcher.find()) {
@@ -59,7 +59,7 @@ public class SmartAdManager implements AdManager {
         double messageLength = message.length();
         double error = 0;
         if (message.contains(",") || message.contains(".")) {
-            message = message.replaceAll(",", ".");
+            message = Config.ADS_REPLACE_COMMAS.getBoolean() ? message.replaceAll(",", ".") : message;
             message = message.replaceAll(urlCompactorPatternString, "");
             Matcher regexMatcher = webPattern.matcher(message);
             while (regexMatcher.find()) {
