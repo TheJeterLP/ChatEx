@@ -51,7 +51,7 @@ public class AntiSpamManager {
         return current > lastChat;
     }
 
-    public long getRemaingSeconds(Player chatter) {
+    public long getRemainingSeconds(Player chatter) {
         if (isAllowed(chatter)) {
             return 0;
         }

@@ -33,7 +33,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
 import java.util.UnknownFormatConversionException;
 import java.util.regex.Pattern;
 
@@ -53,23 +52,23 @@ public class ChatListener implements Listener {
         }
 
         String format = PluginManager.getInstance().getMessageFormat(event.getPlayer());
+
         String chatMessage = event.getMessage();
 
-        if (!AntiSpamManager.getInstance().isAllowed(player)) {
-            long remainingTime = AntiSpamManager.getInstance().getRemaingSeconds(player);
-            String message = Locales.ANTI_SPAM_DENIED.getString(player).replaceAll("%time%", remainingTime + "");
-            MessageBlockedBySpamManagerEvent messageBlockedBySpamManagerEvent = new MessageBlockedBySpamManagerEvent(player, chatMessage, message, remainingTime);
+        if (!AntiSpamManager.getInstance().isAllowed(event.getPlayer())) {
+            long remainingTime = AntiSpamManager.getInstance().getRemainingSeconds(event.getPlayer());
+            String message = Locales.ANTI_SPAM_DENIED.getString(event.getPlayer()).replaceAll("%time%", remainingTime + "");
+            MessageBlockedBySpamManagerEvent messageBlockedBySpamManagerEvent = new MessageBlockedBySpamManagerEvent(event.getPlayer(), chatMessage, message, remainingTime);
             Bukkit.getPluginManager().callEvent(messageBlockedBySpamManagerEvent);
             event.setCancelled(!messageBlockedBySpamManagerEvent.isCancelled());
+            chatMessage = messageBlockedBySpamManagerEvent.getMessage();
             if (!messageBlockedBySpamManagerEvent.isCancelled()) {
-                player.sendMessage(messageBlockedBySpamManagerEvent.getPluginMessage());
+                event.getPlayer().sendMessage(messageBlockedBySpamManagerEvent.getPluginMessage());
                 return;
             }
             chatMessage = messageBlockedBySpamManagerEvent.getMessage();
         }
         AntiSpamManager.getInstance().put(player);
-
-
 
         if (adManager.checkForAds(chatMessage, player)) {
             String message = Locales.MESSAGES_AD.getString(null).replaceAll("%perm", "chatex.bypassads");
@@ -78,7 +77,7 @@ public class ChatListener implements Listener {
             chatMessage = messageBlockedByAdManagerEvent.getMessage();
             event.setCancelled(!messageBlockedByAdManagerEvent.isCancelled());
             if (!messageBlockedByAdManagerEvent.isCancelled()) {
-                player.sendMessage(messageBlockedByAdManagerEvent.getPluginMessage());
+                event.getPlayer().sendMessage(messageBlockedByAdManagerEvent.getPluginMessage());
                 return;
             }
         }
@@ -88,8 +87,9 @@ public class ChatListener implements Listener {
             MessageContainsBlockedWordEvent messageContainsBlockedWordEvent = new MessageContainsBlockedWordEvent(player, chatMessage, message);
             Bukkit.getPluginManager().callEvent(messageContainsBlockedWordEvent);
             event.setCancelled(!messageContainsBlockedWordEvent.isCancelled());
+            chatMessage = messageContainsBlockedWordEvent.getMessage();
             if (!messageContainsBlockedWordEvent.isCancelled()) {
-                player.sendMessage(messageContainsBlockedWordEvent.getPluginMessage());
+                event.getPlayer().sendMessage(messageContainsBlockedWordEvent.getPluginMessage());
                 return;
             }
         }
@@ -123,8 +123,10 @@ public class ChatListener implements Listener {
         if (global && Config.BUNGEECORD.getBoolean()) {
             PlayerUsesRangeModeEvent playerUsesRangeModeEvent = new PlayerUsesRangeModeEvent(player, chatMessage);
             Bukkit.getPluginManager().callEvent(playerUsesRangeModeEvent);
+
+            chatMessage = playerUsesRangeModeEvent.getMessage();
             if (!playerUsesRangeModeEvent.isCancelled()) {
-                String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Utils.translateColorCodes(playerUsesRangeModeEvent.getMessage(), player)));
+                String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Utils.translateColorCodes(chatMessage, player)));
                 ChannelHandler.getInstance().sendMessage(player, msgToSend);
             }
         }
