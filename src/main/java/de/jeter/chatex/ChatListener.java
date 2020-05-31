@@ -33,8 +33,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
 import java.util.UnknownFormatConversionException;
+import java.util.regex.Pattern;
 
 public class ChatListener implements Listener {
 
@@ -45,8 +45,8 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
 
         if (!player.hasPermission("chatex.allowchat")) {
-            String msg = Locales.COMMAND_RESULT_NO_PERM.getString(event.getPlayer()).replaceAll("%perm", "chatex.allowchat");
-            event.getPlayer().sendMessage(msg);
+            String msg = Locales.COMMAND_RESULT_NO_PERM.getString(player).replaceAll("%perm", "chatex.allowchat");
+            player.sendMessage(msg);
             event.setCancelled(true);
             return;
         }
@@ -66,9 +66,9 @@ public class ChatListener implements Listener {
                 event.getPlayer().sendMessage(messageBlockedBySpamManagerEvent.getPluginMessage());
                 return;
             }
+            chatMessage = messageBlockedBySpamManagerEvent.getMessage();
         }
-        AntiSpamManager.getInstance().put(event.getPlayer());
-
+        AntiSpamManager.getInstance().put(player);
 
         if (adManager.checkForAds(chatMessage, player)) {
             String message = Locales.MESSAGES_AD.getString(null).replaceAll("%perm", "chatex.bypassads");
@@ -82,7 +82,7 @@ public class ChatListener implements Listener {
             }
         }
 
-        if (Utils.checkForBlocked(event.getMessage())) {
+        if (Utils.checkForBlocked(chatMessage)) {
             String message = Locales.MESSAGES_BLOCKED.getString(null);
             MessageContainsBlockedWordEvent messageContainsBlockedWordEvent = new MessageContainsBlockedWordEvent(player, chatMessage, message);
             Bukkit.getPluginManager().callEvent(messageContainsBlockedWordEvent);
@@ -96,9 +96,9 @@ public class ChatListener implements Listener {
 
         boolean global = false;
         if (Config.RANGEMODE.getBoolean() || Config.BUNGEECORD.getBoolean()) {
-            if (chatMessage.startsWith("!")) {
+            if (chatMessage.startsWith(Config.RANGEPREFIX.getString())) {
                 if (player.hasPermission("chatex.chat.global")) {
-                    chatMessage = chatMessage.replaceFirst("!", "");
+                    chatMessage = chatMessage.replaceFirst(Pattern.quote(Config.RANGEPREFIX.getString()), "");
                     format = PluginManager.getInstance().getGlobalMessageFormat(player);
                     global = true;
                 } else {
@@ -123,6 +123,7 @@ public class ChatListener implements Listener {
         if (global && Config.BUNGEECORD.getBoolean()) {
             PlayerUsesRangeModeEvent playerUsesRangeModeEvent = new PlayerUsesRangeModeEvent(player, chatMessage);
             Bukkit.getPluginManager().callEvent(playerUsesRangeModeEvent);
+
             chatMessage = playerUsesRangeModeEvent.getMessage();
             if (!playerUsesRangeModeEvent.isCancelled()) {
                 String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Utils.translateColorCodes(chatMessage, player)));
