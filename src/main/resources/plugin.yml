@@ -33,7 +33,7 @@ permissions:
         default: false
     chatex.clear:
         description: Is needed to use /chatex clear to clear the chat
-        default: false
+        default: op
     chatex.reload:
         description: Is needed to use /chatex reload to reload the config and messages of chatex.
-        default: false
+        default: op
