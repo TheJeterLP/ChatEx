@@ -19,6 +19,7 @@
 package de.jeter.chatex.utils;
 
 import de.jeter.chatex.plugins.PluginManager;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class Utils {
     }
 
     public static String replaceColors(String message) {
-        return message.replaceAll("&((?i)[0-9a-fk-or])", "§$1");
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public static List<Player> getLocalRecipients(Player sender) {
