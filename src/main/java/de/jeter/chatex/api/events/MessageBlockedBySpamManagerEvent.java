@@ -19,9 +19,11 @@
 package de.jeter.chatex.api.events;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class MessageBlockedBySpamManagerEvent extends ChatExEvent {
+public class MessageBlockedBySpamManagerEvent extends Event implements Cancellable {
     
     private static final HandlerList handlers = new HandlerList();
     private final Player player;
@@ -38,6 +40,7 @@ public class MessageBlockedBySpamManagerEvent extends ChatExEvent {
      * @param remaining the remaining time in seconds.
      */
     public MessageBlockedBySpamManagerEvent(Player player, String message, String pluginMessage, long remaining) {
+        super(true);
         this.player = player;
         this.message = message;
         this.pluginMessage = pluginMessage;

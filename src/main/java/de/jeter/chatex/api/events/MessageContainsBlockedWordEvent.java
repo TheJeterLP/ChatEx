@@ -19,9 +19,11 @@
 package de.jeter.chatex.api.events;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class MessageContainsBlockedWordEvent extends ChatExEvent {
+public class MessageContainsBlockedWordEvent extends Event implements Cancellable {
     
     private static final HandlerList handlers = new HandlerList();
     private final Player player;
@@ -36,6 +38,7 @@ public class MessageContainsBlockedWordEvent extends ChatExEvent {
      * @param pluginMessage the message which the plugin sends to the player.
      */
     public MessageContainsBlockedWordEvent(Player player, String message, String pluginMessage) {
+        super(true);
         this.player = player;
         this.message = message;
         this.pluginMessage = pluginMessage;

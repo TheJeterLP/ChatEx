@@ -61,7 +61,6 @@ public class ChatListener implements Listener {
             MessageBlockedBySpamManagerEvent messageBlockedBySpamManagerEvent = new MessageBlockedBySpamManagerEvent(event.getPlayer(), chatMessage, message, remainingTime);
             Bukkit.getPluginManager().callEvent(messageBlockedBySpamManagerEvent);
             event.setCancelled(!messageBlockedBySpamManagerEvent.isCancelled());
-            chatMessage = messageBlockedBySpamManagerEvent.getMessage();
             if (!messageBlockedBySpamManagerEvent.isCancelled()) {
                 event.getPlayer().sendMessage(messageBlockedBySpamManagerEvent.getPluginMessage());
                 return;

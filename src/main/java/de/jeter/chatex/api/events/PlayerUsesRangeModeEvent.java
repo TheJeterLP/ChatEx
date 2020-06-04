@@ -19,9 +19,11 @@
 package de.jeter.chatex.api.events;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class PlayerUsesRangeModeEvent extends ChatExEvent {
+public class PlayerUsesRangeModeEvent extends Event implements Cancellable {
     
     private static final HandlerList handlers = new HandlerList();
     private String message;
@@ -29,6 +31,7 @@ public class PlayerUsesRangeModeEvent extends ChatExEvent {
     private boolean canceled = false;
 
     public PlayerUsesRangeModeEvent(Player player, String message){
+        super(true);
         this.player = player;
         this.message = message;
     }
