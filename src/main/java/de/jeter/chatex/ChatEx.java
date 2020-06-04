@@ -23,6 +23,7 @@ import de.jeter.chatex.utils.ChatLogger;
 import de.jeter.chatex.utils.Config;
 import de.jeter.chatex.utils.Locales;
 import de.jeter.chatex.utils.UpdateChecker;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ChatEx extends JavaPlugin {
@@ -48,6 +49,11 @@ public class ChatEx extends JavaPlugin {
         }
 
         ChannelHandler.load();
+
+        if (Config.B_STATS.getBoolean()) {
+            Metrics metrics = new Metrics(this, 7744);
+            getLogger().info("Thanks for using bstats, it was enabled!");
+        }
 
         getLogger().info("is now enabled!");
     }

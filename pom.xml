@@ -6,7 +6,7 @@
     <name>ChatEx</name>
     <inceptionYear>2020</inceptionYear>
 
-    <version>2.5.3</version> 
+    <version>2.5.4</version> 
     <description>ChatManagement plugin for Bukkit</description>  
 
     <scm>
@@ -29,6 +29,31 @@
                 </includes>
             </resource>
         </resources>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <!-- Do not include the <configuration>...</configuration> part if you are using Sponge! -->
+                
+                <configuration>
+                    <artifactSet>
+                        <includes>
+                            <include>org.bstats:bstats-bukkit:*</include>                                    
+                        </includes>
+                    </artifactSet>
+                </configuration>                               
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <repositories>
@@ -43,6 +68,10 @@
         <repository>
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+        <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.org/repository/maven-public</url>
         </repository>
     </repositories>
 
@@ -62,6 +91,12 @@
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.10.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.7</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
