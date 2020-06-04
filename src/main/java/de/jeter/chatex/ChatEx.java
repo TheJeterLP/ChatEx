@@ -23,8 +23,8 @@ import de.jeter.chatex.utils.ChatLogger;
 import de.jeter.chatex.utils.Config;
 import de.jeter.chatex.utils.Locales;
 import de.jeter.chatex.utils.UpdateChecker;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bstats.bukkit.Metrics;
 
 public class ChatEx extends JavaPlugin {
 
