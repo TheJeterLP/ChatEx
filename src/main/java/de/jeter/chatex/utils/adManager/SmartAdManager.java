@@ -30,8 +30,8 @@ import java.util.regex.Pattern;
 
 public class SmartAdManager implements AdManager {
     private static final Map<UUID, Double> uuidErrorMap = new HashMap<>();
-    private static final Pattern ipPattern = Pattern.compile("(\\d{1,3}([.:\\-, ])?){4}");
-    private static final Pattern webPattern = Pattern.compile("((([a-zA-Z0-9_-]{2,256}\\.)*)?[a-zA-Z0-9_-]{2,256}\\.[a-zA-Z0-9_-]{2,256})(\\/[-a-zA-Z0-9@:%_\\\\+~#?&\\/=]*)?");
+    private static final Pattern ipPattern = Pattern.compile("((?<![0-9])(?:(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[.,-:; ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))(?![0-9]))");
+    private static final Pattern webPattern = Pattern.compile("((([a-zA-Z0-9_-]{2,256}\\.)*)?[a-zA-Z0-9_-]{2,256}\\.[a-zA-Z_-]{2,256})(\\/[-a-zA-Z0-9@:%_\\\\+~#?&\\/=]*)?");
 
     //replace any spaces in the range of ADS_MAX_LENGTH near . or , removes () and [] to prevent example(.)com
     private static final String urlCompactorPatternString = "[\\(\\)\\]\\[]|([\\s:\\/](?=.{0," + Config.ADS_MAX_LENGTH.getInt() + "}[\\.]))|((?<=[\\.].{0,4})\\s*)";
