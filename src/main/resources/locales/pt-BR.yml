@@ -17,7 +17,7 @@ Messages:
       &a %message"
   CommandResult:
     NoPermission: '&4[ERRO] &7Voce nao tem permissao para isso! &c(%perm)'
-    WrongUsage: '&c[ERROR] &7Modo errado de usar! Por favor digite &6/%cmd% help&7!'
+    WrongUsage: '&c[ERROR] &7Modo errado de usar! Por favor digite &6%cmd help&7!'
   Player:
     Join: '%prefix%displayname%suffix &eentrou no servidor!'
     FirstJoin: '%prefix%displayname%suffix &eentrou no servidor &6pela primeira vez!'
