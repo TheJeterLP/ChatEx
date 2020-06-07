@@ -1,17 +1,17 @@
 /*
  * This file is part of ChatEx
  * Copyright (C) 2020 ChatEx Team
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -37,19 +37,19 @@ public class ChatLogger {
     public static void load() {
         try {
             File logFolder = new File(ChatEx.getInstance().getDataFolder(), "logs");
-            logFolder.mkdirs();
-
-            File chatLog = new File(logFolder, fileName());
-            if (!chatLog.exists()) {
+            if (Config.LOGCHAT.getBoolean() || Config.ADS_LOG.getBoolean()) {
+                logFolder.mkdirs();
+            }
+            if (Config.LOGCHAT.getBoolean()) {
+                File chatLog = new File(logFolder, fileName());
                 chatLog.createNewFile();
+                chatWriter = new BufferedWriter(new FileWriter(chatLog, true));
             }
-            chatWriter = new BufferedWriter(new FileWriter(chatLog, true));
-
-            File adLog = new File(logFolder, "ads.log");
-            if (!adLog.exists()) {
+            if (Config.ADS_LOG.getBoolean()) {
+                File adLog = new File(logFolder, "ads.log");
                 adLog.createNewFile();
+                adWriter = new BufferedWriter(new FileWriter(adLog, true));
             }
-            adWriter = new BufferedWriter(new FileWriter(adLog, true));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -58,8 +58,10 @@ public class ChatLogger {
     public static void close() {
         try {
             if (chatWriter != null) {
-
                 chatWriter.close();
+            }
+            if (adWriter != null) {
+                adWriter.close();
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -81,7 +83,7 @@ public class ChatLogger {
     }
 
     public static void writeToAdFile(Player player, String message) {
-        if (!Config.ADS_LOG.getBoolean()) {
+        if (!Config.ADS_LOG.getBoolean() || adWriter == null) {
             return;
         }
         try {
