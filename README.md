@@ -12,3 +12,4 @@ If you need to report a bug or want to suggest a new feature, please use GitHubs
 If you want to use ChatEx as a Maven dependency, just click on the Jitpack image above or [Here](https://jitpack.io/#TheJeterLP/ChatEx) to read more about how to add it as a dependency. You can use the versions from github releases
 
 ![BStats](https://bstats.org/signatures/bukkit/ChatEx.svg)
+[bStats.org - ChatEx](https://bstats.org/plugin/bukkit/ChatEx/7744)
