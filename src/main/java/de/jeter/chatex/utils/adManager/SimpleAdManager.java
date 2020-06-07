@@ -59,6 +59,7 @@ public class SimpleAdManager implements AdManager {
     }
 
     private static boolean checkForWebPattern(String message) {
+        message = Config.ADS_REPLACE_COMMAS.getBoolean() ? message.replaceAll(",", ".") : message;
         message = message.replaceAll(" ", "");
         Matcher regexMatcher = webpattern.matcher(message);
         while (regexMatcher.find()) {
