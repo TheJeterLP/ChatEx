@@ -19,6 +19,7 @@
 package de.jeter.chatex.utils;
 
 import de.jeter.chatex.ChatEx;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -60,7 +61,8 @@ public enum Config {
     BLOCKED_WORDS("BlockedWords", Arrays.asList("shit", "@everyone"), "A list of words that should be blocked."),
     CHANGE_TABLIST_NAME("Tablist.Change", true, "Do you want to have the prefixes and suffixes in the tablist?"),
     TABLIST_FORMAT("Tablist.format", "%prefix%player%suffix", "The format of the tablist name"),
-    CHANGE_JOIN_AND_QUIT("Messages.JoinAndQuit.Enabled", false, "Do you want to change the join and the quit messages?");
+    CHANGE_JOIN_AND_QUIT("Messages.JoinAndQuit.Enabled", false, "Do you want to change the join and the quit messages?"),
+    RGB_COLORS("colors", null, "Requires 1.16+, Colors you want to use.");
 
     private final Object value;
     private final String path;
@@ -104,6 +106,10 @@ public enum Config {
 
     public List<String> getStringList() {
         return cfg.getStringList(path);
+    }
+
+    public ConfigurationSection getConfigurationSection() {
+        return cfg.getConfigurationSection(path);
     }
 
     public static void load() {

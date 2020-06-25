@@ -19,10 +19,7 @@
 package de.jeter.chatex;
 
 import de.jeter.chatex.plugins.PluginManager;
-import de.jeter.chatex.utils.ChatLogger;
-import de.jeter.chatex.utils.Config;
-import de.jeter.chatex.utils.Locales;
-import de.jeter.chatex.utils.UpdateChecker;
+import de.jeter.chatex.utils.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bstats.bukkit.Metrics;
 
@@ -39,6 +36,7 @@ public class ChatEx extends JavaPlugin {
         Locales.load();
         PluginManager.load();
         ChatLogger.load();
+        RGBColors.load();
 
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
