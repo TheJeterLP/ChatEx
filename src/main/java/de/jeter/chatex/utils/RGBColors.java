@@ -42,8 +42,28 @@ public class RGBColors {
         if (!Bukkit.getVersion().contains("1.16")) {
             return s;
         }
+        s = translateSingleMessageColorCodes(s);
         for (Map.Entry<String, String> stringColorEntry : placeHolderColorMap.entrySet()) {
             s = s.replace(stringColorEntry.getKey(), stringColorEntry.getValue());
+        }
+        return s;
+    }
+
+    public static String translateSingleMessageColorCodes(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (s.length() - i > 8) {
+                String tempString = s.substring(i, i + 8);
+                if (tempString.startsWith("&#")) {
+                    char[] tempChars = tempString.replaceFirst("&#", "").toCharArray();
+                    StringBuilder rgbColor = new StringBuilder();
+                    rgbColor.append("§x");
+                    for (char tempChar : tempChars) {
+                        rgbColor.append("§").append(tempChar);
+                    }
+                    System.out.println(rgbColor.toString());
+                    s = s.replaceAll(tempString, rgbColor.toString());
+                }
+            }
         }
         return s;
     }
