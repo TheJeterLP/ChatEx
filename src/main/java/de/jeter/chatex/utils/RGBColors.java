@@ -12,7 +12,7 @@ public class RGBColors {
 
     public static void load() {
         ChatEx.getInstance().getLogger().info("Server version:" + Bukkit.getVersion());
-        if (!Bukkit.getVersion().contains("1.16")) {
+        if (isNotSupported()) {
             ChatEx.getInstance().getLogger().info("This server version doesn't support custom color codes!");
             return;
         }
@@ -39,7 +39,7 @@ public class RGBColors {
     }
 
     public static String translateCustomColorCodes(String s) {
-        if (!Bukkit.getVersion().contains("1.16")) {
+        if (isNotSupported()) {
             return s;
         }
         s = translateSingleMessageColorCodes(s);
@@ -66,5 +66,9 @@ public class RGBColors {
             }
         }
         return s;
+    }
+
+    private static boolean isNotSupported(){
+        return !Bukkit.getVersion().contains("1.16");
     }
 }
