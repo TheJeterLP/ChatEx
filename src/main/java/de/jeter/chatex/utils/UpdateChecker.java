@@ -1,17 +1,17 @@
 /*
  * This file is part of ChatEx
  * Copyright (C) 2020 ChatEx Team
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -44,12 +44,7 @@ public class UpdateChecker {
         this.plugin = plugin;
         this.id = id;
         this.USER_AGENT = plugin.getName() + " UpdateChecker";
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-            @Override
-            public void run() {
-                checkUpdate();
-            }
-        });
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this::checkUpdate);
     }
 
     public enum Result {
@@ -108,6 +103,7 @@ public class UpdateChecker {
                 result = Result.NO_UPDATE;
             }
         } catch (Exception e) {
+            result = Result.FAILED;
             e.printStackTrace();
         }
     }
@@ -120,8 +116,8 @@ public class UpdateChecker {
      */
     private boolean shouldUpdate(String newVersion, String oldVersion) {
         try {
-            float oldV = Float.valueOf(oldVersion.replaceAll("\\.", "").replace("v", "."));
-            float newV = Float.valueOf(newVersion.replaceAll("\\.", "").replace("v", "."));
+            float oldV = Float.parseFloat(oldVersion.replaceAll("\\.", "").replace("v", "."));
+            float newV = Float.parseFloat(newVersion.replaceAll("\\.", "").replace("v", "."));
             return oldV < newV;
         } catch (NumberFormatException ex) {
             ex.printStackTrace();
