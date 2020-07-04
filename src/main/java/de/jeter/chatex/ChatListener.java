@@ -33,6 +33,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+
 import java.util.UnknownFormatConversionException;
 import java.util.regex.Pattern;
 
@@ -129,13 +130,15 @@ public class ChatListener implements Listener {
                 ChannelHandler.getInstance().sendMessage(player, msgToSend);
             }
         }
-
-        format = format.replace("%message", "%2$s");
         format = Utils.replacePlayerPlaceholders(player, format);
+        format = Utils.escape(format);
+        format = format.replace("%%message", "%2$s");
+
 
         try {
             event.setFormat(format);
         } catch (UnknownFormatConversionException ex) {
+            System.out.println(format);
             ChatEx.getInstance().getLogger().severe("Placeholder in format is not allowed!");
             format = format.replaceAll("%\\\\?.*?%", "");
             event.setFormat(format);
