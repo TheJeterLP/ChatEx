@@ -18,6 +18,7 @@
  */
 package de.jeter.chatex.utils;
 
+import de.jeter.chatex.ChatEx;
 import de.jeter.chatex.plugins.PluginManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
@@ -95,6 +96,15 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public static void notifyOps(String msg) {
+        for (Player op : ChatEx.getInstance().getServer().getOnlinePlayers()) {
+            if (!op.hasPermission("chatex.notifyad")) {
+                continue;
+            }
+            op.sendMessage(msg);
+        }
     }
 
 }
