@@ -1,17 +1,17 @@
 /*
  * This file is part of ChatEx
  * Copyright (C) 2020 ChatEx Team
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.*;
+import java.util.concurrent.TimeUnit;
 
 public class ChannelHandler implements PluginMessageListener {
 
@@ -48,14 +49,18 @@ public class ChannelHandler implements PluginMessageListener {
 
             DataInputStream msgin = new DataInputStream(new ByteArrayInputStream(msgbytes));
             String msg;
+            long millis = 0;
             try {
+                millis = msgin.readLong();
                 msg = msgin.readUTF();
             } catch (IOException ex) {
                 ex.printStackTrace();
                 msg = "null";
             }
 
-            ChatEx.getInstance().getServer().broadcastMessage(msg);
+            if ((System.currentTimeMillis() - millis) < TimeUnit.SECONDS.toMillis(Config.CROSS_SERVER_TIMEOUT.getInt())) {
+                ChatEx.getInstance().getServer().broadcastMessage(msg);
+            }
         }
     }
 
@@ -82,6 +87,7 @@ public class ChannelHandler implements PluginMessageListener {
             ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
             DataOutputStream msgout = new DataOutputStream(msgbytes);
             try {
+                msgout.writeLong(System.currentTimeMillis());
                 msgout.writeUTF(message);
             } catch (IOException exception) {
                 exception.printStackTrace();
