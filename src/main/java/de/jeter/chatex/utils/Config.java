@@ -32,6 +32,7 @@ public enum Config {
     CHECK_UPDATE("check-for-updates", true, "Should the plugin check for updates by itself?"),
     B_STATS("enable-bstats", true, "Do you want to use bstats?"),
     BUNGEECORD("bungeecord", false, "If you use bungeecord, players can chat cross-server wide with the range mode (! in front of the message)."),
+    CROSS_SERVER_TIMEOUT("cross_server_timeout", 3, "If this timeout (In seconds) is exceeded the cross-server-message will not be send."),
     FORMAT("message-format", "%prefix%player%suffix: %message", "The standard message-format."),
     GLOBALFORMAT("global-message-format", "&9[%world] %prefix%player%suffix: &e%message", "The message-format if ranged-mode is enabled."),
     MULTIPREFIXES("multi-prefixes", false, "Should the multi-prefixes be enabled?"),
