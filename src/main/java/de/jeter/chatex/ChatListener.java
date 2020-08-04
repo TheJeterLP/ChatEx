@@ -35,6 +35,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.UnknownFormatConversionException;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ChatListener implements Listener {
@@ -126,7 +127,7 @@ public class ChatListener implements Listener {
 
             chatMessage = playerUsesRangeModeEvent.getMessage();
             if (!playerUsesRangeModeEvent.isCancelled()) {
-                String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Utils.translateColorCodes(chatMessage, player)));
+                String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Matcher.quoteReplacement(chatMessage)));
                 ChannelHandler.getInstance().sendMessage(player, msgToSend);
             }
         }
