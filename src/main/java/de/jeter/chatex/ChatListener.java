@@ -104,6 +104,7 @@ public class ChatListener implements Listener {
                     Bukkit.getPluginManager().callEvent(playerUsesGlobalChatEvent);
                     chatMessage = playerUsesGlobalChatEvent.getMessage();
                     if (playerUsesGlobalChatEvent.isCancelled()) {
+                        event.setCancelled(true);
                         return;
                     }
 
@@ -126,6 +127,7 @@ public class ChatListener implements Listener {
                         Bukkit.getPluginManager().callEvent(playerUsesRangeModeEvent);
                         chatMessage = playerUsesRangeModeEvent.getMessage();
                         if (playerUsesRangeModeEvent.isCancelled()) {
+                            event.setCancelled(true);
                             return;
                         }
                     }
