@@ -17,7 +17,7 @@ Messages:
     Clear:
       Success: '&f[&4Внимание&f] &7Чат был очищен! '
   CommandResult:
-    NoPermission: '&f[&4Внимание&f] &7У вас нет на это разрешения! &e(%perm)'
+    NoPermission: '&f[&4Внимание&f] &7У вас нет прав на это! &e(%perm)'
     WrongUsage: '&f[&4Внимание&f] &7неизвестная команда, используйте: &e%cmd help&7!'
   Player:
     Join: '%prefix %displayname %suffix &7вошел на сервер!'
