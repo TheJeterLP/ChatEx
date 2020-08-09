@@ -7,22 +7,22 @@ Commands:
     Unknown: 'Неизвестно'
 Messages:
   Chat:
-    AdDetected: '&f[&4ВНимание&f] &7Реклама в чате запрещена! &e(%perm)'
-    AdNotify: "&f[&4ВНимание&f] &e%player &7пытался рекламировать в чате: &e%message"
-    BlockedWord: '&f[&4ВНимание&f] &7Вам нельзя писать запрещенные слова!'
-    NoOneListens: '&f[&4ВНимание&f] &7Это локальный чат! Используй &e! &7знак для использования глобального чата!'
+    AdDetected: '&f[&4Внимание&f] &7Реклама в чате запрещена! &e(%perm)'
+    AdNotify: "&f[&4Внимание&f] &e%player &7пытался рекламировать в чате: &e%message"
+    BlockedWord: '&f[&4Внимание&f] &7Вам нельзя писать запрещенные слова!'
+    NoOneListens: '&f[&4Внимание&f] &7Это локальный чат! Используй &e! &7знак для использования глобального чата!'
   Commands:
     Reload:
-      Success: '&f[&4ВНимание&f] &7ChatEx был перезагружен!'
+      Success: '&f[&4Внимание&f] &7ChatEx был перезагружен!'
     Clear:
-      Success: '&f[&4ВНимание&f] &7Чат был очищен! '
+      Success: '&f[&4Внимание&f] &7Чат был очищен! '
   CommandResult:
-    NoPermission: '&f[&4ВНимание&f] &7У вас нет на это разрешения! &e(%perm)'
-    WrongUsage: '&f[&4ВНимание&f] &7неизвестная команда, используйте: &e%cmd help&7!'
+    NoPermission: '&f[&4Внимание&f] &7У вас нет на это разрешения! &e(%perm)'
+    WrongUsage: '&f[&4Внимание&f] &7неизвестная команда, используйте: &e%cmd help&7!'
   Player:
     Join: '%prefix %displayname %suffix &7вошел на сервер!'
     Quit: '%prefix %displayname %suffix &7покинул сервер!'
     Kick: '%prefix %displayname %suffix &7был кикнут с сервера!'
-  UpdateFound: '&f[&4ChatEx&f] &7Новая версия доступна (&e%newversion&7) У вас установлена: &e%oldversion'
-  UpdateDownloaded: '&f[&4ChatEx&f] &7Обновление успешно установлено и будет активно после перезапуска!'
+  UpdateFound: '&f[&4Внимание&f] &7Новая версия ChatEx доступна (&e%newversion&7) У вас установлена: &e%oldversion'
+  UpdateDownloaded: '&f[&4Внимание&f] 7Обновление ChatEx успешно установлено и будет активно после перезапуска!'
     
