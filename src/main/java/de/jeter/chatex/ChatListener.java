@@ -18,10 +18,7 @@
  */
 package de.jeter.chatex;
 
-import de.jeter.chatex.api.events.MessageBlockedByAdManagerEvent;
-import de.jeter.chatex.api.events.MessageBlockedBySpamManagerEvent;
-import de.jeter.chatex.api.events.MessageContainsBlockedWordEvent;
-import de.jeter.chatex.api.events.PlayerUsesRangeModeEvent;
+import de.jeter.chatex.api.events.*;
 import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.*;
 import de.jeter.chatex.utils.adManager.AdManager;
@@ -35,6 +32,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.UnknownFormatConversionException;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ChatListener implements Listener {
@@ -101,6 +99,15 @@ public class ChatListener implements Listener {
                     chatMessage = chatMessage.replaceFirst(Pattern.quote(Config.RANGEPREFIX.getString()), "");
                     format = PluginManager.getInstance().getGlobalMessageFormat(player);
                     global = true;
+
+                    PlayerUsesGlobalChatEvent playerUsesGlobalChatEvent = new PlayerUsesGlobalChatEvent(player, chatMessage);
+                    Bukkit.getPluginManager().callEvent(playerUsesGlobalChatEvent);
+                    chatMessage = playerUsesGlobalChatEvent.getMessage();
+                    if (playerUsesGlobalChatEvent.isCancelled()) {
+                        event.setCancelled(true);
+                        return;
+                    }
+
                 } else {
                     player.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(player).replaceAll("%perm", "chatex.chat.global"));
                     event.setCancelled(true);
@@ -115,21 +122,24 @@ public class ChatListener implements Listener {
                         return;
                     } else {
                         event.getRecipients().addAll(Utils.getLocalRecipients(player));
+
+                        PlayerUsesRangeModeEvent playerUsesRangeModeEvent = new PlayerUsesRangeModeEvent(player, chatMessage);
+                        Bukkit.getPluginManager().callEvent(playerUsesRangeModeEvent);
+                        chatMessage = playerUsesRangeModeEvent.getMessage();
+                        if (playerUsesRangeModeEvent.isCancelled()) {
+                            event.setCancelled(true);
+                            return;
+                        }
                     }
                 }
             }
         }
 
         if (global && Config.BUNGEECORD.getBoolean()) {
-            PlayerUsesRangeModeEvent playerUsesRangeModeEvent = new PlayerUsesRangeModeEvent(player, chatMessage);
-            Bukkit.getPluginManager().callEvent(playerUsesRangeModeEvent);
-
-            chatMessage = playerUsesRangeModeEvent.getMessage();
-            if (!playerUsesRangeModeEvent.isCancelled()) {
-                String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Utils.translateColorCodes(chatMessage, player)));
-                ChannelHandler.getInstance().sendMessage(player, msgToSend);
-            }
+            String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Matcher.quoteReplacement(chatMessage)));
+            ChannelHandler.getInstance().sendMessage(player, msgToSend);
         }
+
         format = Utils.replacePlayerPlaceholders(player, format);
         format = Utils.escape(format);
         format = format.replace("%%message", "%2$s");
