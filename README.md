@@ -1,4 +1,4 @@
-![ChatEx Logo](https://i.imgur.com/ng1GIOg.png) 
+![ChatEx Logo](https://github.com/TheJeterLP/ChatEx/blob/master/logo.png?raw=true) 
 ![](https://github.com/TheJeterLP/ChatEx/workflows/Java%20CI%20with%20Maven/badge.svg)
 ![](https://jitpack.io/v/TheJeterLP/ChatEx.svg)
 ================================
