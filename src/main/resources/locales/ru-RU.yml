@@ -23,6 +23,6 @@ Messages:
     Join: '%prefix %displayname %suffix &7вошел на сервер!'
     Quit: '%prefix %displayname %suffix &7покинул сервер!'
     Kick: '%prefix %displayname %suffix &7был кикнут с сервера!'
-  UpdateFound: '&f[&4Внимание&f] &7Новая версия ChatEx доступна (&e%newversion&7)! У вас установлена: &e%oldversion'
+  UpdateFound: '&f[&4Внимание&f] &7Новая версия ChatEx (&e%newversion&7) доступна! У вас установлена: &e%oldversion'
   UpdateDownloaded: '&f[&4Внимание&f] &7Обновление ChatEx успешно установлено и будет активно после перезапуска!'
     
