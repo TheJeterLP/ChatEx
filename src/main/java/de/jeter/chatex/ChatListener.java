@@ -18,13 +18,14 @@
  */
 package de.jeter.chatex;
 
-import de.jeter.chatex.api.events.*;
+import de.jeter.chatex.pipe.*;
 import de.jeter.chatex.plugins.PluginManager;
-import de.jeter.chatex.utils.*;
-import de.jeter.chatex.utils.adManager.AdManager;
+import de.jeter.chatex.utils.ChatLogger;
+import de.jeter.chatex.utils.Config;
+import de.jeter.chatex.utils.Locales;
+import de.jeter.chatex.utils.Utils;
 import de.jeter.chatex.utils.adManager.SimpleAdManager;
 import de.jeter.chatex.utils.adManager.SmartAdManager;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,118 +33,34 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.UnknownFormatConversionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ChatListener implements Listener {
+    private final ChatPipe chatPipe;
 
-    private final AdManager adManager = Config.ADS_SMART_MANAGER.getBoolean() ? new SmartAdManager() : new SimpleAdManager();
+    public ChatListener() {
+        this.chatPipe = new ChatPipe();
+
+        this.chatPipe.addLast(new ChatPermissionHandler());
+        this.chatPipe.addLast(new SpamManagerHandler());
+        this.chatPipe.addLast(new AdHandler(
+                Config.ADS_SMART_MANAGER.getBoolean() ? new SmartAdManager() : new SimpleAdManager()
+        ));
+        this.chatPipe.addLast(new BlockedMessageHandler());
+        this.chatPipe.addLast(new BungeeHandler());
+    }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if (!player.hasPermission("chatex.allowchat")) {
-            String msg = Locales.COMMAND_RESULT_NO_PERM.getString(player).replaceAll("%perm", "chatex.allowchat");
-            player.sendMessage(msg);
-            event.setCancelled(true);
-            return;
-        }
-
         String format = PluginManager.getInstance().getMessageFormat(event.getPlayer());
-
-        String chatMessage = event.getMessage();
-
-        if (!AntiSpamManager.getInstance().isAllowed(event.getPlayer())) {
-            long remainingTime = AntiSpamManager.getInstance().getRemainingSeconds(event.getPlayer());
-            String message = Locales.ANTI_SPAM_DENIED.getString(event.getPlayer()).replaceAll("%time%", remainingTime + "");
-            MessageBlockedBySpamManagerEvent messageBlockedBySpamManagerEvent = new MessageBlockedBySpamManagerEvent(event.getPlayer(), chatMessage, message, remainingTime);
-            Bukkit.getPluginManager().callEvent(messageBlockedBySpamManagerEvent);
-            event.setCancelled(!messageBlockedBySpamManagerEvent.isCancelled());
-            if (!messageBlockedBySpamManagerEvent.isCancelled()) {
-                event.getPlayer().sendMessage(messageBlockedBySpamManagerEvent.getPluginMessage());
-                return;
-            }
-            chatMessage = messageBlockedBySpamManagerEvent.getMessage();
-        }
-        AntiSpamManager.getInstance().put(player);
-
-        if (adManager.checkForAds(chatMessage, player)) {
-            String message = Locales.MESSAGES_AD.getString(null).replaceAll("%perm", "chatex.bypassads");
-            MessageBlockedByAdManagerEvent messageBlockedByAdManagerEvent = new MessageBlockedByAdManagerEvent(player, chatMessage, message);
-            Bukkit.getPluginManager().callEvent(messageBlockedByAdManagerEvent);
-            chatMessage = messageBlockedByAdManagerEvent.getMessage();
-            event.setCancelled(!messageBlockedByAdManagerEvent.isCancelled());
-            if (!messageBlockedByAdManagerEvent.isCancelled()) {
-                event.getPlayer().sendMessage(messageBlockedByAdManagerEvent.getPluginMessage());
-                return;
-            }
-        }
-
-        if (Utils.checkForBlocked(chatMessage)) {
-            String message = Locales.MESSAGES_BLOCKED.getString(null);
-            MessageContainsBlockedWordEvent messageContainsBlockedWordEvent = new MessageContainsBlockedWordEvent(player, chatMessage, message);
-            Bukkit.getPluginManager().callEvent(messageContainsBlockedWordEvent);
-            event.setCancelled(!messageContainsBlockedWordEvent.isCancelled());
-            chatMessage = messageContainsBlockedWordEvent.getMessage();
-            if (!messageContainsBlockedWordEvent.isCancelled()) {
-                event.getPlayer().sendMessage(messageContainsBlockedWordEvent.getPluginMessage());
-                return;
-            }
-        }
-
-        boolean global = false;
-        if (Config.RANGEMODE.getBoolean() || Config.BUNGEECORD.getBoolean()) {
-            if (chatMessage.startsWith(Config.RANGEPREFIX.getString())) {
-                if (player.hasPermission("chatex.chat.global")) {
-                    chatMessage = chatMessage.replaceFirst(Pattern.quote(Config.RANGEPREFIX.getString()), "");
-                    format = PluginManager.getInstance().getGlobalMessageFormat(player);
-                    global = true;
-
-                    PlayerUsesGlobalChatEvent playerUsesGlobalChatEvent = new PlayerUsesGlobalChatEvent(player, chatMessage);
-                    Bukkit.getPluginManager().callEvent(playerUsesGlobalChatEvent);
-                    chatMessage = playerUsesGlobalChatEvent.getMessage();
-                    if (playerUsesGlobalChatEvent.isCancelled()) {
-                        event.setCancelled(true);
-                        return;
-                    }
-
-                } else {
-                    player.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(player).replaceAll("%perm", "chatex.chat.global"));
-                    event.setCancelled(true);
-                    return;
-                }
-            } else {
-                if (Config.RANGEMODE.getBoolean()) {
-                    event.getRecipients().clear();
-                    if (Utils.getLocalRecipients(player).size() == 1 && Config.SHOW_NO_RECEIVER_MSG.getBoolean()) {
-                        player.sendMessage(Locales.NO_LISTENING_PLAYERS.getString(player));
-                        event.setCancelled(true);
-                        return;
-                    } else {
-                        event.getRecipients().addAll(Utils.getLocalRecipients(player));
-
-                        PlayerUsesRangeModeEvent playerUsesRangeModeEvent = new PlayerUsesRangeModeEvent(player, chatMessage);
-                        Bukkit.getPluginManager().callEvent(playerUsesRangeModeEvent);
-                        chatMessage = playerUsesRangeModeEvent.getMessage();
-                        if (playerUsesRangeModeEvent.isCancelled()) {
-                            event.setCancelled(true);
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (global && Config.BUNGEECORD.getBoolean()) {
-            String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Matcher.quoteReplacement(chatMessage)));
-            ChannelHandler.getInstance().sendMessage(player, msgToSend);
-        }
-
-        format = Utils.replacePlayerPlaceholders(player, format);
+        NonCheckingAsyncChatEvent nonCheckingAsyncChatEvent = new NonCheckingAsyncChatEvent(event.isAsynchronous(), event.getPlayer(), event.getMessage(), event.getRecipients(), format);
+        chatPipe.handle(nonCheckingAsyncChatEvent);
+        format = Utils.replacePlayerPlaceholders(player, nonCheckingAsyncChatEvent.getFormat());
         format = Utils.escape(format);
         format = format.replace("%%message", "%2$s");
 
+        event.setCancelled(nonCheckingAsyncChatEvent.isCancelled());
 
         try {
             event.setFormat(format);
@@ -154,8 +71,8 @@ public class ChatListener implements Listener {
             event.setFormat(format);
         }
 
-        event.setMessage(Utils.translateColorCodes(chatMessage, player));
-        ChatLogger.writeToFile(player, chatMessage);
+        event.setMessage(Utils.translateColorCodes(nonCheckingAsyncChatEvent.getMessage(), player));
+        ChatLogger.writeToFile(player, nonCheckingAsyncChatEvent.getMessage());
     }
 
 }
