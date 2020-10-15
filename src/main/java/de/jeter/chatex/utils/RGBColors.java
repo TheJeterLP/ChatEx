@@ -4,11 +4,15 @@ import de.jeter.chatex.ChatEx;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class RGBColors {
     private static final HashMap<String, String> placeHolderColorMap = new HashMap<>();
+    private static final List<String> supportedVersions = Arrays.asList(
+            "1.16",
+            "1.17");
+
+    private static Boolean supported = null;
 
     public static void load() {
         ChatEx.getInstance().getLogger().info("Server version:" + Bukkit.getVersion());
@@ -69,6 +73,10 @@ public class RGBColors {
     }
 
     private static boolean isNotSupported(){
-        return !Bukkit.getVersion().contains("1.16");
+        if(supported == null) {
+            final String version = Bukkit.getVersion();
+            supported = supportedVersions.stream().anyMatch(version::contains);
+        }
+        return !supported;
     }
 }
