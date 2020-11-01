@@ -1,0 +1,32 @@
+Commands:
+  Reload:
+    Description: Reloads the plugin and its configuration.
+  Clear:
+    Description: Clears the chat.
+    Console: CONSOLE
+    Unknown: UNKNOWN
+Messages:
+  Commands:
+    Reload:
+      Success: '&aLa configuración ha sido recargada.'
+    Clear:
+      Success: '&aEl chat ha sido borrado '
+  Chat:
+    AdDetected: '&4[ERROR] &7La publicidad no está permitida! &c(%perm)'
+    BlockedWord: '&4[ERROR] &7Trataste de usar una palabra que no está permitida!'
+    AdNotify: "&c%player intentó hacer publicidad. Su mensaje fue: \n&a %message"
+    NoOneListens: '&cNo players are near you to hear you talking! Use the ranged mode
+      to chat.'
+  CommandResult:
+    NoPermission: '&4[ERROR] &7No tienes permiso para hacer esto! &c(%perm)'
+    WrongUsage: '&c[ERROR] &7Sintaxis incorrecta, por favor, usa &6%cmd help&7! para
+      obtener ayuda'
+  AntiSpam:
+    Denied: '&e[AntiSpam] &7Por favor, espera &e%time% &7segundos antes de enviar
+      otro mensaje!'
+  Player:
+    Join: '%prefix%displayname%suffix &ese unió al juego!'
+    Kick: '%prefix%displayname%suffix &efue expulsado del juego!'
+    Quit: '%prefix%displayname%suffix &ese fue del juego!'
+  UpdateFound: '&a[ChatEx]&7 Una nueva actualización fue encontrada en SpigotMC. Versión
+    actual: %oldversion New version: %newversion'
