@@ -64,7 +64,6 @@ public class RGBColors {
                     for (char tempChar : tempChars) {
                         rgbColor.append("§").append(tempChar);
                     }
-                    System.out.println(rgbColor.toString());
                     s = s.replaceAll(tempString, rgbColor.toString());
                 }
             }
