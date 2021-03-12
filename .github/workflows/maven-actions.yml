@@ -12,7 +12,7 @@ on:
 
 jobs:
   create-main-release:
-    if: "startsWith(github.event.commits[0].message, 'v') && !contains(github.event.commits[0].message, '-SNAPSHOT')"
+    if: "startsWith(github.event.head_commit.message, 'v') && !contains(github.event.head_commit.message, '-SNAPSHOT')"
     name: Create Release
     runs-on: ubuntu-latest
     steps:
@@ -35,7 +35,7 @@ jobs:
       - name: upload jar
         uses: actions/upload-artifact@v1
         with:
-          name: ChatEx ${{ github.event.commits[0].message }}
+          name: ChatEx ${{ github.event.head_commit.message }}
           path: staging
       - name: Create Release
         id: create_release
@@ -43,9 +43,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.commits[0].message }}
-          release_name: ChatEx ${{ github.event.commits[0].message }}
-          body: ${{ github.event.commits[0].message }}
+          tag_name: ${{ github.event.head_commit.message }}
+          release_name: ChatEx ${{ github.event.head_commit.message }}
+          body: ${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
@@ -59,7 +59,7 @@ jobs:
           asset_name: ChatEx.jar
           asset_content_type: application/java-archive
   create-pre-release:
-    if: "startsWith(github.event.commits[0].message, 'v') && contains(github.event.commits[0].message, '-SNAPSHOT')"
+    if: "startsWith(github.event.head_commit.message, 'v') && contains(github.event.head_commit.message, '-SNAPSHOT')"
     name: Create Pre Release
     runs-on: ubuntu-latest
     steps:
@@ -82,7 +82,7 @@ jobs:
       - name: upload jar
         uses: actions/upload-artifact@v1
         with:
-          name: ChatEx ${{ github.event.commits[0].message }}
+          name: ChatEx ${{ github.event.head_commit.message }}
           path: staging
       - name: Create Release
         id: create_release
@@ -90,9 +90,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.commits[0].message }}
-          release_name: ChatEx ${{ github.event.commits[0].message }}
-          body: ${{ github.event.commits[0].message }}
+          tag_name: ${{ github.event.head_commit.message }}
+          release_name: ChatEx ${{ github.event.head_commit.message }}
+          body: ${{ github.event.head_commit.message }}
           draft: false
           prerelease: true
       - name: Upload Release Asset
@@ -106,7 +106,7 @@ jobs:
           asset_name: ChatEx.jar
           asset_content_type: application/java-archive  
   main:
-    if: "!startsWith(github.event.commits[0].message, 'v')"
+    if: "!startsWith(github.event.head_commit.message, 'v')"
     name: Create Dev Build
     runs-on: ubuntu-latest
     steps:
