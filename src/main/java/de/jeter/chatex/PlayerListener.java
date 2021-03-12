@@ -41,6 +41,11 @@ public class PlayerListener implements Listener {
         if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
             String name = Config.TABLIST_FORMAT.getString();
             name = Utils.replacePlayerPlaceholders(e.getPlayer(), name);
+
+            if (name.length() > 16) {
+                name = name.substring(0, 15);
+            }
+
             e.getPlayer().setPlayerListName(name);
         }
 
