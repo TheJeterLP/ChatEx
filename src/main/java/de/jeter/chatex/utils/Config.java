@@ -63,7 +63,9 @@ public enum Config {
     CHANGE_TABLIST_NAME("Tablist.Change", true, "Do you want to have the prefixes and suffixes in the tablist?"),
     TABLIST_FORMAT("Tablist.format", "%prefix%player%suffix", "The format of the tablist name"),
     CHANGE_JOIN_AND_QUIT("Messages.JoinAndQuit.Enabled", false, "Do you want to change the join and the quit messages?"),
-    RGB_COLORS("colors", null, "Requires 1.16+, Colors you want to use.");
+    RGB_COLORS("colors", null, "Requires 1.16+, Colors you want to use."),
+    AFK_PLACEHOLDER("AfkPlaceholder.Enabled", false, "Enable the %afk placeholder. You can use it to display AFK players on tablist. (Requires Essentials)."),
+    AFK_FORMAT("AfkPlaceholder.format", "&r[&7AFK&r] ", "The format of the afk placeholder.");
 
     private final Object value;
     private final String path;

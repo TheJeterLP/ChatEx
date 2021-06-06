@@ -19,6 +19,7 @@
 package de.jeter.chatex.utils;
 
 import de.jeter.chatex.ChatEx;
+import de.jeter.chatex.EssentialsAFKListener;
 import de.jeter.chatex.plugins.PluginManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
@@ -62,6 +63,10 @@ public class Utils {
 
         if (HookManager.checkPlaceholderAPI()) {
             result = PlaceholderAPI.setPlaceholders(player, result);
+        }
+
+        if (HookManager.checkEssentials() && Config.AFK_PLACEHOLDER.getBoolean()) {
+            result = result.replace("%afk", "");
         }
 
         result = result.replace("%displayname", player.getDisplayName());
