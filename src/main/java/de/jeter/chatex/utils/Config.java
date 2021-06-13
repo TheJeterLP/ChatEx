@@ -53,7 +53,7 @@ public enum Config {
     ), "The endings the SmartManager applies the multiplier to."),
     ADS_REPLACE_COMMAS("Ads.ReplaceCommas", false, "Should commas be replaced with \".\" for the add test?"),
     ADS_SMART_MULTIPLIER("Ads.SmartConfig.Multiplier", 4, "If a domain pattern contains an ending from Ads.SmartConfig.DomainEndings the score get multiplied by this number."),
-    ADS_SMART_UN_MULTIPLIER("Ads.SmartConfig.UnMultiplier", 1, "If a domain pattern contains NOT an ending from Ads.SmartConfig.DomainEndings the score get multiplied by this number."),
+    ADS_SMART_UN_MULTIPLIER("Ads.SmartConfig.UnMultiplier", 0, "If a domain pattern does NOT contain an ending from Ads.SmartConfig.DomainEndings the score get multiplied by this number."),
     ADS_THRESHOLD("Ads.Threshold.Block", 0.3, "The threshold required to cancel a message."),
     ADS_REDUCE_THRESHOLD("Ads.Threshold.ReduceThreshold", 0.1, "How much threshold is removed per message"),
     ADS_MAX_LENGTH("Ads.Threshold.MaxLinkLength", 10, "What the max detected link length is (For more information read: https://github.com/TheJeterLP/ChatEx/wiki/Ad-Manager)"),
