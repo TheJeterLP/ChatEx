@@ -12,3 +12,4 @@ If you want to use ChatEx as a Maven dependency, just click on the Jitpack image
 ![BStats](https://bstats.org/signatures/bukkit/ChatEx.svg)
 
 [bStats.org - ChatEx](https://bstats.org/plugin/bukkit/ChatEx/7744)
+
