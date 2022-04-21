@@ -7,10 +7,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.*;
 
 public class RGBColors {
+
     private static final HashMap<String, String> placeHolderColorMap = new HashMap<>();
-    private static final List<String> supportedVersions = Arrays.asList(
-            "1.16",
-            "1.17");
 
     private static Boolean supported = null;
 
@@ -20,7 +18,7 @@ public class RGBColors {
             ChatEx.getInstance().getLogger().info("This server version doesn't support custom color codes!");
             return;
         }
-        ChatEx.getInstance().getLogger().info("Loading RGB ColorCodes!");
+        ChatEx.getInstance().getLogger().info("Version is later than 1.16. Loading RGB ColorCodes!");
         ConfigurationSection configurationSection = Config.RGB_COLORS.getConfigurationSection();
 
         if (configurationSection == null) {
@@ -71,10 +69,19 @@ public class RGBColors {
         return s;
     }
 
-    private static boolean isNotSupported(){
-        if(supported == null) {
-            final String version = Bukkit.getVersion();
-            supported = supportedVersions.stream().anyMatch(version::contains);
+    private static boolean isNotSupported() {
+        if (supported == null) {
+            try {
+                final String version = Bukkit.getVersion();
+                String ver = version.split("\\(MC: ")[1];
+                String[] numbers = ver.replaceAll("\\)", "").split("\\.");
+                ver = numbers[0] + numbers[1];
+                int toCheck = Integer.valueOf(ver);
+                LogHelper.debug(ver + "  INT: " + toCheck);
+                supported = toCheck >= 116;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         return !supported;
     }
