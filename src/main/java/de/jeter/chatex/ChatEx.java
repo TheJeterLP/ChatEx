@@ -53,14 +53,14 @@ public class ChatEx extends JavaPlugin {
             getLogger().info("Thanks for using bstats, it was enabled!");
         }
 
-        getLogger().info("is now enabled!");
+        getLogger().info("Is now enabled!");
     }
 
     @Override
     public void onDisable() {
         ChatLogger.close();
         getServer().getScheduler().cancelTasks(this);
-        getLogger().info("is now disabled!");
+        getLogger().info("Is now disabled!");
     }
 
     public static ChatEx getInstance() {
