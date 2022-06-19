@@ -17,13 +17,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@latest
+        uses: actions/checkout@v2
       - name: Set up JDK 1.8
-        uses: actions/setup-java@latest
+        uses: actions/setup-java@v1
         with:
           java-version: 1.8
       - name: Cache Maven Packages
-        uses: actions/cache@latest
+        uses: actions/cache@v1
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
@@ -39,7 +39,7 @@ jobs:
           path: staging
       - name: Create Release
         id: create_release
-        uses: actions/create-release@latest
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -50,7 +50,7 @@ jobs:
           prerelease: false
       - name: Upload Release Asset
         id: upload-release-asset
-        uses: actions/upload-release-asset@latest
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -64,13 +64,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@latest
+        uses: actions/checkout@v2
       - name: Set up JDK 1.8
-        uses: actions/setup-java@latest
+        uses: actions/setup-java@v1
         with:
           java-version: 1.8
       - name: Cache Maven Packages
-        uses: actions/cache@latest
+        uses: actions/cache@v1
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
@@ -80,13 +80,13 @@ jobs:
       - name: Archive jar
         run: mkdir staging && cp target/*.jar staging
       - name: upload jar
-        uses: actions/upload-artifact@latest
+        uses: actions/upload-artifact@v1
         with:
           name: ChatEx ${{ github.event.head_commit.message }}
           path: staging
       - name: Create Release
         id: create_release
-        uses: actions/create-release@latest
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -97,7 +97,7 @@ jobs:
           prerelease: true
       - name: Upload Release Asset
         id: upload-release-asset
-        uses: actions/upload-release-asset@latest
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -110,13 +110,13 @@ jobs:
     name: Create Dev Build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@latest
+    - uses: actions/checkout@v2
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
     - name: Cache Maven Packages
-      uses: actions/cache@latest
+      uses: actions/cache@v1
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
@@ -126,7 +126,7 @@ jobs:
     - name: Archive jar
       run: mkdir staging && cp target/*.jar staging
     - name: upload jar
-      uses: actions/upload-artifact@latest
+      uses: actions/upload-artifact@v1
       with:
         name: ChatEx-DEVELOPMENT-BUILD
         path: staging
