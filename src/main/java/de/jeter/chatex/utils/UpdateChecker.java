@@ -97,7 +97,7 @@ public class UpdateChecker {
 
             if (shouldUpdate(version, plugin.getDescription().getVersion())) {
                 result = Result.UPDATE_FOUND;
-                plugin.getLogger().info("Update found!");
+                plugin.getLogger().info("Update found! Please consider installing the latest version from SpigotMC!");
             } else {
                 plugin.getLogger().info("No update found.");
                 result = Result.NO_UPDATE;
