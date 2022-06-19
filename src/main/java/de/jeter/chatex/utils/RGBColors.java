@@ -29,6 +29,7 @@ public class RGBColors {
         for (Map.Entry<String, Object> stringObjectEntry : configurationSection.getValues(false).entrySet()) {
             String key = stringObjectEntry.getKey();
             String value = (String) stringObjectEntry.getValue();
+            LogHelper.debug(("Loading custom color code " + key + " with value " + value + " from config!"));
             String clearedValue = value.replaceFirst("#", "");
             char[] valueChars = clearedValue.toCharArray();
             StringBuilder rgbColor = new StringBuilder();
@@ -36,6 +37,7 @@ public class RGBColors {
             for (int i = 0; i < clearedValue.length(); i++) {
                 rgbColor.append("§").append(valueChars[i]);
             }
+            LogHelper.debug("Putting KEY: " + key + " value: " + rgbColor.toString());
             placeHolderColorMap.put(key, rgbColor.toString());
         }
     }

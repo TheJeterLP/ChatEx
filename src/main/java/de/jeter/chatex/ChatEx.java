@@ -1,6 +1,6 @@
 /*
  * This file is part of ChatEx
- * Copyright (C) 2020 ChatEx Team
+ * Copyright (C) 2022 ChatEx Team
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@ package de.jeter.chatex;
 
 import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.*;
+import de.jeter.updatechecker.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bstats.bukkit.Metrics;
 

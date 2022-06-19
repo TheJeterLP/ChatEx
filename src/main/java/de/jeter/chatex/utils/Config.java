@@ -1,6 +1,6 @@
 /*
  * This file is part of ChatEx
- * Copyright (C) 2020 ChatEx Team
+ * Copyright (C) 2022 ChatEx Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -64,6 +64,7 @@ public enum Config {
     TABLIST_FORMAT("Tablist.format", "%prefix%player%suffix", "The format of the tablist name"),
     CHANGE_JOIN_AND_QUIT("Messages.JoinAndQuit.Enabled", false, "Do you want to change the join and the quit messages?"),
     RGB_COLORS("colors", null, "Requires 1.16+, Colors you want to use."),
+    RGB_COLORS_EXAMPLE("colors.$g", "#00ff00", "Default color code. &g in chat will be used with the #00ff00."),
     AFK_PLACEHOLDER("AfkPlaceholder.Enabled", false, "Enable the %afk placeholder. You can use it to display AFK players on tablist. (Requires Essentials)."),
     AFK_FORMAT("AfkPlaceholder.format", "&r[&7AFK&r] ", "The format of the afk placeholder.");
 

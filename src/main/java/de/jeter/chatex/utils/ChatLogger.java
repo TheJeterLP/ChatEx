@@ -1,6 +1,6 @@
 /*
  * This file is part of ChatEx
- * Copyright (C) 2020 ChatEx Team
+ * Copyright (C) 2022 ChatEx Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
