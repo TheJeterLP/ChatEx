@@ -23,10 +23,11 @@ git clone https://github.com/TheJeterLP/ChatEx.git
 
 To create a new branch, go to [Github](https://github.com/TheJeterLP/ChatEx), click on branch master and create a new branch.
 Otherwise use:
+```
   git branch [username]
   git checkout [username]
   git branch -u origin/[username]
-
+```
 To switch to a branch
 ````
 git pull origin BRANCHNAME
