@@ -1,7 +1,6 @@
-**ChatEx** ![](https://github.com/TheJeterLP/ChatEx/workflows/Java%20CI%20with%20Maven/badge.svg)
-![](https://jitpack.io/v/TheJeterLP/ChatEx.svg)
-
-![ChatEx Logo](https://i.imgur.com/ng1GIOg.png)
+[![ChatEx Logo](https://github.com/TheJeterLP/ChatEx/blob/master/logo.png?raw=true)](https://www.spigotmc.org/resources/chatex-continued.71041/)
+[![Create DevBuild](https://github.com/TheJeterLP/ChatEx/actions/workflows/create-devbuild.yml/badge.svg)](https://github.com/TheJeterLP/ChatEx/actions)
+[![JitPack](https://jitpack.io/v/TheJeterLP/ChatEx.svg)](https://jitpack.io/#TheJeterLP/ChatEx)
 
 Developer requirements
 ------------
@@ -23,7 +22,10 @@ git clone https://github.com/TheJeterLP/ChatEx.git
 ```
 
 To create a new branch, go to [Github](https://github.com/TheJeterLP/ChatEx), click on branch master and create a new branch.
-
+Otherwise use:
+  git branch [username]
+  git checkout [username]
+  git branch -u origin/[username]
 
 To switch to a branch
 ````
