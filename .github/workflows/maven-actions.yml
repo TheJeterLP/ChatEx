@@ -39,15 +39,20 @@ jobs:
         with:
           name: ChatEx ${{ github.event.head_commit.message }}
           path: staging
+      - name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1.1.4
+        uses: actions/create-release@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.head_commit.message }}
           release_name: ChatEx ${{ github.event.head_commit.message }}
-          body: ${{ github.event.head_commit.message }}
+          body: ${{steps.github_release.outputs.changelog}}
           draft: false
           prerelease: false
       - name: Upload Release Asset
@@ -88,6 +93,11 @@ jobs:
         with:
           name: ChatEx ${{ github.event.head_commit.message }}
           path: staging
+      - name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1.1.4
@@ -96,7 +106,7 @@ jobs:
         with:
           tag_name: ${{ github.event.head_commit.message }}
           release_name: ChatEx ${{ github.event.head_commit.message }}
-          body: ${{ github.event.head_commit.message }}
+          body: ${{steps.github_release.outputs.changelog}}
           draft: false
           prerelease: true
       - name: Upload Release Asset
