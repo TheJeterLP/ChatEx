@@ -1,5 +1,5 @@
 ![ChatEx Logo](https://github.com/TheJeterLP/ChatEx/blob/master/logo.png?raw=true) 
-![Create DevBuild](https://github.com/TheJeterLP/ChatEx/actions/workflows/create-devbuild.yml)
+![Create DevBuild](https://github.com/TheJeterLP/ChatEx/actions/workflows/create-devbuild.yml/badge.svg)
 ![JitPack](https://jitpack.io/v/TheJeterLP/ChatEx.svg)
 ================================
 Recode of the original ChatManager from PermissionsEx, which is no longer supported.
