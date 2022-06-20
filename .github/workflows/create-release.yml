@@ -22,10 +22,6 @@ jobs:
           java-version: '8'
           java-package: jdk # optional (jdk or jre) - defaults to jdk
           cache: 'maven'
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "lts/*"
       - name: Build with Maven
         run: mvn clean install
       - name: Build Changelog
@@ -58,12 +54,24 @@ jobs:
           draft: false
           prerelease: false
       - name: Upload Release Asset
+        if: ${{!contains(github.event.head_commit.message, '-SNAPSHOT')}}
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: target/ChatEx.jar
+          asset_name: ChatEx.jar
+          asset_content_type: application/java-archive
+      - name: Upload Preelease Asset
+        if: ${{!contains(github.event.head_commit.message, '-SNAPSHOT')}}
+        id: upload-prerelease-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_prerelease.outputs.upload_url }} 
           asset_path: target/ChatEx.jar
           asset_name: ChatEx.jar
           asset_content_type: application/java-archive
