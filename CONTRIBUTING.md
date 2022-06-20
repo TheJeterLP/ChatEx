@@ -1,5 +1,5 @@
 [![ChatEx Logo](https://github.com/TheJeterLP/ChatEx/blob/master/logo.png?raw=true)](https://www.spigotmc.org/resources/chatex-continued.71041/)
-[![Create DevBuild](https://github.com/TheJeterLP/ChatEx/actions/workflows/create-devbuild.yml/badge.svg)](https://github.com/TheJeterLP/ChatEx/actions)
+[![Create DevBuild](https://github.com/TheJeterLP/ChatEx/actions/workflows/autobuild.yml/badge.svg)](https://github.com/TheJeterLP/ChatEx/actions/workflows/autobuild.yml)
 [![JitPack](https://jitpack.io/v/TheJeterLP/ChatEx.svg)](https://jitpack.io/#TheJeterLP/ChatEx)
 
 Developer requirements
