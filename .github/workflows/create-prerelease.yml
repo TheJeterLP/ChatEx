@@ -1,9 +1,5 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Create Prerelease
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
     branches: [ master ]
@@ -22,21 +18,9 @@ jobs:
           distribution: 'zulu'
           java-version: '8'
           java-package: jdk # optional (jdk or jre) - defaults to jdk
-      - name: Cache Maven Packages
-        uses: actions/cache@v3.0.4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          cache: 'maven'
       - name: Build with Maven
         run: mvn clean install
-      - name: Archive jar
-        run: mkdir staging && cp target/*.jar staging
-      - name: upload jar
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          name: ChatEx ${{ github.event.head_commit.message }}
-          path: staging
       - name: Build Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@v3
@@ -59,7 +43,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: staging/ChatEx.jar
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: target/ChatEx.jar
           asset_name: ChatEx.jar
           asset_content_type: application/java-archive  
