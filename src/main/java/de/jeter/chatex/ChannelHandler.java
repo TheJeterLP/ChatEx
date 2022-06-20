@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ChannelHandler implements PluginMessageListener {
 
-    private static ChannelHandler INSTANCE;
+    private static ChannelHandler INSTANCE;  
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
