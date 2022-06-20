@@ -24,12 +24,19 @@ jobs:
           cache: 'maven'
       - name: Build with Maven
         run: mvn clean install
-      - name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@v3
+      - name: Create Prerelease
+        if: ${{contains(github.event.head_commit.message, '-SNAPSHOT')}}
+        id: create_prerelease
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.head_commit.message }}
+          files: target/ChatEx.jar
+          generate_release_notes: true
+          prerelease: true
       - name: Create Release
+        if: ${{!contains(github.event.head_commit.message, '-SNAPSHOT')}}
         id: create_release
         uses: softprops/action-gh-release@v1
         env:
@@ -38,5 +45,3 @@ jobs:
           tag_name: ${{ github.event.head_commit.message }}
           files: target/ChatEx.jar
           generate_release_notes: true
-          if: ${{contains(github.event.head_commit.message, '-SNAPSHOT')}}
-          prerelease: true
