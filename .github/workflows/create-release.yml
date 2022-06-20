@@ -7,8 +7,8 @@ on:
       - master
 
 jobs:
-  release:
-    if: "startsWith(github.event.head_commit.message, 'v') && !contains(github.event.head_commit.message, '-SNAPSHOT')"
+  create-release:
+    if: "startsWith(github.event.head_commit.message, 'v')"
     name: Create Release
     runs-on: ubuntu-latest
     steps:
@@ -34,7 +34,20 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create PreRelease
+        if: ${{contains(github.event.head_commit.message, '-SNAPSHOT')}}
+        id: create_prerelease
+        uses: actions/create-release@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.head_commit.message }}
+          release_name: ChatEx ${{ github.event.head_commit.message }}
+          body: ${{steps.github_release.outputs.changelog}}
+          draft: false
+          prerelease: true
       - name: Create Release
+        if: ${{!contains(github.event.head_commit.message, '-SNAPSHOT')}}
         id: create_release
         uses: actions/create-release@v3
         env:
