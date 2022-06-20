@@ -9,14 +9,10 @@ on:
   push:
     branches: 
       - master
-      - dev
-  pull_request:
-    branches:
-      - master
-      - dev
 
 jobs:
   release:
+    if: "startsWith(github.event.head_commit.message, 'v') && !contains(github.event.head_commit.message, '-SNAPSHOT')"
     name: Create Release
     runs-on: ubuntu-latest
     steps:
@@ -37,9 +33,29 @@ jobs:
           node-version: "lts/*"
       - name: Build with Maven
         run: mvn clean install
-      - name: Setup semantic-release
-        run: npm install --location=global semantic-release @semantic-release/git @semantic-release/changelog -D
-      - name: Release
+      - name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.head_commit.message }}
+          release_name: ChatEx ${{ github.event.head_commit.message }}
+          body: ${{steps.github_release.outputs.changelog}}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: target/ChatEx.jar
+          asset_name: ChatEx.jar
+          asset_content_type: application/java-archive
