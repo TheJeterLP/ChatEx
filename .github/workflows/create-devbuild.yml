@@ -1,14 +1,12 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Create DevBuild
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: 
+      - dev
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   create-prerelease:
@@ -23,18 +21,6 @@ jobs:
           distribution: 'zulu'
           java-version: '8'
           java-package: jdk # optional (jdk or jre) - defaults to jdk
-    - name: Cache Maven Packages
-      uses: actions/cache@v3.0.4
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
+          cache: 'maven'
     - name: Build with Maven
       run: mvn clean install
-    - name: Archive jar
-      run: mkdir staging && cp target/ChatEx.jar staging
-    - name: upload jar
-      uses: actions/upload-artifact@v1
-      with:
-        name: ChatEx-DEVELOPMENT-BUILD
-        path: staging
