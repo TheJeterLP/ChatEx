@@ -8,7 +8,12 @@ on:
   workflow_dispatch:
   push:
     branches: 
-    - master
+      - master
+      - dev
+  pull_request:
+    branches:
+      - master
+      - dev
 
 jobs:
   release:
@@ -25,12 +30,7 @@ jobs:
           distribution: 'zulu'
           java-version: '8'
           java-package: jdk # optional (jdk or jre) - defaults to jdk
-      - name: Cache Maven Packages
-        uses: actions/cache@v3.0.4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          cache: 'maven'
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
