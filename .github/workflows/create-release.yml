@@ -31,6 +31,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          name: ChatEx ${{ github.event.head_commit.message }}
           tag_name: ${{ github.event.head_commit.message }}
           files: target/ChatEx.jar
           generate_release_notes: true
@@ -42,6 +43,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          name: ChatEx ${{ github.event.head_commit.message }}
           tag_name: ${{ github.event.head_commit.message }}
           files: target/ChatEx.jar
           generate_release_notes: true
