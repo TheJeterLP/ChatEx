@@ -7,7 +7,8 @@
     <inceptionYear>2022</inceptionYear>
 
     <version>2.8.3</version> 
-    <description>ChatManagement plugin for Bukkit</description>  
+    <description>ChatManagement plugin for Bukkit</description> 
+    <url>https://www.spigotmc.org/resources/chatex-continued.71041/</url>
 
     <scm>
         <connection>scm:git:git@github.com:TheJeterLP/ChatEx.git</connection>
