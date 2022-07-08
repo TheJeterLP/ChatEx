@@ -24,6 +24,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -119,14 +120,14 @@ public enum Config {
     public static void load() {
         ChatEx.getInstance().getDataFolder().mkdirs();
         reload(false);
-        StringBuilder header = new StringBuilder();
+        List<String> header = new ArrayList<>();
         for (Config c : values()) {
-            header.append(c.getPath()).append(": ").append(c.getDescription()).append(System.lineSeparator());
+            header.add(c.getPath() + ": " + c.getDescription());
             if (!cfg.contains(c.getPath())) {
                 c.set(c.getDefaultValue(), false);
             }
         }
-        cfg.options().header(header.toString());
+        cfg.options().setHeader(header);
         try {
             cfg.save(f);
         } catch (IOException ex) {
