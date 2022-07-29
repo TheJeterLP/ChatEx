@@ -25,4 +25,4 @@ Messages:
     Join: '%prefix%displayname%suffix &e加入服务器！'
     Kick: '%prefix%displayname%suffix &e被踢出服务器！'
     Quit: '%prefix%displayname%suffix &e离开服务器！'
-  UpdateFound: '&a[ChatEx]&7 在 SpigotMC发现可用的插件更新。当前版本：%oldversion 新版本：%newversion'
+  UpdateFound: '&a[ChatEx]&7 在 SpigotMC 发现可用的插件更新。当前版本：%oldversion 新版本：%newversion'
