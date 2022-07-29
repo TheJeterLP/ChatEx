@@ -69,6 +69,10 @@ public class Utils {
             result = result.replace("%afk", "");
         }
 
+        if (HookManager.checkPurpur() && Config.AFK_PLACEHOLDER.getBoolean()) {
+            result = result.replace("%afk", "");
+        }
+
         result = result.replace("%displayname", player.getDisplayName());
         result = result.replace("%prefix", PluginManager.getInstance().getPrefix(player));
         result = result.replace("%suffix", PluginManager.getInstance().getSuffix(player));

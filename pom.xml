@@ -77,6 +77,10 @@
             <id>essentials-repo</id>
             <url>https://repo.essentialsx.net/releases/</url>
         </repository>
+        <repository>
+            <id>purpur</id>
+            <url>https://repo.purpurmc.org/snapshots</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -114,6 +118,12 @@
             <groupId>net.ess3</groupId>
             <artifactId>EssentialsX</artifactId>
             <version>2.18.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.purpurmc.purpur</groupId>
+            <artifactId>purpur-api</artifactId>
+            <version>1.19-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
