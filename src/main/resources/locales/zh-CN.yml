@@ -1,0 +1,28 @@
+Commands:
+  Reload:
+    Description: 重新加载插件和配置文件
+  Clear:
+    Description: 清空聊天栏
+    Console: 控制台
+    Unknown: 未知
+Messages:
+  Commands:
+    Reload:
+      Success: '&a配置文件已重新加载'
+    Clear:
+      Success: '&a聊天已被清除，操作者：'
+  Chat:
+    AdDetected: '&4[错误] &7禁止发送广告！ &c(%perm)'
+    BlockedWord: '&4[错误] &7你正尝试发送被禁止的文字！'
+    AdNotify: "&c%player 尝试发送广告信息： \n&a %message"
+    NoOneListens: '&c附件没有玩家能听到你说话！请使用远程模式聊天。'
+  CommandResult:
+    NoPermission: '&4[错误] &7你没有足够的权限执行此操作！ &c(%perm)'
+    WrongUsage: '&c[错误] &7无效的用法，请尝试 &6%cmd help&7！'
+  AntiSpam:
+    Denied: '&e[反垃圾信息] &7请不要频繁发送聊天信息，请等待 &e%time% &7秒！'
+  Player:
+    Join: '%prefix%displayname%suffix &e加入服务器！'
+    Kick: '%prefix%displayname%suffix &e被踢出服务器！'
+    Quit: '%prefix%displayname%suffix &e离开服务器！'
+  UpdateFound: '&a[ChatEx]&7 在 SpigotMC发现可用的插件更新。当前版本：%oldversion 新版本：%newversion'
