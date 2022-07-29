@@ -65,11 +65,7 @@ public class Utils {
             result = PlaceholderAPI.setPlaceholders(player, result);
         }
 
-        if (HookManager.checkEssentials() && Config.AFK_PLACEHOLDER.getBoolean()) {
-            result = result.replace("%afk", "");
-        }
-
-        if (HookManager.checkPurpur() && Config.AFK_PLACEHOLDER.getBoolean()) {
+        if ((HookManager.checkEssentials() || HookManager.checkPurpur()) && Config.AFK_PLACEHOLDER.getBoolean()) {
             result = result.replace("%afk", "");
         }
 
