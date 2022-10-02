@@ -41,7 +41,7 @@ public class ChatListener implements Listener {
     private final AdManager adManager = Config.ADS_SMART_MANAGER.getBoolean() ? new SmartAdManager() : new SimpleAdManager();
     private final BlockedWords blockedWords = new BlockedWords();
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(final AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
