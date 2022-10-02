@@ -20,6 +20,8 @@ package de.jeter.chatex;
 
 import de.jeter.chatex.plugins.PluginManager;
 import de.jeter.chatex.utils.*;
+import de.jeter.updatechecker.GitHubUpdateChecker;
+import de.jeter.updatechecker.SpigotUpdateChecker;
 import de.jeter.updatechecker.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bstats.bukkit.Metrics;
@@ -44,7 +46,7 @@ public class ChatEx extends JavaPlugin {
         getCommand("chatex").setExecutor(new CommandHandler());
 
         if (Config.CHECK_UPDATE.getBoolean()) {
-            updatechecker = new UpdateChecker(this, 71041);
+            updatechecker = new SpigotUpdateChecker(this, 71041);
         }
 
         ChannelHandler.load();

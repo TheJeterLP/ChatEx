@@ -21,6 +21,7 @@ package de.jeter.chatex;
 import de.jeter.chatex.utils.Config;
 import de.jeter.chatex.utils.Locales;
 import de.jeter.chatex.utils.Utils;
+import de.jeter.updatechecker.Result;
 import de.jeter.updatechecker.UpdateChecker;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -45,8 +46,8 @@ public class PlayerListener implements Listener {
         }
 
         if (Config.CHECK_UPDATE.getBoolean() && e.getPlayer().hasPermission("chatex.notifyupdate") && ChatEx.getInstance().getUpdateChecker() != null) {
-            if (ChatEx.getInstance().getUpdateChecker().getResult() == UpdateChecker.Result.UPDATE_FOUND) {
-                e.getPlayer().sendMessage(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEx.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEx.getInstance().getUpdateChecker().getVersion()));
+            if (ChatEx.getInstance().getUpdateChecker().getResult() == Result.UPDATE_FOUND) {
+                e.getPlayer().sendMessage(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEx.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEx.getInstance().getUpdateChecker().getLatestRemoteVersion()));
             }
         }
     }
