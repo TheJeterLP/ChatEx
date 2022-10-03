@@ -127,7 +127,15 @@ public enum Config {
                 c.set(c.getDefaultValue(), false);
             }
         }
-        cfg.options().setHeader(header);
+        try {
+            cfg.options().setHeader(header);
+        } catch (NoSuchMethodError e) {
+            String headerString = "";
+            for (String s : header) {
+                headerString += s + System.lineSeparator();
+            }
+            cfg.options().header(headerString);
+        }
         try {
             cfg.save(f);
         } catch (IOException ex) {
