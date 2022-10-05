@@ -41,8 +41,51 @@ public class ChatListener implements Listener {
     private final AdManager adManager = Config.ADS_SMART_MANAGER.getBoolean() ? new SmartAdManager() : new SimpleAdManager();
     private final BlockedWords blockedWords = new BlockedWords();
 
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onLowest(final AsyncPlayerChatEvent event) {
+        if (Config.PRIORITY.getString().equalsIgnoreCase("LOWEST")) {
+            executeChatEvent(event);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOW)
+    public void onLow(final AsyncPlayerChatEvent event) {
+        if (Config.PRIORITY.getString().equalsIgnoreCase("LOW")) {
+            executeChatEvent(event);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onNormal(final AsyncPlayerChatEvent event) {
+        if (Config.PRIORITY.getString().equalsIgnoreCase("NORMAL")) {
+            executeChatEvent(event);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onHigh(final AsyncPlayerChatEvent event) {
+        if (Config.PRIORITY.getString().equalsIgnoreCase("HIGH")) {
+            executeChatEvent(event);
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onChat(final AsyncPlayerChatEvent event) {
+    public void onHighest(final AsyncPlayerChatEvent event) {
+        if (Config.PRIORITY.getString().equalsIgnoreCase("HIGHEST")) {
+            executeChatEvent(event);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onMonitor(final AsyncPlayerChatEvent event) {
+        if (Config.PRIORITY.getString().equalsIgnoreCase("MONITOR")) {
+            executeChatEvent(event);
+        }
+    }
+
+    private void executeChatEvent(AsyncPlayerChatEvent event) {
+        LogHelper.debug("ChatEvent fired with priority: " + Config.PRIORITY.getString().toUpperCase() + ", ChatEx reacting to it...");
         Player player = event.getPlayer();
 
         if (!player.hasPermission("chatex.allowchat")) {
@@ -53,6 +96,9 @@ public class ChatListener implements Listener {
         }
 
         String format = PluginManager.getInstance().getMessageFormat(event.getPlayer());
+        LogHelper.debug("Format: " + format);
+        LogHelper.debug("Prefix: " + PluginManager.getInstance().getPrefix(event.getPlayer()));
+        LogHelper.debug("Suffix: " + PluginManager.getInstance().getSuffix(event.getPlayer()));
 
         String chatMessage = event.getMessage();
 
@@ -70,6 +116,8 @@ public class ChatListener implements Listener {
         }
         AntiSpamManager.getInstance().put(player);
 
+        LogHelper.debug("Player did not activate the AntiSpam. Continuing...");
+
         if (adManager.checkForAds(chatMessage, player)) {
             String message = Locales.MESSAGES_AD.getString(null).replaceAll("%perm", "chatex.bypassads");
             MessageBlockedByAdManagerEvent messageBlockedByAdManagerEvent = new MessageBlockedByAdManagerEvent(player, chatMessage, message);
@@ -81,6 +129,8 @@ public class ChatListener implements Listener {
                 return;
             }
         }
+
+        LogHelper.debug("Player did not activate the AdBlocker. Continuing...");
 
         if (blockedWords.isBlocked(chatMessage)) {
             String message = Locales.MESSAGES_BLOCKED.getString(null);
@@ -94,9 +144,12 @@ public class ChatListener implements Listener {
             }
         }
 
+        LogHelper.debug("Player did not use a blocked word. Continuing...");
+
         boolean global = false;
         if (Config.RANGEMODE.getBoolean() || Config.BUNGEECORD.getBoolean()) {
             if (chatMessage.startsWith(Config.RANGEPREFIX.getString())) {
+                LogHelper.debug("Global mode enabled!");
                 if (player.hasPermission("chatex.chat.global")) {
                     chatMessage = chatMessage.replaceFirst(Pattern.quote(Config.RANGEPREFIX.getString()), "");
                     format = PluginManager.getInstance().getGlobalMessageFormat(player);
@@ -117,6 +170,7 @@ public class ChatListener implements Listener {
                 }
             } else {
                 if (Config.RANGEMODE.getBoolean()) {
+                    LogHelper.debug("Range mode enabled!");
                     event.getRecipients().clear();
                     if (Utils.getLocalRecipients(player).size() == 1 && Config.SHOW_NO_RECEIVER_MSG.getBoolean()) {
                         player.sendMessage(Locales.NO_LISTENING_PLAYERS.getString(player));
@@ -138,13 +192,16 @@ public class ChatListener implements Listener {
         }
 
         if (global && Config.BUNGEECORD.getBoolean()) {
+            LogHelper.debug("Local mode & Bungeecord mode enabled! Spreading Cross server message...");
             String msgToSend = Utils.replacePlayerPlaceholders(player, format.replaceAll("%message", Matcher.quoteReplacement(chatMessage)));
             ChannelHandler.getInstance().sendMessage(player, msgToSend);
         }
 
+        LogHelper.debug("Replacing Placeholder in format...");
         format = Utils.replacePlayerPlaceholders(player, format);
         format = Utils.escape(format);
         format = format.replace("%%message", "%2$s");
+        LogHelper.debug("Format after replacing: " + format);
 
 
         try {
@@ -158,6 +215,7 @@ public class ChatListener implements Listener {
 
         event.setMessage(Utils.translateColorCodes(chatMessage, player));
         ChatLogger.writeToFile(player, chatMessage);
+        LogHelper.debug("Everything done! Method end.");
     }
 
 }
