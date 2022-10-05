@@ -21,6 +21,7 @@ package de.jeter.chatex.utils;
 import de.jeter.chatex.ChatEx;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.EventPriority;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +45,7 @@ public enum Config {
     RANGE("chat-range", 100, "The range to talk to other players. Set to -1 to enable world-wide-chat"),
     LOGCHAT("logChat", false, "Should the chat be logged?"),
     DEBUG("debug", false, "Should the debug log be enabled?"),
+    PRIORITY("EventPriority", EventPriority.NORMAL.name(), "Choose the Eventpriority here of ChatEx. Listeners are called in following order: LOWEST -> LOW -> NORMAL -> HIGH -> HIGHEST -> MONITOR"),
     LOCALE("Locale", "en-EN", "Which language do you want? (You can choose betwenn de-DE, fr-FR, pt-BR, zh-CN and en-EN by default.)"),
     ADS_ENABLED("Ads.Enabled", true, "Should we check for ads?"),
     ADS_BYPASS("Ads.Bypass", Arrays.asList("127.0.0.1", "my-domain.com"), "A list with allowed ips or domains."),

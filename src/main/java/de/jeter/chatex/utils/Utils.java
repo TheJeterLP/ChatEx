@@ -62,7 +62,9 @@ public class Utils {
         String result = format;
 
         if (HookManager.checkPlaceholderAPI()) {
+            LogHelper.debug("PlaceholderAPI is installed! Replacing...");
             result = PlaceholderAPI.setPlaceholders(player, result);
+            LogHelper.debug("Result: " + result);
         }
 
         if ((HookManager.checkEssentials() || HookManager.checkPurpur()) && Config.AFK_PLACEHOLDER.getBoolean()) {
