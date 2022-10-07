@@ -4,7 +4,8 @@ import de.jeter.chatex.ChatEx;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RGBColors {
 

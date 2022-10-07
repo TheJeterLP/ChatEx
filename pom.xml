@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.jeter</groupId>
@@ -6,8 +6,8 @@
     <name>ChatEx</name>
     <inceptionYear>2022</inceptionYear>
 
-    <version>2.9.0</version>
-    <description>ChatManagement plugin for Bukkit</description> 
+    <version>2.9.1</version>
+    <description>ChatManagement plugin for Bukkit</description>
     <url>https://www.spigotmc.org/resources/chatex-continued.71041/</url>
 
     <scm>
@@ -15,7 +15,7 @@
         <url>scm:git:git@github.com:TheJeterLP/ChatEx.git</url>
         <developerConnection>scm:git:git@github.com:TheJeterLP/ChatEx.git</developerConnection>
     </scm>
-    
+
     <build>
         <defaultGoal>clean install</defaultGoal>
         <finalName>${project.name}</finalName>
@@ -30,7 +30,7 @@
                 </includes>
             </resource>
         </resources>
-        
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

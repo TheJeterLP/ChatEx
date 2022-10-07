@@ -41,10 +41,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
         } else {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("chatex.reload")) {
-                    
-                    ChatEx.getInstance().onDisable();
-                    ChatEx.getInstance().onEnable();
-                    
+                    Config.reload(true);
                     sender.sendMessage(Locales.MESSAGES_RELOAD.getString(null));
 
                     if (Config.CHANGE_TABLIST_NAME.getBoolean()) {

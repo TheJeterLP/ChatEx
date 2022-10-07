@@ -8,14 +8,18 @@ import org.bukkit.event.HandlerList;
 public class PlayerUsesGlobalChatEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
-    private String message;
     private final Player player;
+    private String message;
     private boolean canceled = false;
 
-    public PlayerUsesGlobalChatEvent(Player player, String message){
+    public PlayerUsesGlobalChatEvent(Player player, String message) {
         super(true);
         this.player = player;
         this.message = message;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     /**
@@ -33,7 +37,6 @@ public class PlayerUsesGlobalChatEvent extends Event implements Cancellable {
     }
 
     /**
-     *
      * @param message set the message which the player writes.
      */
     public void setMessage(String message) {
@@ -42,10 +45,6 @@ public class PlayerUsesGlobalChatEvent extends Event implements Cancellable {
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 
