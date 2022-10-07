@@ -1,40 +1,40 @@
 name: ${project.name}
 main: de.jeter.chatex.ChatEx
 version: ${project.version}
-authors: [Jeter, Wizard_x]
+authors: [ Jeter, Wizard_x ]
 description: Chat management plugin
-softdepend: [PermissionsEx, Vault, PlaceholderAPI, Essentials]
+softdepend: [ PermissionsEx, Vault, PlaceholderAPI, Essentials ]
 api-version: 1.13
 
 commands:
-    chatex:
-        description: ChatEx Plugin commands
+  chatex:
+    description: ChatEx Plugin commands
 
 permissions:
-    chatex.allowchat:
-        description: Allows chatting
-        default: true
-    chatex.chat.global:
-        description: Is needed to use the global chat (if ranged mode is enabled) or Cross server chat
-        default: false
-    chatex.chat.color:
-        description: Is needed to use color codes with & in chat
-        default: false
-    chatex.antispam.bypass:
-        description: Is needed to bypass the antispam system
-        default: false
-    chatex.bypassads:
-        description: Is needed to bypass the AdBlocker
-        default: false
-    chatex.notifyad:
-        description: Is needed to be messaged when a player tries to advertise.
-        default: false
-    chatex.notifyupdate:
-        description: Is needed to get notiefied about new updates when you join
-        default: false
-    chatex.clear:
-        description: Is needed to use /chatex clear to clear the chat
-        default: op
-    chatex.reload:
-        description: Is needed to use /chatex reload to reload the config and messages of chatex.
-        default: op
+  chatex.allowchat:
+    description: Allows chatting
+    default: true
+  chatex.chat.global:
+    description: Is needed to use the global chat (if ranged mode is enabled) or Cross server chat
+    default: false
+  chatex.chat.color:
+    description: Is needed to use color codes with & in chat
+    default: false
+  chatex.antispam.bypass:
+    description: Is needed to bypass the antispam system
+    default: false
+  chatex.bypassads:
+    description: Is needed to bypass the AdBlocker
+    default: false
+  chatex.notifyad:
+    description: Is needed to be messaged when a player tries to advertise.
+    default: false
+  chatex.notifyupdate:
+    description: Is needed to get notiefied about new updates when you join
+    default: false
+  chatex.clear:
+    description: Is needed to use /chatex clear to clear the chat
+    default: op
+  chatex.reload:
+    description: Is needed to use /chatex reload to reload the config and messages of chatex.
+    default: op

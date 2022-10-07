@@ -30,7 +30,19 @@ import java.util.concurrent.TimeUnit;
 
 public class ChannelHandler implements PluginMessageListener {
 
-    private static ChannelHandler INSTANCE;  
+    private static ChannelHandler INSTANCE;
+
+    public static ChannelHandler getInstance() {
+        return INSTANCE;
+    }
+
+    public static void load() {
+        if (Config.BUNGEECORD.getBoolean()) {
+            INSTANCE = new ChannelHandler();
+            ChatEx.getInstance().getServer().getMessenger().registerOutgoingPluginChannel(ChatEx.getInstance(), "BungeeCord");
+            ChatEx.getInstance().getServer().getMessenger().registerIncomingPluginChannel(ChatEx.getInstance(), "BungeeCord", INSTANCE);
+        }
+    }
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
@@ -61,18 +73,6 @@ public class ChannelHandler implements PluginMessageListener {
             if ((System.currentTimeMillis() - millis) < TimeUnit.SECONDS.toMillis(Config.CROSS_SERVER_TIMEOUT.getInt())) {
                 ChatEx.getInstance().getServer().broadcastMessage(msg);
             }
-        }
-    }
-
-    public static ChannelHandler getInstance() {
-        return INSTANCE;
-    }
-
-    public static void load() {
-        if (Config.BUNGEECORD.getBoolean()) {
-            INSTANCE = new ChannelHandler();
-            ChatEx.getInstance().getServer().getMessenger().registerOutgoingPluginChannel(ChatEx.getInstance(), "BungeeCord");
-            ChatEx.getInstance().getServer().getMessenger().registerIncomingPluginChannel(ChatEx.getInstance(), "BungeeCord", INSTANCE);
         }
     }
 

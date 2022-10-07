@@ -19,7 +19,6 @@
 package de.jeter.chatex.utils;
 
 import de.jeter.chatex.ChatEx;
-import de.jeter.chatex.EssentialsAFKListener;
 import de.jeter.chatex.plugins.PluginManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
