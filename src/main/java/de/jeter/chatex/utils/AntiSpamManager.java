@@ -73,4 +73,8 @@ public class AntiSpamManager {
         return lastChat - current;
     }
 
+    public void clear() {
+        map.clear();
+    }
+
 }

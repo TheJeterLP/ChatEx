@@ -61,6 +61,7 @@ public class ChatEx extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        AntiSpamManager.getInstance().clear();
         ChatLogger.close();
         getServer().getScheduler().cancelTasks(this);
         getLogger().info("Is now disabled!");
