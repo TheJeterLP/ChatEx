@@ -29,53 +29,62 @@ public class Vault implements PermissionsPlugin {
     private static Chat chat = null;
 
     protected static boolean setupChat() {
-        RegisteredServiceProvider<Chat> chatProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider != null) {
-            chatProvider.getProvider();
-            chat = chatProvider.getProvider();
-            return chat.isEnabled();
-        }
-        return false;
+        Thread chatSetup = new Thread(() -> {
+            RegisteredServiceProvider<Chat> chatProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+            if (chatProvider != null) {
+                chatProvider.getProvider();
+                chat = chatProvider.getProvider();
+                return chat.isEnabled();
+            }
+            return false;
+        });
+        chatSetup.start();
     }
 
     @Override
     public String getPrefix(Player p) {
-        if (!Config.MULTIPREFIXES.getBoolean()) {
-            return chat.getPlayerPrefix(p.getWorld().getName(), p);
-        }
-        StringBuilder finalPrefix = new StringBuilder();
-        int i = 0;
-        for (String group : chat.getPlayerGroups(p)) {
-            String groupPrefix = chat.getGroupPrefix(p.getWorld(), group);
-            if (groupPrefix != null && !groupPrefix.isEmpty()) {
-                if (i > 1) {
-                    finalPrefix.append(" ");
-                }
-                finalPrefix.append(groupPrefix);
-                i++;
+        Thread prefixGetting = new Thread(() -> {
+            if (!Config.MULTIPREFIXES.getBoolean()) {
+                return chat.getPlayerPrefix(p.getWorld().getName(), p);
             }
-        }
-        return finalPrefix.toString();
+            StringBuilder finalPrefix = new StringBuilder();
+            int i = 0;
+            for (String group : chat.getPlayerGroups(p)) {
+                String groupPrefix = chat.getGroupPrefix(p.getWorld(), group);
+                if (groupPrefix != null && !groupPrefix.isEmpty()) {
+                    if (i > 1) {
+                        finalPrefix.append(" ");
+                    }
+                    finalPrefix.append(groupPrefix);
+                    i++;
+                }
+            }
+            return finalPrefix.toString();
+        });
+        prefixGetting.start();
     }
 
     @Override
     public String getSuffix(Player p) {
-        if (!Config.MULTIPREFIXES.getBoolean()) {
-            return chat.getPlayerSuffix(p.getWorld().getName(), p);
-        }
-        StringBuilder finalSuffix = new StringBuilder();
-        int i = 0;
-        for (String group : chat.getPlayerGroups(p)) {
-            String groupSuffix = chat.getGroupSuffix(p.getWorld(), group);
-            if (groupSuffix != null && !groupSuffix.isEmpty()) {
-                if (i > 1) {
-                    finalSuffix.append(" ");
-                }
-                i++;
-                finalSuffix.append(groupSuffix);
+        Thread suffixGetting = new Thread(() -> {
+            if (!Config.MULTIPREFIXES.getBoolean()) {
+                return chat.getPlayerSuffix(p.getWorld().getName(), p);
             }
-        }
-        return finalSuffix.toString();
+            StringBuilder finalSuffix = new StringBuilder();
+            int i = 0;
+            for (String group : chat.getPlayerGroups(p)) {
+                String groupSuffix = chat.getGroupSuffix(p.getWorld(), group);
+                if (groupSuffix != null && !groupSuffix.isEmpty()) {
+                    if (i > 1) {
+                        finalSuffix.append(" ");
+                    }
+                    i++;
+                    finalSuffix.append(groupSuffix);
+                }
+            }
+            return finalSuffix.toString();
+        });
+        suffixGetting.start();
     }
 
     @Override
