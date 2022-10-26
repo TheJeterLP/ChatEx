@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import java.lang.Thread;
+
 public enum Config {
 
     CHECK_UPDATE("check-for-updates", true, "Should the plugin check for updates by itself?"),
@@ -84,29 +86,32 @@ public enum Config {
     }
 
     public static void load() {
-        ChatEx.getInstance().getDataFolder().mkdirs();
-        reload(false);
-        List<String> header = new ArrayList<>();
-        for (Config c : values()) {
-            header.add(c.getPath() + ": " + c.getDescription());
-            if (!cfg.contains(c.getPath())) {
-                c.set(c.getDefaultValue(), false);
+        Thread loadConfig = new Thread(() -> {
+            ChatEx.getInstance().getDataFolder().mkdirs();
+            reload(false);
+            List<String> header = new ArrayList<>();
+            for (Config c : values()) {
+                header.add(c.getPath() + ": " + c.getDescription());
+                if (!cfg.contains(c.getPath())) {
+                    c.set(c.getDefaultValue(), false);
+                }
             }
-        }
-        try {
-            cfg.options().setHeader(header);
-        } catch (NoSuchMethodError e) {
-            String headerString = "";
-            for (String s : header) {
-                headerString += s + System.lineSeparator();
+            try {
+                cfg.options().setHeader(header);
+            } catch (NoSuchMethodError e) {
+                String headerString = "";
+                for (String s : header) {
+                    headerString += s + System.lineSeparator();
+                }
+                cfg.options().header(headerString);
             }
-            cfg.options().header(headerString);
-        }
-        try {
-            cfg.save(f);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+            try {
+                cfg.save(f);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+        loadConfig.start();
     }
 
     public static void reload(boolean complete) {
