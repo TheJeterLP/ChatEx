@@ -28,74 +28,81 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.lang.Thread;
+
 public class CommandHandler implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0) {
-            sender.sendMessage("§aChatEx plugin by " + ChatEx.getInstance().getDescription().getAuthors());
-            return true;
-        } else if (args.length > 1) {
-            sender.sendMessage(Locales.COMMAND_RESULT_WRONG_USAGE.getString(null).replaceAll("%cmd", command.getName()));
-            return true;
-        } else {
-            if (args[0].equalsIgnoreCase("reload")) {
-                if (sender.hasPermission("chatex.reload")) {
-                    Config.reload(true);
-                    sender.sendMessage(Locales.MESSAGES_RELOAD.getString(null));
-
-                    if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            String name = Config.TABLIST_FORMAT.getString();
-                            name = Utils.replacePlayerPlaceholders(p, name);
-                            p.setPlayerListName(name);
-                        }
-                    }
-                } else {
-                    sender.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(null).replaceAll("%perm", "chatex.reload"));
-                }
+        Thread reloadCommand = new Thread(() -> {
+            if (args.length == 0) {
+                sender.sendMessage("§aChatEx plugin by " + ChatEx.getInstance().getDescription().getAuthors());
                 return true;
-            } else if (args[0].equalsIgnoreCase("clear")) {
-                if (sender.hasPermission("chatex.clear")) {
-                    for (int i = 0; i < 50; i++) {
-                        Bukkit.broadcastMessage("\n");
-                    }
-
-                    Player clearer = null;
-
-                    String who = Locales.COMMAND_CLEAR_UNKNOWN.getString(null);
-                    if ((sender instanceof ConsoleCommandSender) || (sender instanceof BlockCommandSender)) {
-                        who = Locales.COMMAND_CLEAR_CONSOLE.getString(null);
-                    } else if (sender instanceof Player) {
-                        who = sender.getName();
-                        clearer = (Player) sender;
-                    }
-                    Bukkit.broadcastMessage(Locales.MESSAGES_CLEAR.getString(clearer) + who);
-                } else {
-                    sender.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(null).replaceAll("%perm", "chatex.clear"));
-                }
-                return true;
-            } else if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?")) {
-                sender.sendMessage("§a/" + command.getName() + " reload - " + Locales.COMMAND_RELOAD_DESCRIPTION.getString(null));
-                sender.sendMessage("§a/" + command.getName() + " clear - " + Locales.COMMAND_CLEAR_DESCRIPTION.getString(null));
+            } else if (args.length > 1) {
+                sender.sendMessage(Locales.COMMAND_RESULT_WRONG_USAGE.getString(null).replaceAll("%cmd", command.getName()));
                 return true;
             } else {
-                sender.sendMessage(Locales.COMMAND_RESULT_WRONG_USAGE.getString(null).replaceAll("%cmd", "/chatex"));
-                return true;
-            }
-        }
+                if (args[0].equalsIgnoreCase("reload")) {
+                    if (sender.hasPermission("chatex.reload")) {
+                        Config.reload(true);
+                        sender.sendMessage(Locales.MESSAGES_RELOAD.getString(null));
 
+                        if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
+                            for (Player p : Bukkit.getOnlinePlayers()) {
+                                String name = Config.TABLIST_FORMAT.getString();
+                                name = Utils.replacePlayerPlaceholders(p, name);
+                                p.setPlayerListName(name);
+                            }
+                        }
+                    } else {
+                        sender.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(null).replaceAll("%perm", "chatex.reload"));
+                    }
+                    return true;
+                } else if (args[0].equalsIgnoreCase("clear")) {
+                    if (sender.hasPermission("chatex.clear")) {
+                        for (int i = 0; i < 50; i++) {
+                            Bukkit.broadcastMessage("\n");
+                        }
+
+                        Player clearer = null;
+
+                        String who = Locales.COMMAND_CLEAR_UNKNOWN.getString(null);
+                        if ((sender instanceof ConsoleCommandSender) || (sender instanceof BlockCommandSender)) {
+                            who = Locales.COMMAND_CLEAR_CONSOLE.getString(null);
+                        } else if (sender instanceof Player) {
+                            who = sender.getName();
+                            clearer = (Player) sender;
+                        }
+                        Bukkit.broadcastMessage(Locales.MESSAGES_CLEAR.getString(clearer) + who);
+                    } else {
+                        sender.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(null).replaceAll("%perm", "chatex.clear"));
+                    }
+                    return true;
+                } else if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?")) {
+                    sender.sendMessage("§a/" + command.getName() + " reload - " + Locales.COMMAND_RELOAD_DESCRIPTION.getString(null));
+                    sender.sendMessage("§a/" + command.getName() + " clear - " + Locales.COMMAND_CLEAR_DESCRIPTION.getString(null));
+                    return true;
+                } else {
+                    sender.sendMessage(Locales.COMMAND_RESULT_WRONG_USAGE.getString(null).replaceAll("%cmd", "/chatex"));
+                    return true;
+                }
+            }
+        });
+        reloadCommand.start();
     }
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        List<String> possibleTabs = new ArrayList<>();
-        if (commandSender.hasPermission("chatex.clear")) {
-            possibleTabs.add("clear");
-        }
-        if (commandSender.hasPermission("chatex.reload")) {
-            possibleTabs.add("reload");
-        }
-        return possibleTabs;
+        Thread reloadTabComplete = new Thread(() -> {
+            List<String> possibleTabs = new ArrayList<>();
+            if (commandSender.hasPermission("chatex.clear")) {
+                possibleTabs.add("clear");
+            }
+            if (commandSender.hasPermission("chatex.reload")) {
+                possibleTabs.add("reload");
+            }
+            return possibleTabs;
+        });
+        reloadTabComplete.start()
     }
 }
