@@ -25,6 +25,8 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 
+import java.lang.Thread;
+
 public enum Locales {
 
     COMMAND_RELOAD_DESCRIPTION("Commands.Reload.Description", "Reloads the plugin and its configuration."),
@@ -58,17 +60,31 @@ public enum Locales {
     }
 
     public static void load() {
-        localeFolder.mkdirs();
-        f = new File(localeFolder, Config.LOCALE.getString() + ".yml");
-        if (!f.exists()) {
-            try {
-                ChatEx.getInstance().saveResource("locales" + File.separator + Config.LOCALE.getString() + ".yml", true);
-                File locale = new File(ChatEx.getInstance().getDataFolder(), Config.LOCALE.getString() + ".yml");
-                if (locale.exists()) {
-                    locale.delete();
+        Thread loadLocales = new Thread(() -> {
+            localeFolder.mkdirs();
+            f = new File(localeFolder, Config.LOCALE.getString() + ".yml");
+            if (!f.exists()) {
+                try {
+                    ChatEx.getInstance().saveResource("locales" + File.separator + Config.LOCALE.getString() + ".yml", true);
+                    File locale = new File(ChatEx.getInstance().getDataFolder(), Config.LOCALE.getString() + ".yml");
+                    if (locale.exists()) {
+                        locale.delete();
+                    }
+                    reload(false);
+                } catch (IllegalArgumentException ex) {
+                    reload(false);
+                    try {
+                        for (Locales c : values()) {
+                            if (!cfg.contains(c.getPath())) {
+                                c.set(c.getDefaultValue(), false);
+                            }
+                        }
+                        cfg.save(f);
+                    } catch (IOException ioex) {
+                        ioex.printStackTrace();
+                    }
                 }
-                reload(false);
-            } catch (IllegalArgumentException ex) {
+            } else {
                 reload(false);
                 try {
                     for (Locales c : values()) {
@@ -77,23 +93,12 @@ public enum Locales {
                         }
                     }
                     cfg.save(f);
-                } catch (IOException ioex) {
-                    ioex.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
             }
-        } else {
-            reload(false);
-            try {
-                for (Locales c : values()) {
-                    if (!cfg.contains(c.getPath())) {
-                        c.set(c.getDefaultValue(), false);
-                    }
-                }
-                cfg.save(f);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
+        });
+        loadLocales.start();
     }
 
     public static void reload(boolean complete) {
@@ -119,14 +124,17 @@ public enum Locales {
     }
 
     public void set(Object value, boolean save) {
-        cfg.set(path, value);
-        if (save) {
-            try {
-                cfg.save(f);
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            Thread setCFG = new Thread(() -> {
+            cfg.set(path, value);
+            if (save) {
+                try {
+                    cfg.save(f);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                reload(false);
             }
-            reload(false);
-        }
+        });
+        setCFG.start();
     }
 }
