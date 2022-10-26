@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import java.lang.Thread;
+
 public class AntiSpamManager {
 
     private static AntiSpamManager instance = new AntiSpamManager();
@@ -42,27 +44,33 @@ public class AntiSpamManager {
     }
 
     public boolean isAllowed(Player chatter) {
-        if (!map.containsKey(chatter) || !Config.ANTISPAM_ENABLED.getBoolean() || chatter.hasPermission("chatex.antispam.bypass")) {
-            return true;
-        }
+        Thread allowedCheck = new Thread(() -> {
+            if (!map.containsKey(chatter) || !Config.ANTISPAM_ENABLED.getBoolean() || chatter.hasPermission("chatex.antispam.bypass")) {
+                return true;
+            }
 
-        long lastChat = map.get(chatter) + (Config.ANTISPAM_SECONDS.getInt() * 1000);
-        long current = System.currentTimeMillis();
+            long lastChat = map.get(chatter) + (Config.ANTISPAM_SECONDS.getInt() * 1000);
+            long current = System.currentTimeMillis();
 
-        return current > lastChat;
+            return current > lastChat;
+        });
+        allowedCheck.start();
     }
 
     public long getRemainingSeconds(Player chatter) {
-        if (isAllowed(chatter)) {
-            return 0;
-        }
+        Thread secondsRemain = new Thread(() -> {
+            if (isAllowed(chatter)) {
+                return 0;
+            }
 
-        long lastChat = map.get(chatter) + (Config.ANTISPAM_SECONDS.getInt() * 1000);
-        long current = System.currentTimeMillis();
+            long lastChat = map.get(chatter) + (Config.ANTISPAM_SECONDS.getInt() * 1000);
+            long current = System.currentTimeMillis();
 
-        long diff = lastChat - current;
-        return TimeUnit.MILLISECONDS.toSeconds(diff);
-    }
+            long diff = lastChat - current;
+            return TimeUnit.MILLISECONDS.toSeconds(diff);
+        });
+        secondsRemain.start();
+    }                                      
 
     public void clear() {
         map.clear();
