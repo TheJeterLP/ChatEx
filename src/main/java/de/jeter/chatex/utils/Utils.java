@@ -28,6 +28,8 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.lang.Thread;
+
 public class Utils {
 
     public static String translateColorCodes(String string, Player p) {
@@ -40,45 +42,51 @@ public class Utils {
     }
 
     public static List<Player> getLocalRecipients(Player sender) {
-        Location playerLocation = sender.getLocation();
-        List<Player> recipients = new ArrayList<>();
+        Thread localRecipients = new Thread(() -> {
+            Location playerLocation = sender.getLocation();
+            List<Player> recipients = new ArrayList<>();
 
-        double squaredDistance = Math.pow(Config.RANGE.getInt(), 2);
-        for (Player recipient : sender.getWorld().getPlayers()) {
-            if (Config.RANGE.getInt() > 0 && (playerLocation.distanceSquared(recipient.getLocation()) > squaredDistance)) {
-                continue;
+            double squaredDistance = Math.pow(Config.RANGE.getInt(), 2);
+            for (Player recipient : sender.getWorld().getPlayers()) {
+                if (Config.RANGE.getInt() > 0 && (playerLocation.distanceSquared(recipient.getLocation()) > squaredDistance)) {
+                    continue;
+                }
+                recipients.add(recipient);
             }
-            recipients.add(recipient);
-        }
 
-        return recipients;
+            return recipients;
+        });
+        localRecipients.start();
     }
 
     public static String replacePlayerPlaceholders(Player player, String format) {
-        if (player == null) {
-            return format;
-        }
-        String result = format;
+        Thread playerPlaceholders = new Thread(() -> {
+            if (player == null) {
+                return format;
+            }
+            String result = format;
 
-        if (HookManager.checkPlaceholderAPI()) {
-            LogHelper.debug("PlaceholderAPI is installed! Replacing...");
-            result = PlaceholderAPI.setPlaceholders(player, result);
-            LogHelper.debug("Result: " + result);
-        }
+            if (HookManager.checkPlaceholderAPI()) {
+                LogHelper.debug("PlaceholderAPI is installed! Replacing...");
+                result = PlaceholderAPI.setPlaceholders(player, result);
+                LogHelper.debug("Result: " + result);
+            }
 
-        if ((HookManager.checkEssentials() || HookManager.checkPurpur()) && Config.AFK_PLACEHOLDER.getBoolean()) {
-            result = result.replace("%afk", "");
-        }
+            if ((HookManager.checkEssentials() || HookManager.checkPurpur()) && Config.AFK_PLACEHOLDER.getBoolean()) {
+                result = result.replace("%afk", "");
+            }
 
-        result = result.replace("%displayname", player.getDisplayName());
-        result = result.replace("%prefix", PluginManager.getInstance().getPrefix(player));
-        result = result.replace("%suffix", PluginManager.getInstance().getSuffix(player));
-        result = result.replace("%player", player.getName());
-        result = result.replace("%world", player.getWorld().getName());
-        result = result.replace("%group", PluginManager.getInstance().getGroupNames(player).length > 0 ? PluginManager.getInstance().getGroupNames(player)[0] : "none");
-        result = replaceColors(result);
+            result = result.replace("%displayname", player.getDisplayName());
+            result = result.replace("%prefix", PluginManager.getInstance().getPrefix(player));
+            result = result.replace("%suffix", PluginManager.getInstance().getSuffix(player));
+            result = result.replace("%player", player.getName());
+            result = result.replace("%world", player.getWorld().getName());
+            result = result.replace("%group", PluginManager.getInstance().getGroupNames(player).length > 0 ? PluginManager.getInstance().getGroupNames(player)[0] : "none");
+            result = replaceColors(result);
 
-        return result;
+            return result;
+        });
+        playerPlaceholders.start();    
     }
 
     public static String escape(String string) {
@@ -86,21 +94,26 @@ public class Utils {
     }
 
     public static boolean checkForBypassString(String message) {
-        for (String block : Config.ADS_BYPASS.getStringList()) {
-            if (message.toLowerCase().contains(block.toLowerCase())) {
-                return true;
+        Thread bypassString = new Thread(() -> {
+            for (String block : Config.ADS_BYPASS.getStringList()) {
+                if (message.toLowerCase().contains(block.toLowerCase())) {
+                    return true;
+                }
             }
-        }
-        return false;
+            return false;
+        });
+        bypassString.start();
     }
 
     public static void notifyOps(String msg) {
-        for (Player op : ChatEx.getInstance().getServer().getOnlinePlayers()) {
-            if (!op.hasPermission("chatex.notifyad")) {
-                continue;
+        Thread opNotify = new Thread(() -> {
+            for (Player op : ChatEx.getInstance().getServer().getOnlinePlayers()) {
+                if (!op.hasPermission("chatex.notifyad")) {
+                    continue;
+                }
+                op.sendMessage(msg);
             }
-            op.sendMessage(msg);
-        }
+        });
+        opNotify.start()
     }
-
 }
