@@ -29,70 +29,84 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import java.lang.Thread;
+
 public class ChatLogger {
 
     private static BufferedWriter chatWriter = null;
     private static BufferedWriter adWriter = null;
 
     public static void load() {
-        try {
-            File logFolder = new File(ChatEx.getInstance().getDataFolder(), "logs");
-            if (Config.LOGCHAT.getBoolean() || Config.ADS_LOG.getBoolean()) {
-                logFolder.mkdirs();
+        Thread loadChatLogger = new Thread(() -> {
+            try {
+                File logFolder = new File(ChatEx.getInstance().getDataFolder(), "logs");
+                if (Config.LOGCHAT.getBoolean() || Config.ADS_LOG.getBoolean()) {
+                    logFolder.mkdirs();
+                }
+                if (Config.LOGCHAT.getBoolean()) {
+                    File chatLog = new File(logFolder, fileName());
+                    chatLog.createNewFile();
+                    chatWriter = new BufferedWriter(new FileWriter(chatLog, true));
+                }
+                if (Config.ADS_LOG.getBoolean()) {
+                    File adLog = new File(logFolder, "ads.log");
+                    adLog.createNewFile();
+                    adWriter = new BufferedWriter(new FileWriter(adLog, true));
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-            if (Config.LOGCHAT.getBoolean()) {
-                File chatLog = new File(logFolder, fileName());
-                chatLog.createNewFile();
-                chatWriter = new BufferedWriter(new FileWriter(chatLog, true));
-            }
-            if (Config.ADS_LOG.getBoolean()) {
-                File adLog = new File(logFolder, "ads.log");
-                adLog.createNewFile();
-                adWriter = new BufferedWriter(new FileWriter(adLog, true));
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        });
+        loadChatLogger.start();
     }
 
     public static void close() {
-        try {
-            if (chatWriter != null) {
-                chatWriter.close();
+        Thread closeMethod = new Thread(() -> {
+            try {
+                if (chatWriter != null) {
+                    chatWriter.close();
+                }
+                if (adWriter != null) {
+                    adWriter.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-            if (adWriter != null) {
-                adWriter.close();
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        });
+        closeMethod.start();
     }
 
     public static void writeToFile(Player player, String message) {
-        if (!Config.LOGCHAT.getBoolean() || chatWriter == null) {
-            return;
-        }
+        Thread fileWriting = new Thread(() -> {
+            if (!Config.LOGCHAT.getBoolean() || chatWriter == null) {
+                return;
+            }
 
-        try {
-            chatWriter.write(prefix(false) + player.getName() + " (uuid: " + player.getUniqueId() + "): " + message);
-            chatWriter.newLine();
-            chatWriter.flush();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+            try {
+                chatWriter.write(prefix(false) + player.getName() + " (uuid: " + player.getUniqueId() + "): " + message);
+                chatWriter.newLine();
+                chatWriter.flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+        fileWriting.start();
     }
 
     public static void writeToAdFile(Player player, String message) {
-        if (!Config.ADS_LOG.getBoolean() || adWriter == null) {
-            return;
-        }
-        try {
-            adWriter.write(prefix(true) + player.getName() + " (uuid: " + player.getUniqueId() + "): " + message);
-            adWriter.newLine();
-            adWriter.flush();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        Thread writeAdFile = new Thread(() -> {
+            if (!Config.ADS_LOG.getBoolean() || adWriter == null) {
+                return;
+            }
+            try {
+                adWriter.write(prefix(true) + player.getName() + " (uuid: " + player.getUniqueId() + "): " + message);
+                adWriter.newLine();
+                adWriter.flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+        writeAdFile.start();
     }
 
     private static String fileName() {
