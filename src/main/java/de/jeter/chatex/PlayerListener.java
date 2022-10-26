@@ -29,44 +29,55 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.lang.Thread;
+
 public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
-        if (Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
-            String msg = Locales.PLAYER_JOIN.getString(e.getPlayer());
-            e.setJoinMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
-        }
-
-        if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
-            String name = Config.TABLIST_FORMAT.getString();
-            name = Utils.replacePlayerPlaceholders(e.getPlayer(), name);
-            e.getPlayer().setPlayerListName(name);
-        }
-
-        if (Config.CHECK_UPDATE.getBoolean() && e.getPlayer().hasPermission("chatex.notifyupdate") && ChatEx.getInstance().getUpdateChecker() != null) {
-            if (ChatEx.getInstance().getUpdateChecker().getResult() == Result.UPDATE_FOUND) {
-                e.getPlayer().sendMessage(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEx.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEx.getInstance().getUpdateChecker().getLatestRemoteVersion()));
+        Thread joinEvent = new Thread(() -> {
+            if (Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
+                String msg = Locales.PLAYER_JOIN.getString(e.getPlayer());
+                e.setJoinMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
             }
-        }
+
+            if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
+                String name = Config.TABLIST_FORMAT.getString();
+                name = Utils.replacePlayerPlaceholders(e.getPlayer(), name);
+                e.getPlayer().setPlayerListName(name);
+            }
+
+            if (Config.CHECK_UPDATE.getBoolean() && e.getPlayer().hasPermission("chatex.notifyupdate") && ChatEx.getInstance().getUpdateChecker() != null) {
+                if (ChatEx.getInstance().getUpdateChecker().getResult() == Result.UPDATE_FOUND) {
+                    e.getPlayer().sendMessage(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEx.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEx.getInstance().getUpdateChecker().getLatestRemoteVersion()));
+                }
+            }
+        });
+        joinEvent.start();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(final PlayerQuitEvent e) {
-        if (!Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
-            return;
-        }
-        String msg = Locales.PLAYER_QUIT.getString(e.getPlayer());
-        e.setQuitMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
+        Thread quitEvent = new Thread(() -> {
+            if (!Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
+                return;
+            }
+            String msg = Locales.PLAYER_QUIT.getString(e.getPlayer());
+            e.setQuitMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
+        });
+        quitEvent.start()
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onKick(final PlayerKickEvent e) {
-        if (!Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
-            return;
-        }
-        String msg = Locales.PLAYER_KICK.getString(e.getPlayer());
-        e.setLeaveMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
+        Thread kickEvent = new Thread(() -> {
+            if (!Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
+                return;
+            }
+            String msg = Locales.PLAYER_KICK.getString(e.getPlayer());
+            e.setLeaveMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
+        });
+        kickEvent.start()
     }
 
 }
