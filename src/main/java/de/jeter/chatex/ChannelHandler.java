@@ -28,6 +28,8 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import java.io.*;
 import java.util.concurrent.TimeUnit;
 
+import java.lang.Thread;
+
 public class ChannelHandler implements PluginMessageListener {
 
     private static ChannelHandler INSTANCE;
@@ -46,57 +48,62 @@ public class ChannelHandler implements PluginMessageListener {
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-        if (!channel.equals("BungeeCord")) {
-            return;
-        }
-
-        ByteArrayDataInput in = ByteStreams.newDataInput(message);
-        String subChannel = in.readUTF();
-        if (subChannel.equals("ChatEx")) {
-            //String serverName = in.readUTF();
-
-            short len = in.readShort();
-            byte[] msgbytes = new byte[len];
-            in.readFully(msgbytes);
-
-            DataInputStream msgin = new DataInputStream(new ByteArrayInputStream(msgbytes));
-            String msg;
-            long millis = 0;
-            try {
-                millis = msgin.readLong();
-                msg = msgin.readUTF();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                msg = "null";
+        Thread pluginMessagedReceived = new Thread(() -> {
+            if (!channel.equals("BungeeCord")) {
+                return;
             }
 
-            if ((System.currentTimeMillis() - millis) < TimeUnit.SECONDS.toMillis(Config.CROSS_SERVER_TIMEOUT.getInt())) {
-                ChatEx.getInstance().getServer().broadcastMessage(msg);
+            ByteArrayDataInput in = ByteStreams.newDataInput(message);
+            String subChannel = in.readUTF();
+            if (subChannel.equals("ChatEx")) {
+                //String serverName = in.readUTF();
+
+                short len = in.readShort();
+                byte[] msgbytes = new byte[len];
+                in.readFully(msgbytes);
+
+                DataInputStream msgin = new DataInputStream(new ByteArrayInputStream(msgbytes));
+                String msg;
+                long millis = 0;
+                try {
+                    millis = msgin.readLong();
+                    msg = msgin.readUTF();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    msg = "null";
+                }
+
+                if ((System.currentTimeMillis() - millis) < TimeUnit.SECONDS.toMillis(Config.CROSS_SERVER_TIMEOUT.getInt())) {
+                    ChatEx.getInstance().getServer().broadcastMessage(msg);
+                }
             }
-        }
-    }
+        });
+        pluginMessageRecieved.start();
+    }    
 
     public void sendMessage(Player p, String message) {
-        if (Config.BUNGEECORD.getBoolean()) {
-            ByteArrayDataOutput out = ByteStreams.newDataOutput();
-            out.writeUTF("Forward"); // So BungeeCord knows to forward it
-            out.writeUTF("ALL");
-            out.writeUTF("ChatEx"); // The channel name to check if this your data
-            //out.writeUTF("GetServer");
+        Thread bungeeSendMessage = new Thread(() -> {
+            if (Config.BUNGEECORD.getBoolean()) {
+                ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                out.writeUTF("Forward"); // So BungeeCord knows to forward it
+                out.writeUTF("ALL");
+                out.writeUTF("ChatEx"); // The channel name to check if this your data
+                //out.writeUTF("GetServer");
 
-            ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
-            DataOutputStream msgout = new DataOutputStream(msgbytes);
-            try {
-                msgout.writeLong(System.currentTimeMillis());
-                msgout.writeUTF(message);
-            } catch (IOException exception) {
-                exception.printStackTrace();
+                ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
+                DataOutputStream msgout = new DataOutputStream(msgbytes);
+                try {
+                    msgout.writeLong(System.currentTimeMillis());
+                    msgout.writeUTF(message);
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+
+                out.writeShort(msgbytes.toByteArray().length);
+                out.write(msgbytes.toByteArray());
+                p.sendPluginMessage(ChatEx.getInstance(), "BungeeCord", out.toByteArray());
             }
-
-            out.writeShort(msgbytes.toByteArray().length);
-            out.write(msgbytes.toByteArray());
-            p.sendPluginMessage(ChatEx.getInstance(), "BungeeCord", out.toByteArray());
-        }
+        });
+        bungeeSendMessage.start();
     }
-
 }
