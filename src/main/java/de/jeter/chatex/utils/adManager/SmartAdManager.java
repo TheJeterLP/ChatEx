@@ -37,73 +37,81 @@ public class SmartAdManager implements AdManager {
 
     //Ips are clear
     private static boolean checkForIPPattern(String message) {
+        Thread ipPattern = new Thread(() -> {
+            message = message.replaceAll(" ", "");
+            Matcher regexMatcher = ipPattern.matcher(message);
+            while (regexMatcher.find()) {
+                if (regexMatcher.group().length() != 0) {
+                    String text = regexMatcher.group().trim().replaceAll("http://", "").replaceAll("https://", "").split("/")[0];
 
-        message = message.replaceAll(" ", "");
-        Matcher regexMatcher = ipPattern.matcher(message);
-        while (regexMatcher.find()) {
-            if (regexMatcher.group().length() != 0) {
-                String text = regexMatcher.group().trim().replaceAll("http://", "").replaceAll("https://", "").split("/")[0];
-
-                if (ipPattern.matcher(text).find()) {
-                    if (!Utils.checkForBypassString(regexMatcher.group().trim())) {
-                        return true;
+                    if (ipPattern.matcher(text).find()) {
+                        if (!Utils.checkForBypassString(regexMatcher.group().trim())) {
+                            return true;
+                        }
                     }
                 }
             }
-        }
-        return false;
+            return false;
+        });
+        ipPattern.start();
     }
 
     private static double checkForWebPattern(String message) {
-        double messageLength = message.length();
-        double error = 0;
-        if (message.contains(",") || message.contains(".")) {
-            message = Config.ADS_REPLACE_COMMAS.getBoolean() ? message.replaceAll(",", ".") : message;
-            message = message.replaceAll(urlCompactorPatternString, "");
-            Matcher regexMatcher = webPattern.matcher(message);
-            while (regexMatcher.find()) {
-                if (regexMatcher.group().length() != 0) {
-                    String text = regexMatcher.group().trim();
-                    if (!Utils.checkForBypassString(text)) {
-                        error += text.length();
-                        if (DomainDictionary.containsTopLevelEnding(text)) {
-                            error *= Config.ADS_SMART_MULTIPLIER.getDouble();
-                        } else {
-                            error *= Config.ADS_SMART_UN_MULTIPLIER.getDouble();
+        Thread webPattern = new Thread(() -> {
+            double messageLength = message.length();
+            double error = 0;
+            if (message.contains(",") || message.contains(".")) {
+                message = Config.ADS_REPLACE_COMMAS.getBoolean() ? message.replaceAll(",", ".") : message;
+                message = message.replaceAll(urlCompactorPatternString, "");
+                Matcher regexMatcher = webPattern.matcher(message);
+                while (regexMatcher.find()) {
+                    if (regexMatcher.group().length() != 0) {
+                        String text = regexMatcher.group().trim();
+                        if (!Utils.checkForBypassString(text)) {
+                            error += text.length();
+                            if (DomainDictionary.containsTopLevelEnding(text)) {
+                                error *= Config.ADS_SMART_MULTIPLIER.getDouble();
+                            } else {
+                                error *= Config.ADS_SMART_UN_MULTIPLIER.getDouble();
+                            }
                         }
-                    }
 
+                    }
                 }
+                error = error > 0 ? error / messageLength : 0;
             }
-            error = error > 0 ? error / messageLength : 0;
-        }
-        return error;
+            return error;
+        });
+        webPattern.start
     }
 
     @Override
     public boolean checkForAds(String msg, Player p) {
-        if (p.hasPermission("chatex.bypassads")) {
-            return false;
-        }
-        if (!Config.ADS_ENABLED.getBoolean()) {
-            return false;
-        }
-        if (!uuidErrorMap.containsKey(p.getUniqueId()) || uuidErrorMap.get(p.getUniqueId()) < 0) {
-            uuidErrorMap.put(p.getUniqueId(), 0d);
-        }
-        double error = checkForWebPattern(msg);
-        uuidErrorMap.put(p.getUniqueId(), uuidErrorMap.get(p.getUniqueId()) + error);
-        boolean canceled = uuidErrorMap.get(p.getUniqueId()) > Config.ADS_THRESHOLD.getDouble() || checkForIPPattern(msg);
-        if (canceled) {
-            uuidErrorMap.put(p.getUniqueId(), Config.ADS_THRESHOLD.getDouble());
-            String message = Locales.MESSAGES_AD_NOTIFY.getString(p)
-                    .replaceAll("%player", Matcher.quoteReplacement(p.getName()))
-                    .replaceAll("%message", Matcher.quoteReplacement(msg));
-            Utils.notifyOps(message);
-            ChatLogger.writeToAdFile(p, msg);
-        } else {
-            uuidErrorMap.put(p.getUniqueId(), uuidErrorMap.get(p.getUniqueId()) - Config.ADS_REDUCE_THRESHOLD.getDouble());
-        }
-        return canceled;
+        Thread adsCheck = new Thread(() -> {
+            if (p.hasPermission("chatex.bypassads")) {
+                return false;
+            }
+            if (!Config.ADS_ENABLED.getBoolean()) {
+                return false;
+            }
+            if (!uuidErrorMap.containsKey(p.getUniqueId()) || uuidErrorMap.get(p.getUniqueId()) < 0) {
+                uuidErrorMap.put(p.getUniqueId(), 0d);
+            }
+            double error = checkForWebPattern(msg);
+            uuidErrorMap.put(p.getUniqueId(), uuidErrorMap.get(p.getUniqueId()) + error);
+            boolean canceled = uuidErrorMap.get(p.getUniqueId()) > Config.ADS_THRESHOLD.getDouble() || checkForIPPattern(msg);
+            if (canceled) {
+                uuidErrorMap.put(p.getUniqueId(), Config.ADS_THRESHOLD.getDouble());
+                String message = Locales.MESSAGES_AD_NOTIFY.getString(p)
+                        .replaceAll("%player", Matcher.quoteReplacement(p.getName()))
+                        .replaceAll("%message", Matcher.quoteReplacement(msg));
+                Utils.notifyOps(message);
+                ChatLogger.writeToAdFile(p, msg);
+            } else {
+                uuidErrorMap.put(p.getUniqueId(), uuidErrorMap.get(p.getUniqueId()) - Config.ADS_REDUCE_THRESHOLD.getDouble());
+            }
+            return canceled;
+        });
+        adsCheck.start();
     }
 }
