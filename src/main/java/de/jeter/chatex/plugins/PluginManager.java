@@ -23,6 +23,8 @@ import de.jeter.chatex.utils.HookManager;
 import de.jeter.chatex.utils.Utils;
 import org.bukkit.entity.Player;
 
+import java.lang.Thread;
+
 public class PluginManager implements PermissionsPlugin {
 
     private static PermissionsPlugin handler;
@@ -33,29 +35,32 @@ public class PluginManager implements PermissionsPlugin {
     }
 
     public static void load() {
-        INSTANCE = new PluginManager();
-        if (HookManager.checkVault() && Vault.setupChat()) {
-            handler = new Vault();
-        } else {
-            handler = new Nothing();
-        }
-        ChatEx.getInstance().getLogger().info("Successfully hooked into: " + handler.getName());
-
-        if (HookManager.checkPlaceholderAPI()) {
-            ChatEx.getInstance().getLogger().info("Hooked into PlaceholderAPI");
-        }
-
-        if (Config.AFK_PLACEHOLDER.getBoolean()) {
-            if (HookManager.checkEssentials()) {
-                ChatEx.getInstance().getLogger().info("Hooked into Essentials");
-                ChatEx.getInstance().getServer().getPluginManager().registerEvents(new EssentialsAFKListener(), ChatEx.getInstance());
-            } else if (HookManager.checkPurpur()) {
-                ChatEx.getInstance().getLogger().info("Hooked into Purpur");
-                ChatEx.getInstance().getServer().getPluginManager().registerEvents(new PurpurAFKListener(), ChatEx.getInstance());
+        Thread loadPermissionsPlugin = new Thread(() -> {
+            INSTANCE = new PluginManager();
+            if (HookManager.checkVault() && Vault.setupChat()) {
+                handler = new Vault();
             } else {
-                ChatEx.getInstance().getLogger().warning("Error while enabling AFK placeholder, neither essentials nor purpur were found!");
+                handler = new Nothing();
             }
-        }
+            ChatEx.getInstance().getLogger().info("Successfully hooked into: " + handler.getName());
+
+            if (HookManager.checkPlaceholderAPI()) {
+                ChatEx.getInstance().getLogger().info("Hooked into PlaceholderAPI");
+            }
+
+            if (Config.AFK_PLACEHOLDER.getBoolean()) {
+                if (HookManager.checkEssentials()) {
+                    ChatEx.getInstance().getLogger().info("Hooked into Essentials");
+                    ChatEx.getInstance().getServer().getPluginManager().registerEvents(new EssentialsAFKListener(), ChatEx.getInstance());
+                } else if (HookManager.checkPurpur()) {
+                    ChatEx.getInstance().getLogger().info("Hooked into Purpur");
+                    ChatEx.getInstance().getServer().getPluginManager().registerEvents(new PurpurAFKListener(), ChatEx.getInstance());
+                } else {
+                    ChatEx.getInstance().getLogger().warning("Error while enabling AFK placeholder, neither essentials nor purpur were found!");
+                }
+            }
+        });
+        loadPermissionsPlugin.start();
     }
 
     @Override
