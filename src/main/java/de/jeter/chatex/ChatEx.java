@@ -25,6 +25,8 @@ import de.jeter.updatechecker.UpdateChecker;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.lang.Thread;
+
 public class ChatEx extends JavaPlugin {
 
     private static ChatEx INSTANCE;
@@ -36,38 +38,44 @@ public class ChatEx extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        INSTANCE = this;
+        Thread pluginEnable = new Thread(() -> {
+            INSTANCE = this;
 
-        Config.load();
-        Locales.load();
-        PluginManager.load();
-        ChatLogger.load();
-        RGBColors.load();
+            Config.load();
+            Locales.load();
+            PluginManager.load();
+            ChatLogger.load();
+            RGBColors.load();
 
-        getServer().getPluginManager().registerEvents(new ChatListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        getCommand("chatex").setExecutor(new CommandHandler());
+            getServer().getPluginManager().registerEvents(new ChatListener(), this);
+            getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+            getCommand("chatex").setExecutor(new CommandHandler());
 
-        if (Config.CHECK_UPDATE.getBoolean()) {
-            updatechecker = new SpigotUpdateChecker(this, 71041);
-        }
+            if (Config.CHECK_UPDATE.getBoolean()) {
+                updatechecker = new SpigotUpdateChecker(this, 71041);
+            }
 
-        ChannelHandler.load();
+            ChannelHandler.load();
 
-        if (Config.B_STATS.getBoolean()) {
-            Metrics metrics = new Metrics(this, 7744);
-            getLogger().info("Thanks for using bstats, it was enabled!");
-        }
+            if (Config.B_STATS.getBoolean()) {
+                Metrics metrics = new Metrics(this, 7744);
+                getLogger().info("Thanks for using bstats, it was enabled!");
+            }
 
-        getLogger().info("Is now enabled!");
+            getLogger().info("Is now enabled!");
+        });
+        pluginEnable.start();
     }
 
     @Override
     public void onDisable() {
-        AntiSpamManager.getInstance().clear();
-        ChatLogger.close();
-        getServer().getScheduler().cancelTasks(this);
-        getLogger().info("Is now disabled!");
+        Thread pluginDisable = new Thread(() -> {
+            AntiSpamManager.getInstance().clear();
+            ChatLogger.close();
+            getServer().getScheduler().cancelTasks(this);
+            getLogger().info("Is now disabled!");
+        });
+        pluginDisable.start()
     }
 
     public UpdateChecker getUpdateChecker() {
