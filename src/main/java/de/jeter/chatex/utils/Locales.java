@@ -113,7 +113,7 @@ public enum Locales {
     }
 
     public String getString(Player p) {
-        String ret = cfg.getString(path).replaceAll("&((?i)[0-9a-fk-or])", "§$1");
+        String ret = Utils.replaceColors(cfg.getString(path));
         ret = Utils.replacePlayerPlaceholders(p, ret);
         return ret;
     }
