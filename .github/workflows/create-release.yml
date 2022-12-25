@@ -27,7 +27,7 @@ jobs:
       - name: Create Prerelease
         if: ${{contains(github.event.head_commit.message, '-SNAPSHOT')}}
         id: create_prerelease
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v0.1.15
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
