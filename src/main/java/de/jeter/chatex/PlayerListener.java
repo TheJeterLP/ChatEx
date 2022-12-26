@@ -22,6 +22,12 @@ import de.jeter.chatex.utils.Config;
 import de.jeter.chatex.utils.Locales;
 import de.jeter.chatex.utils.Utils;
 import de.jeter.updatechecker.Result;
+import de.jeter.updatechecker.UpdateChecker;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -44,9 +50,14 @@ public class PlayerListener implements Listener {
             e.getPlayer().setPlayerListName(name);
         }
 
-        if (Config.CHECK_UPDATE.getBoolean() && e.getPlayer().hasPermission("chatex.notifyupdate") && ChatEx.getInstance().getUpdateChecker() != null) {
-            if (ChatEx.getInstance().getUpdateChecker().getResult() == Result.UPDATE_FOUND) {
-                e.getPlayer().sendMessage(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEx.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEx.getInstance().getUpdateChecker().getLatestRemoteVersion()));
+        UpdateChecker checker = ChatEx.getInstance().getUpdateChecker();
+
+        if (Config.CHECK_UPDATE.getBoolean() && e.getPlayer().hasPermission("chatex.notifyupdate") && checker != null) {
+            if (checker.getResult() == Result.UPDATE_FOUND) {
+                TextComponent msg = new TextComponent(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEx.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEx.getInstance().getUpdateChecker().getLatestRemoteVersion()));
+                msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§aClick to download")));
+                msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, checker.getDownloadLink()));
+                e.getPlayer().spigot().sendMessage(msg);
             }
         }
     }
