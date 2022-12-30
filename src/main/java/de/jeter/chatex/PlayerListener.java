@@ -24,7 +24,6 @@ import de.jeter.chatex.utils.Utils;
 import de.jeter.updatechecker.Result;
 import de.jeter.updatechecker.UpdateChecker;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
@@ -54,10 +53,15 @@ public class PlayerListener implements Listener {
 
         if (Config.CHECK_UPDATE.getBoolean() && e.getPlayer().hasPermission("chatex.notifyupdate") && checker != null) {
             if (checker.getResult() == Result.UPDATE_FOUND) {
-                TextComponent msg = new TextComponent(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEx.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEx.getInstance().getUpdateChecker().getLatestRemoteVersion()));
-                msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§aClick to download")));
-                msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, checker.getDownloadLink()));
-                e.getPlayer().spigot().sendMessage(msg);
+                try {
+                    Class.forName("net.md_5.bungee.api.chat.TextComponent");
+                    TextComponent msg = new TextComponent(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEx.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEx.getInstance().getUpdateChecker().getLatestRemoteVersion()));
+                    msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§aClick to download")));
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, checker.getDownloadLink()));
+                    e.getPlayer().spigot().sendMessage(msg);
+                } catch (ClassNotFoundException ex) {
+                    e.getPlayer().sendMessage(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEx.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEx.getInstance().getUpdateChecker().getLatestRemoteVersion()));
+                }
             }
         }
     }
