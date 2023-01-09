@@ -34,7 +34,9 @@ public class PluginManager implements PermissionsPlugin {
 
     public static void load() {
         INSTANCE = new PluginManager();
-        if (HookManager.checkVault() && Vault.setupChat()) {
+        if (HookManager.checkLuckperms()) {
+            handler = new LuckPerms();
+        } else if (HookManager.checkVault() && Vault.setupChat()) {
             handler = new Vault();
         } else {
             handler = new Nothing();

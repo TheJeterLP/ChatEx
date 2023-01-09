@@ -85,7 +85,7 @@ public class Vault implements PermissionsPlugin {
 
     @Override
     public String getName() {
-        return chat.getName();
+        return "Vault:" + chat.getName();
     }
 
     @Override

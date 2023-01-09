@@ -56,6 +56,8 @@ public class ChatEx extends JavaPlugin {
 
         if (Config.B_STATS.getBoolean()) {
             Metrics metrics = new Metrics(this, 7744);
+            CustomCharts.addPermissionsPluginChart(metrics);
+            CustomCharts.addUpdateCheckerChart(metrics);
             getLogger().info("Thanks for using bstats, it was enabled!");
         }
 
