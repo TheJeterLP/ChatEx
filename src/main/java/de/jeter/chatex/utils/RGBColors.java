@@ -38,7 +38,7 @@ public class RGBColors {
             for (int i = 0; i < clearedValue.length(); i++) {
                 rgbColor.append("§").append(valueChars[i]);
             }
-            LogHelper.debug("Putting KEY: " + key + " value: " + rgbColor.toString());
+            LogHelper.debug("Putting KEY: " + key + " value: " + rgbColor);
             placeHolderColorMap.put(key, rgbColor.toString());
         }
     }
