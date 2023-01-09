@@ -87,6 +87,11 @@ public enum Config {
         ChatEx.getInstance().getDataFolder().mkdirs();
         reload(false);
         List<String> header = new ArrayList<>();
+        header.add("Thanks for installing " + ChatEx.getInstance().getName());
+        header.add("Please report any bugs you may encounter at my discord under:");
+        header.add("https://www.thejeterlp.de/discord");
+        header.add("-------------------------------Descriptions--------------------------------------");
+        header.add("");
         for (Config c : values()) {
             header.add(c.getPath() + ": " + c.getDescription());
             if (!cfg.contains(c.getPath())) {

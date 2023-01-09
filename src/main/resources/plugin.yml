@@ -3,7 +3,7 @@ main: de.jeter.chatex.ChatEx
 version: ${project.version}
 authors: [ Jeter, Wizard_x ]
 description: Chat management plugin
-softdepend: [ PermissionsEx, Vault, PlaceholderAPI, Essentials ]
+softdepend: [ LuckPerms, Vault, PlaceholderAPI, Essentials ]
 api-version: 1.13
 
 commands:
