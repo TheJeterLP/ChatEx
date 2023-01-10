@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AntiSpamManager {
 
-    private static AntiSpamManager instance = new AntiSpamManager();
+    private static final AntiSpamManager instance = new AntiSpamManager();
     private final Map<Player, Long> map = new HashMap<>();
 
     private AntiSpamManager() {
@@ -46,7 +46,7 @@ public class AntiSpamManager {
             return true;
         }
 
-        long lastChat = map.get(chatter) + (Config.ANTISPAM_SECONDS.getInt() * 1000);
+        long lastChat = map.get(chatter) + (Config.ANTISPAM_SECONDS.getInt() * 1000L);
         long current = System.currentTimeMillis();
 
         return current > lastChat;
@@ -57,7 +57,7 @@ public class AntiSpamManager {
             return 0;
         }
 
-        long lastChat = map.get(chatter) + (Config.ANTISPAM_SECONDS.getInt() * 1000);
+        long lastChat = map.get(chatter) + (Config.ANTISPAM_SECONDS.getInt() * 1000L);
         long current = System.currentTimeMillis();
 
         long diff = lastChat - current;
