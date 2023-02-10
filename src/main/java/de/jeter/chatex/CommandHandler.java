@@ -33,7 +33,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage("§aChatEx plugin by " + ChatEx.getInstance().getDescription().getAuthors());
+            sender.sendMessage("§aChatEx plugin by " + ChatEx.getInstance().getDescription().getAuthors() + " (" + ChatEx.getInstance().getDescription().getVersion() + ")");
             return true;
         } else if (args.length > 1) {
             sender.sendMessage(Locales.COMMAND_RESULT_WRONG_USAGE.getString(null).replaceAll("%cmd", command.getName()));
