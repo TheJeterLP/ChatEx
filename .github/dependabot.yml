@@ -17,7 +17,7 @@ updates:
     # default location of `.github/workflows`
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     commit-message:
       # Prefix all commit messages with "npm: "
       prefix: "gh-actions"
