@@ -35,6 +35,7 @@ public class Utils {
     }
 
     public static String replaceColors(String message) {
+        message = RGBColors.translateGradientCodes(message);
         message = RGBColors.translateCustomColorCodes(message);
         return ChatColor.translateAlternateColorCodes('&', message);
     }
