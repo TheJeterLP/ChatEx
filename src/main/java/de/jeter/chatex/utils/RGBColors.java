@@ -93,49 +93,19 @@ public class RGBColors {
     }
 
     public static String translateGradientCodes(String message) {
-        Pattern pattern = Pattern.compile("&g#([A-Fa-f0-9]{6})#([A-Fa-f0-9]{6})#([^&]+)&g");
-        Matcher matcher = pattern.matcher(message);
-        //for all matches
-        while (matcher.find()) {
-            String hexColor1 = "#" + matcher.group(1);
-            String hexColor2 = "#" + matcher.group(2);
-            String text = matcher.group(3);
-            message = message.replace(matcher.group(0), gradientText(text, hexColor1, hexColor2)+ ChatColor.RESET);
+        final Pattern hexPattern = Pattern.compile("#([A-Fa-f0-9]{6})");
+        Matcher matcher = hexPattern.matcher(message);
+        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
+        while (matcher.find())
+        {
+            String group = matcher.group(1);
+            matcher.appendReplacement(buffer, ChatColor.COLOR_CHAR + "x"
+                    + ChatColor.COLOR_CHAR + group.charAt(0) + ChatColor.COLOR_CHAR + group.charAt(1)
+                    + ChatColor.COLOR_CHAR + group.charAt(2) + ChatColor.COLOR_CHAR + group.charAt(3)
+                    + ChatColor.COLOR_CHAR + group.charAt(4) + ChatColor.COLOR_CHAR + group.charAt(5)
+            );
         }
-        return message;
-    }
-
-    public static String gradientText(String text, String hexColor1, String hexColor2) {
-        StringBuilder result = new StringBuilder();
-        int length = text.length();
-        int[][] rgbValues = new int[2][3];
-        float[][] colorSteps = new float[2][3];
-        int[] currentRGB = new int[3];
-
-        rgbValues[0][0] = Integer.parseInt(hexColor1.substring(1, 3), 16);
-        rgbValues[0][1] = Integer.parseInt(hexColor1.substring(3, 5), 16);
-        rgbValues[0][2] = Integer.parseInt(hexColor1.substring(5, 7), 16);
-
-        rgbValues[1][0] = Integer.parseInt(hexColor2.substring(1, 3), 16);
-        rgbValues[1][1] = Integer.parseInt(hexColor2.substring(3, 5), 16);
-        rgbValues[1][2] = Integer.parseInt(hexColor2.substring(5, 7), 16);
-
-        for (int i = 0; i < 3; i++) {
-            colorSteps[0][i] = (float)(rgbValues[1][i] - rgbValues[0][i]) / length;
-            currentRGB[i] = rgbValues[0][i];
-        }
-
-        for (int i = 0; i < length; i++) {
-            String hexColor = String.format("#%02x%02x%02x", currentRGB[0], currentRGB[1], currentRGB[2]);
-            result.append("&" + hexColor + text.charAt(i));
-
-            // Update RGB values for next character
-            for (int j = 0; j < 3; j++) {
-                currentRGB[j] += colorSteps[0][j];
-            }
-        }
-
-        return result.toString();
+        return matcher.appendTail(buffer).toString();
     }
 
 }
