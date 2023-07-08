@@ -39,7 +39,13 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
         if (Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
-            String msg = Locales.PLAYER_JOIN.getString(e.getPlayer());
+            String msg;
+            if(e.getPlayer().hasPlayedBefore()) {
+                msg = Locales.PLAYER_JOIN.getString(e.getPlayer());
+            } else {
+                msg = Locales.PLAYER_JOIN_FIRST_TIME.getString(e.getPlayer());
+            }
+
             e.setJoinMessage(Utils.replacePlayerPlaceholders(e.getPlayer(), msg));
         }
 

@@ -40,6 +40,7 @@ public enum Locales {
     COMMAND_RESULT_WRONG_USAGE("Messages.CommandResult.WrongUsage", "&c[ERROR] &7Wrong usage! Please type &6%cmd help&7!"),
     ANTI_SPAM_DENIED("Messages.AntiSpam.Denied", "&e[AntiSpam] &7You are not allowed to spam! Please wait another &e%time% &7seconds!"),
     PLAYER_JOIN("Messages.Player.Join", "%prefix%displayname%suffix &ejoined the game!"),
+    PLAYER_JOIN_FIRST_TIME("Messages.Player.JoinFirstTime", "%prefix%displayname%suffix &ejoined the server for the first time!"),
     PLAYER_KICK("Messages.Player.Kick", "%prefix%displayname%suffix &ewas kicked from the game!"),
     PLAYER_QUIT("Messages.Player.Quit", "%prefix%displayname%suffix &eleft the game!"),
     NO_LISTENING_PLAYERS("Messages.Chat.NoOneListens", "&cNo players are near you to hear you talking! Use the ranged mode to chat."),
