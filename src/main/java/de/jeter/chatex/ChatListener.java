@@ -145,10 +145,12 @@ public class ChatListener implements Listener {
         }
 
         LogHelper.debug("Player did not use a blocked word. Continuing...");
-
+        LogHelper.debug("ChatMessage: " + chatMessage);
         boolean global = false;
+
         if (Config.RANGEMODE.getBoolean() || Config.BUNGEECORD.getBoolean()) {
-            if (chatMessage.startsWith(Config.RANGEPREFIX.getString())) {
+            LogHelper.debug("Message starts with prefix (" + Config.RANGEPREFIX.getString() + "): " + chatMessage.startsWith(Config.RANGEPREFIX.getString()));
+            if ((Config.RANGEMODE.getBoolean() && chatMessage.startsWith(Config.RANGEPREFIX.getString())) || Config.BUNGEECORD.getBoolean()) {
                 LogHelper.debug("Global mode enabled!");
                 if (player.hasPermission("chatex.chat.global")) {
                     chatMessage = chatMessage.replaceFirst(Pattern.quote(Config.RANGEPREFIX.getString()), "");
@@ -162,7 +164,6 @@ public class ChatListener implements Listener {
                         event.setCancelled(true);
                         return;
                     }
-
                 } else {
                     player.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(player).replaceAll("%perm", "chatex.chat.global"));
                     event.setCancelled(true);
