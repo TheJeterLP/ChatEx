@@ -43,7 +43,7 @@ public enum Locales {
     PLAYER_JOIN_FIRST_TIME("Messages.Player.JoinFirstTime", "%prefix%displayname%suffix &ejoined the server for the first time!"),
     PLAYER_KICK("Messages.Player.Kick", "%prefix%displayname%suffix &ewas kicked from the game!"),
     PLAYER_QUIT("Messages.Player.Quit", "%prefix%displayname%suffix &eleft the game!"),
-    NO_LISTENING_PLAYERS("Messages.Chat.NoOneListens", "&cNo players are near you to hear you talking! Use the ranged mode to chat."),
+    NO_LISTENING_PLAYERS("Messages.Chat.NoOneListens", "&cNo players are near you to hear you talking! Try to use the global mode to chat globally."),
     UPDATE_FOUND("Messages.UpdateFound", "&a[ChatEx]&7 A new update has been found on SpigotMC. Current version: %oldversion New version: %newversion. Click this message to download it!"),
     ;
 

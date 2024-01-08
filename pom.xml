@@ -4,9 +4,9 @@
     <groupId>de.jeter</groupId>
     <artifactId>ChatEx</artifactId>
     <name>ChatEx</name>
-    <inceptionYear>2022</inceptionYear>
+    <inceptionYear>2024</inceptionYear>
 
-    <version>3.1.0</version>
+    <version>3.2.0</version>
     <description>ChatManagement plugin for Bukkit</description>
     <url>https://www.spigotmc.org/resources/chatex-continued.71041/</url>
 
