@@ -24,7 +24,6 @@ import de.jeter.chatex.utils.*;
 import de.jeter.chatex.utils.adManager.AdManager;
 import de.jeter.chatex.utils.adManager.SimpleAdManager;
 import de.jeter.chatex.utils.adManager.SmartAdManager;
-import de.jeter.chatex.utils.blockedWords.BlockedWords;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,8 +38,6 @@ import java.util.regex.Pattern;
 public class ChatListener implements Listener {
 
     private final AdManager adManager = Config.ADS_SMART_MANAGER.getBoolean() ? new SmartAdManager() : new SimpleAdManager();
-    private final BlockedWords blockedWords = new BlockedWords();
-
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onLowest(final AsyncPlayerChatEvent event) {
@@ -132,15 +129,18 @@ public class ChatListener implements Listener {
 
         LogHelper.debug("Player did not activate the AdBlocker. Continuing...");
 
-        if (blockedWords.isBlocked(chatMessage)) {
-            String message = Locales.MESSAGES_BLOCKED.getString(null);
-            MessageContainsBlockedWordEvent messageContainsBlockedWordEvent = new MessageContainsBlockedWordEvent(player, chatMessage, message);
-            Bukkit.getPluginManager().callEvent(messageContainsBlockedWordEvent);
-            event.setCancelled(!messageContainsBlockedWordEvent.isCancelled());
-            chatMessage = messageContainsBlockedWordEvent.getMessage();
-            if (!messageContainsBlockedWordEvent.isCancelled()) {
-                event.getPlayer().sendMessage(messageContainsBlockedWordEvent.getPluginMessage());
-                return;
+        for(String block : Config.BLOCKED_WORDS.getStringList()) {
+            if(chatMessage.contains(block)) {
+                LogHelper.debug("Player activated wordblocker! ChatMessage: " + chatMessage + " contains blockedWord: " + block);
+                String message = Locales.MESSAGES_BLOCKED.getString(null);
+                MessageContainsBlockedWordEvent messageContainsBlockedWordEvent = new MessageContainsBlockedWordEvent(player, chatMessage, message);
+                Bukkit.getPluginManager().callEvent(messageContainsBlockedWordEvent);
+                event.setCancelled(!messageContainsBlockedWordEvent.isCancelled());
+                chatMessage = messageContainsBlockedWordEvent.getMessage();
+                if (!messageContainsBlockedWordEvent.isCancelled()) {
+                    event.getPlayer().sendMessage(messageContainsBlockedWordEvent.getPluginMessage());
+                    return;
+                }
             }
         }
 
