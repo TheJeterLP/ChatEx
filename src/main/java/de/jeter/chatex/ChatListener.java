@@ -130,7 +130,7 @@ public class ChatListener implements Listener {
         LogHelper.debug("Player did not activate the AdBlocker. Continuing...");
 
         for(String block : Config.BLOCKED_WORDS.getStringList()) {
-            if(chatMessage.contains(block)) {
+            if(chatMessage.toLowerCase().contains(block.toLowerCase())) {
                 LogHelper.debug("Player activated wordblocker! ChatMessage: " + chatMessage + " contains blockedWord: " + block);
                 String message = Locales.MESSAGES_BLOCKED.getString(null);
                 MessageContainsBlockedWordEvent messageContainsBlockedWordEvent = new MessageContainsBlockedWordEvent(player, chatMessage, message);
