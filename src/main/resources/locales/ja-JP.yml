@@ -1,0 +1,30 @@
+Commands:
+  Reload:
+    Description: Pluginと設定を再読み込みします。
+  Clear:
+    Description: チャットを削除します。
+    Console: CONSOLE
+    Unknown: UNKNOWN
+Messages:
+  Commands:
+    Reload:
+      Success: '&a設定が再読み込みされました。'
+    Clear:
+      Success: '&aチャットは削除されました。 '
+  Chat:
+    AdDetected: '&4[エラー] &7広告は許可されていません！ &c(%perm)'
+    BlockedWord: '&4[エラー] &7禁止されている単語を使用しようとしました！'
+    AdNotify: "&c%player intentó hacer publicidad. Su mensaje fue: \n&a %message"
+    NoOneListens: '&cNo hay jugadores lo suficientemente cerca de ti como para verte
+      hablar. Usa el modo a distancia para charlar.'
+  CommandResult:
+    NoPermission: '&4[エラー] &7これを実行する許可がありません！ &c(%perm)'
+    WrongUsage: '&c[エラー] &7構文が正しくありません。ヘルプは、&6%cmd help&7 を使用してください！'
+  AntiSpam:
+    Denied: '&e[AntiSpam] &7別のメッセージを送信する前に、&e%time%&7 秒待ってください'
+  Player:
+    Join: '%prefix%displayname%suffix &eゲームに参加しました！'
+    Kick: '%prefix%displayname%suffix &eゲームから除外されました！'
+    Quit: '%prefix%displayname%suffix &eゲームから退出しました！'
+  UpdateFound: '&a[ChatEx]&7 SpigotMC で新しいアップデートが見つかりました。 
+    現在のバージョン: %oldversion 最新のバージョン: %newversion'
