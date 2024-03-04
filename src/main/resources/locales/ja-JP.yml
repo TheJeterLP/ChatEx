@@ -14,9 +14,9 @@ Messages:
   Chat:
     AdDetected: '&4[エラー] &7広告は許可されていません！ &c(%perm)'
     BlockedWord: '&4[エラー] &7禁止されている単語を使用しようとしました！'
-    AdNotify: "&c%player intentó hacer publicidad. Su mensaje fue: \n&a %message"
-    NoOneListens: '&cNo hay jugadores lo suficientemente cerca de ti como para verte
-      hablar. Usa el modo a distancia para charlar.'
+    AdNotify: "&c%playerが宣伝しようとしました。宣伝内容：\n&a %message"
+    NoOneListens: '&c周辺にあなたのチャットが見えるプレイヤーが近くにいません。
+      遠隔モードを使用してチャットしてください。'
   CommandResult:
     NoPermission: '&4[エラー] &7これを実行する許可がありません！ &c(%perm)'
     WrongUsage: '&c[エラー] &7構文が正しくありません。ヘルプは、&6%cmd help&7 を使用してください！'
