@@ -1,0 +1,28 @@
+Commands:
+  Reload:
+    Description: 'Eklentiyi ve yapılandırmasını yeniden yükler.'
+  Clear:
+    Description: 'Sohbeti boşaltır.'
+    Console: 'KONSOL'
+    Unknown: 'BİLİNMEYEN'
+Messages:
+  Chat:
+    AdDetected: '&4[HATA] &7Reklama izin verilmiyor! &c(%perm)'
+    AdNotify: "&c%player Bir reklam yazmaya çalıştın: \n&a %message"
+    BlockedWord: '&4[HATA] &7Yasak bir kelime yazmaya çalıştınız!'
+    NoOneListens: '&cKimse seni duyamaz! Sohbet etmek için menzilli modu kullanın.'
+  Commands:
+    Reload:
+      Success: '&aChatEx yeniden yüklendi.'
+    Clear:
+      Success: '&aSohbet şu kişi tarafından boşaltıldı: '
+  CommandResult:
+    NoPermission: '&4[HATA] &7Bunun için gerekli izinlere sahip değilsiniz! &c(%perm)'
+    WrongUsage: '&c[HATA] &7 Yanlış kullanım! &6%cmd help&7'i kullan!'
+  Player:
+    Join: '%prefix%displayname%suffix &esunucuya girdi!'
+    Quit: '%prefix%displayname%suffix &esunucudan ayrıldı!'
+    Kick: '%prefix%displayname%suffix &esunucu tarafından atıldı!'
+  UpdateFound: '&a[ChatEx]&7 Yeni bir güncelleme yayınlandı. Şimdiki versiyonu: %oldversion Yeni versiyon: %newversion'
+  UpdateDownloaded: '&a[ChatEx]&7 Yeni bir güncelleme yüklendi. Bir sonraki yeniden başlatmada aktif hale gelecektir.'
+    

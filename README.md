@@ -2,13 +2,13 @@
 [![Create DevBuild](https://github.com/TheJeterLP/ChatEx/actions/workflows/autobuild.yml/badge.svg)](https://github.com/TheJeterLP/ChatEx/actions/workflows/autobuild.yml)
 [![JitPack](https://jitpack.io/v/TheJeterLP/ChatEx.svg)](https://jitpack.io/#TheJeterLP/ChatEx)
 ================================
-Recode of the original ChatManager from PermissionsEx, which is no longer supported.
-This is the only official version.
+Artık desteklenmeyen orijinal ChatManager'ın PermissionsEx'ten yeniden kodu.
+Bu tek resmi versiyondur.
 
-If you need to report a bug or want to suggest a new feature, please use GitHubs Issue trackl.
+Bir hatayı bildirmeniz gerekiyorsa veya yeni bir özellik önermek istiyorsanız lütfen GitHubs Issue trackl'ı kullanın.
 
-If you want to use ChatEx as a Maven dependency, just click on the Jitpack image above
-or [Here](https://jitpack.io/#TheJeterLP/ChatEx) to read more about how to add it as a dependency. You can use the
-versions from github releases
+ChatEx'i Maven bağımlılığı olarak kullanmak istiyorsanız yukarıdaki Jitpack görseline tıklamanız yeterli
+veya bunu bir bağımlılık olarak nasıl ekleyeceğinizle ilgili daha fazla bilgi edinmek için [Buraya](https://jitpack.io/#TheJeterLP/ChatEx) bakın. Şunu kullanabilirsiniz:
+github sürümlerinden sürümler
 
 [![BStats](https://bstats.org/signatures/bukkit/ChatEx.svg)](https://bstats.org/plugin/bukkit/ChatEx/7744) 
