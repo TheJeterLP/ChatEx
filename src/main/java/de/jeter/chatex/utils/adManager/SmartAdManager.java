@@ -21,14 +21,14 @@ package de.jeter.chatex.utils.adManager;
 import de.jeter.chatex.utils.*;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SmartAdManager implements AdManager {
-    private static final Map<UUID, Double> uuidErrorMap = new HashMap<>();
+    private static final Map<UUID, Double> uuidErrorMap = new ConcurrentHashMap<>();
     private static final Pattern ipPattern = Pattern.compile("((?<![0-9])(?:(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[.,-:; ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[ ]?[., ][ ]?(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))(?![0-9]))");
     private static final Pattern webPattern = Pattern.compile("((([a-zA-Z0-9_-]{2,256}\\.)*)?[a-zA-Z0-9_-]{2,256}\\.[a-zA-Z_-]{2,256})(\\/[-a-zA-Z0-9@:%_\\\\+~#?&\\/=]*)?");
 
@@ -78,6 +78,10 @@ public class SmartAdManager implements AdManager {
             error = error > 0 ? error / messageLength : 0;
         }
         return error;
+    }
+
+    public static void clearPlayer(UUID uuid) {
+        uuidErrorMap.remove(uuid);
     }
 
     @Override

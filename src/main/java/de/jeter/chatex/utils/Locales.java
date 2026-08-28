@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 public enum Locales {
 
@@ -79,7 +80,7 @@ public enum Locales {
                     }
                     cfg.save(f);
                 } catch (IOException ioex) {
-                    ioex.printStackTrace();
+                    ChatEx.getInstance().getLogger().log(Level.SEVERE, "Could not save locale file", ioex);
                 }
             }
         } else {
@@ -92,7 +93,7 @@ public enum Locales {
                 }
                 cfg.save(f);
             } catch (IOException ex) {
-                ex.printStackTrace();
+                ChatEx.getInstance().getLogger().log(Level.SEVERE, "Could not save locale file", ex);
             }
         }
     }
@@ -125,7 +126,7 @@ public enum Locales {
             try {
                 cfg.save(f);
             } catch (IOException ex) {
-                ex.printStackTrace();
+                ChatEx.getInstance().getLogger().log(Level.SEVERE, "Could not save locale file", ex);
             }
             reload(false);
         }

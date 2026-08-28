@@ -4,9 +4,9 @@
     <groupId>de.jeter</groupId>
     <artifactId>ChatEx</artifactId>
     <name>ChatEx</name>
-    <inceptionYear>2024</inceptionYear>
+    <inceptionYear>2026</inceptionYear>
 
-    <version>3.2.2</version>
+    <version>3.3.0</version>
     <description>ChatManagement plugin for Bukkit</description>
     <url>https://www.spigotmc.org/resources/chatex-continued.71041/</url>
 
@@ -91,7 +91,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <version>1.18.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -109,7 +109,7 @@
         <dependency>
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
-            <version>5.4</version>
+            <version>5.5</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -121,13 +121,13 @@
         <dependency>
             <groupId>org.purpurmc.purpur</groupId>
             <artifactId>purpur-api</artifactId>
-            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <version>1.18.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>3.0.2</version>
+            <version>3.2.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -139,9 +139,9 @@
     </dependencies>
 
     <properties>
-        <java.version>16</java.version>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

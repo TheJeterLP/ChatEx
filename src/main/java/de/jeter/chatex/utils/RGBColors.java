@@ -7,6 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -86,7 +87,7 @@ public class RGBColors {
                 LogHelper.debug(ver + "  INT: " + toCheck);
                 supported = toCheck >= 116;
             } catch (Exception ex) {
-                ex.printStackTrace();
+                ChatEx.getInstance().getLogger().log(Level.SEVERE, "Could not determine server version for RGB color support", ex);
             }
         }
         return !supported;

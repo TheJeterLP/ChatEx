@@ -4,7 +4,7 @@ version: ${project.version}
 authors: [ Jeter, Wizard_x ]
 description: Chat management plugin
 softdepend: [ LuckPerms, Vault, PlaceholderAPI, Essentials ]
-api-version: 1.13
+api-version: 1.18
 
 commands:
   chatex:
