@@ -12,3 +12,9 @@ or [Here](https://jitpack.io/#TheJeterLP/ChatEx) to read more about how to add i
 versions from github releases
 
 [![BStats](https://bstats.org/signatures/bukkit/ChatEx.svg)](https://bstats.org/plugin/bukkit/ChatEx/7744)
+
+
+Links: 
+- [SpigotMC](https://www.spigotmc.org/resources/chatex.71041/)
+- [Hangar (PaperMC)](https://hangar.papermc.io/TheJeterLP/ChatEx)
+- [Modrinth](https://modrinth.com/project/chatex)
