@@ -15,7 +15,7 @@ Messages:
     Reload:
       Success: '&aChatEx yeniden yüklendi.'
     Clear:
-      Success: '&aSohbet şu kişi tarafından boşaltıldı: '
+      Success: '&aSohbet şu kişi tarafından boşaltıldı: %prefix%displayname%suffix'
   CommandResult:
     NoPermission: '&4[HATA] &7Bunun için gerekli izinlere sahip değilsiniz! &c(%perm)'
     WrongUsage: '&c[HATA] &7 Yanlış kullanım! &6%cmd help&7'i kullan!'

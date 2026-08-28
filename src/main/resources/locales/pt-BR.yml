@@ -10,7 +10,7 @@ Messages:
     Reload:
       Success: '&aConfig foi recarregada.'
     Clear:
-      Success: '&aO chat foi limpo por '
+      Success: '&aO chat foi limpo por %prefix%displayname%suffix'
   Chat:
     AdDetected: '&4[ERRO] &7Propaganda nao e permitida! &c(%perm)'
     AdNotify: "&c%jogador tentou escrever propaganda no chat. Ele/ela escreveu: \n\

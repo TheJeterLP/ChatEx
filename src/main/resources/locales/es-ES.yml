@@ -10,7 +10,7 @@ Messages:
     Reload:
       Success: '&aLa configuración ha sido recargada.'
     Clear:
-      Success: '&aEl chat ha sido borrado '
+      Success: '&aEl chat ha sido borrado %prefix%displayname%suffix'
   Chat:
     AdDetected: '&4[ERROR] &7La publicidad no está permitida! &c(%perm)'
     BlockedWord: '&4[ERROR] &7Trataste de usar una palabra que no está permitida!'

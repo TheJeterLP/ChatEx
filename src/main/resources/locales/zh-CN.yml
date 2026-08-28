@@ -10,7 +10,7 @@ Messages:
     Reload:
       Success: '&a配置文件已重新加载'
     Clear:
-      Success: '&a聊天已被清除，操作者：'
+      Success: '&a聊天已被清除，操作者：%prefix%displayname%suffix'
   Chat:
     AdDetected: '&4[错误] &7禁止发送广告！ &c(%perm)'
     BlockedWord: '&4[错误] &7你正尝试发送被禁止的文字！'

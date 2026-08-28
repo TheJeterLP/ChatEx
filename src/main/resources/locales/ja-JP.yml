@@ -10,7 +10,7 @@ Messages:
     Reload:
       Success: '&a設定が再読み込みされました。'
     Clear:
-      Success: '&aチャットは削除されました。 '
+      Success: '&aチャットは削除されました。 %prefix%displayname%suffix'
   Chat:
     AdDetected: '&4[エラー] &7広告は許可されていません！ &c(%perm)'
     BlockedWord: '&4[エラー] &7禁止されている単語を使用しようとしました！'

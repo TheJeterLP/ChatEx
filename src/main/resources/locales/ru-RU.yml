@@ -15,7 +15,7 @@ Messages:
     Reload:
       Success: '&f[&4Внимание&f] &7ChatEx был перезагружен!'
     Clear:
-      Success: '&f[&4Внимание&f] &7Чат был очищен! '
+      Success: '&f[&4Внимание&f] &7Чат был очищен! %prefix%displayname%suffix'
   CommandResult:
     NoPermission: '&f[&4Внимание&f] &7У вас нет прав на это! &7(&e%perm&7)'
     WrongUsage: '&f[&4Внимание&f] &7неизвестная команда, используйте: &e%cmd help&7!'

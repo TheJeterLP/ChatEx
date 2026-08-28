@@ -12,7 +12,7 @@ Messages:
     Reload:
       Success: '&aConfiguration rechargée.'
     Clear:
-      Success: '&aLe chat a été effacé par '
+      Success: '&aLe chat a été effacé par %prefix%displayname%suffix'
   CommandResult:
     NoPermission: "&4[ERREUR] &7Vous n'avez pas la permission ! &c(%perm%)"
     WrongUsage: '&c[ERREUR] &7Mauvaise utilisation ! Tapez &6%cmd help&7!'

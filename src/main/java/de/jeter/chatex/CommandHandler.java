@@ -43,6 +43,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("chatex.reload")) {
                     Config.reload(true);
+                    Locales.reload(true);
                     DomainDictionary.load();
                     ChatEx.getInstance().getChatListener().reregister(ChatEx.getInstance());
                     sender.sendMessage(Locales.MESSAGES_RELOAD.getString(null));
@@ -65,15 +66,18 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                     }
 
                     Player clearer = null;
-
-                    String who = Locales.COMMAND_CLEAR_UNKNOWN.getString(null);
-                    if ((sender instanceof ConsoleCommandSender) || (sender instanceof BlockCommandSender)) {
-                        who = Locales.COMMAND_CLEAR_CONSOLE.getString(null);
-                    } else if (sender instanceof Player) {
-                        who = sender.getName();
+                    String who;
+                    if (sender instanceof Player) {
                         clearer = (Player) sender;
+                        who = "%prefix%displayname%suffix";
+                    } else if (sender instanceof ConsoleCommandSender || sender instanceof BlockCommandSender) {
+                        who = Locales.COMMAND_CLEAR_CONSOLE.getString(null);
+                    } else {
+                        who = Locales.COMMAND_CLEAR_UNKNOWN.getString(null);
                     }
-                    Bukkit.broadcastMessage(Locales.MESSAGES_CLEAR.getString(clearer) + who);
+
+                    String msg = Locales.MESSAGES_CLEAR.getString(clearer) + who;
+                    Bukkit.broadcastMessage(Utils.replacePlayerPlaceholders(clearer, msg));
                 } else {
                     sender.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(null).replaceAll("%perm", "chatex.clear"));
                 }
