@@ -6,11 +6,15 @@ Commands:
     Console: CONSOLE
     Unknown: DESCONHECIDO
 Messages:
+  Info: '&aPlugin ChatEx por %authors (%version)'
+  UpdateFoundHover: '&aClique para baixar'
   Commands:
     Reload:
       Success: '&aConfig foi recarregada.'
     Clear:
       Success: '&aO chat foi limpo por %prefix%displayname%suffix'
+    Help:
+      Line: '&a/%cmd %subcommand - %description'
   Chat:
     AdDetected: '&4[ERRO] &7Propaganda nao e permitida! &c(%perm)'
     AdNotify: "&c%jogador tentou escrever propaganda no chat. Ele/ela escreveu: \n\

@@ -28,13 +28,16 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 
 public class CommandHandler implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage("§aChatEx plugin by " + ChatEx.getInstance().getDescription().getAuthors() + " (" + ChatEx.getInstance().getDescription().getVersion() + ")");
+            sender.sendMessage(Locales.COMMAND_INFO.getString(null)
+                    .replaceAll("%authors", Matcher.quoteReplacement(String.valueOf(ChatEx.getInstance().getDescription().getAuthors())))
+                    .replaceAll("%version", Matcher.quoteReplacement(ChatEx.getInstance().getDescription().getVersion())));
             return true;
         } else if (args.length > 1) {
             sender.sendMessage(Locales.COMMAND_RESULT_WRONG_USAGE.getString(null).replaceAll("%cmd", command.getName()));
@@ -65,26 +68,42 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                         Bukkit.broadcastMessage("\n");
                     }
 
-                    Player clearer = null;
-                    String who;
-                    if (sender instanceof Player) {
-                        clearer = (Player) sender;
-                        who = "%prefix%displayname%suffix";
-                    } else if (sender instanceof ConsoleCommandSender || sender instanceof BlockCommandSender) {
-                        who = Locales.COMMAND_CLEAR_CONSOLE.getString(null);
-                    } else {
-                        who = Locales.COMMAND_CLEAR_UNKNOWN.getString(null);
+                    Player clearer = sender instanceof Player ? (Player) sender : null;
+                    String who = null;
+                    if (clearer == null) {
+                        who = (sender instanceof ConsoleCommandSender || sender instanceof BlockCommandSender)
+                                ? Locales.COMMAND_CLEAR_CONSOLE.getString(null)
+                                : Locales.COMMAND_CLEAR_UNKNOWN.getString(null);
                     }
 
-                    String msg = Locales.MESSAGES_CLEAR.getString(clearer) + who;
-                    Bukkit.broadcastMessage(Utils.replacePlayerPlaceholders(clearer, msg));
+                    // The locale text is the source of truth for where "who cleared the chat" is
+                    // placed (via %prefix%displayname%suffix, same as every bundled translation).
+                    // Appending it in code below is only a fallback for locale files saved before
+                    // this was configurable, i.e. that don't contain %displayname at all yet.
+                    String rawMsg = Locales.MESSAGES_CLEAR.getString(null);
+                    String msg;
+                    if (rawMsg.contains("%displayname")) {
+                        msg = clearer != null
+                                ? Locales.MESSAGES_CLEAR.getString(clearer)
+                                : rawMsg.replace("%prefix", "").replace("%displayname", who).replace("%suffix", "");
+                    } else {
+                        msg = Utils.replacePlayerPlaceholders(clearer, rawMsg + (clearer != null ? "%prefix%displayname%suffix" : who));
+                    }
+
+                    Bukkit.broadcastMessage(msg);
                 } else {
                     sender.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(null).replaceAll("%perm", "chatex.clear"));
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?")) {
-                sender.sendMessage("§a/" + command.getName() + " reload - " + Locales.COMMAND_RELOAD_DESCRIPTION.getString(null));
-                sender.sendMessage("§a/" + command.getName() + " clear - " + Locales.COMMAND_CLEAR_DESCRIPTION.getString(null));
+                sender.sendMessage(Locales.COMMAND_HELP_LINE.getString(null)
+                        .replaceAll("%cmd", Matcher.quoteReplacement(command.getName()))
+                        .replaceAll("%subcommand", "reload")
+                        .replaceAll("%description", Matcher.quoteReplacement(Locales.COMMAND_RELOAD_DESCRIPTION.getString(null))));
+                sender.sendMessage(Locales.COMMAND_HELP_LINE.getString(null)
+                        .replaceAll("%cmd", Matcher.quoteReplacement(command.getName()))
+                        .replaceAll("%subcommand", "clear")
+                        .replaceAll("%description", Matcher.quoteReplacement(Locales.COMMAND_CLEAR_DESCRIPTION.getString(null))));
                 return true;
             } else {
                 sender.sendMessage(Locales.COMMAND_RESULT_WRONG_USAGE.getString(null).replaceAll("%cmd", "/chatex"));

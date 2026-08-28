@@ -33,7 +33,9 @@ public enum Locales {
     COMMAND_CLEAR_CONSOLE("Commands.Clear.Console", "CONSOLE"),
     COMMAND_CLEAR_UNKNOWN("Commands.Clear.Unknown", "UNKNOWN"),
     MESSAGES_RELOAD("Messages.Commands.Reload.Success", "&aConfig was reloaded."),
-    MESSAGES_CLEAR("Messages.Commands.Clear.Success", "&aThe chat has been cleared by "),
+    MESSAGES_CLEAR("Messages.Commands.Clear.Success", "&aThe chat has been cleared by %prefix%displayname%suffix"),
+    COMMAND_INFO("Messages.Info", "&aChatEx plugin by %authors (%version)"),
+    COMMAND_HELP_LINE("Messages.Commands.Help.Line", "&a/%cmd %subcommand - %description"),
     MESSAGES_AD("Messages.Chat.AdDetected", "&4[ERROR] &7Advertising is not allowed! &c(%perm)"),
     MESSAGES_BLOCKED("Messages.Chat.BlockedWord", "&4[ERROR] &7You tried to write a word that is blocked!"),
     MESSAGES_AD_NOTIFY("Messages.Chat.AdNotify", "&c%player tried to write an ad in chat. He wrote: \n&a %message"),
@@ -46,6 +48,7 @@ public enum Locales {
     PLAYER_QUIT("Messages.Player.Quit", "%prefix%displayname%suffix &eleft the game!"),
     NO_LISTENING_PLAYERS("Messages.Chat.NoOneListens", "&cNo players are near you to hear you talking! Try to use the global mode to chat globally."),
     UPDATE_FOUND("Messages.UpdateFound", "&a[ChatEx]&7 A new update has been found on SpigotMC. Current version: %oldversion New version: %newversion. Click this message to download it!"),
+    UPDATE_FOUND_HOVER("Messages.UpdateFoundHover", "&aClick to download"),
     ;
 
     private static final File localeFolder = new File(ChatEx.getInstance().getDataFolder(), "locales");

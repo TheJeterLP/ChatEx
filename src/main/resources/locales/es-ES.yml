@@ -6,11 +6,14 @@ Commands:
     Console: CONSOLE
     Unknown: UNKNOWN
 Messages:
+  Info: '&aPlugin ChatEx de %authors (%version)'
   Commands:
     Reload:
       Success: '&aLa configuración ha sido recargada.'
     Clear:
       Success: '&aEl chat ha sido borrado %prefix%displayname%suffix'
+    Help:
+      Line: '&a/%cmd %subcommand - %description'
   Chat:
     AdDetected: '&4[ERROR] &7La publicidad no está permitida! &c(%perm)'
     BlockedWord: '&4[ERROR] &7Trataste de usar una palabra que no está permitida!'
@@ -30,3 +33,4 @@ Messages:
     Quit: '%prefix%displayname%suffix &ese fue del juego!'
   UpdateFound: '&a[ChatEx]&7 Una nueva actualización fue encontrada en SpigotMC. Versión
     actual: %oldversion Nueva versión: %newversion'
+  UpdateFoundHover: '&aHaz clic para descargar'
