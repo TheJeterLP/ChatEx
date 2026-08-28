@@ -1,13 +1,11 @@
 package de.jeter.chatex.utils;
 
 import de.jeter.chatex.ChatEx;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,15 +13,8 @@ public class RGBColors {
 
     private static final HashMap<String, String> placeHolderColorMap = new HashMap<>();
 
-    private static Boolean supported = null;
-
     public static void load() {
-        ChatEx.getInstance().getLogger().info("Server version:" + Bukkit.getVersion());
-        if (isNotSupported()) {
-            ChatEx.getInstance().getLogger().info("This server version doesn't support custom color codes!");
-            return;
-        }
-        ChatEx.getInstance().getLogger().info("Version is later than 1.16. Loading RGB ColorCodes!");
+        ChatEx.getInstance().getLogger().info("Loading RGB ColorCodes!");
         ConfigurationSection configurationSection = Config.RGB_COLORS.getConfigurationSection();
 
         if (configurationSection == null) {
@@ -48,12 +39,12 @@ public class RGBColors {
     }
 
     public static String translateCustomColorCodes(String s) {
-        if (isNotSupported()) {
-            return s;
-        }
         s = translateSingleMessageColorCodes(s);
         for (Map.Entry<String, String> stringColorEntry : placeHolderColorMap.entrySet()) {
-            s = s.replace(stringColorEntry.getKey(), stringColorEntry.getValue());
+            // Custom color placeholders are typed as "&<key>" (e.g. "&$g"); the leading "&"
+            // must be consumed here too, otherwise it survives as a stray character in the
+            // output since it's no longer followed by a valid legacy color code.
+            s = s.replace("&" + stringColorEntry.getKey(), stringColorEntry.getValue());
         }
         return s;
     }
@@ -76,27 +67,10 @@ public class RGBColors {
         return s;
     }
 
-    private static boolean isNotSupported() {
-        if (supported == null) {
-            try {
-                final String version = Bukkit.getVersion();
-                String ver = version.split("\\(MC: ")[1];
-                String[] numbers = ver.replaceAll("\\)", "").split("\\.");
-                ver = numbers[0] + numbers[1];
-                int toCheck = Integer.valueOf(ver);
-                LogHelper.debug(ver + "  INT: " + toCheck);
-                supported = toCheck >= 116;
-            } catch (Exception ex) {
-                ChatEx.getInstance().getLogger().log(Level.SEVERE, "Could not determine server version for RGB color support", ex);
-            }
-        }
-        return !supported;
-    }
-
     public static String translateGradientCodes(String message) {
         final Pattern hexPattern = Pattern.compile("#([A-Fa-f0-9]{6})");
         Matcher matcher = hexPattern.matcher(message);
-        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
+        StringBuilder buffer = new StringBuilder(message.length() + 4 * 8);
         while (matcher.find())
         {
             String group = matcher.group(1);
