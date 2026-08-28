@@ -62,11 +62,11 @@ public class Utils {
         String result = format;
 
         result = result.replace("%displayname", player.getDisplayName());
-        result = result.replace("%prefix", PluginManager.getInstance().getPrefix(player));
-        result = result.replace("%suffix", PluginManager.getInstance().getSuffix(player));
+        result = result.replace("%prefix", PluginManager.getPrefix(player));
+        result = result.replace("%suffix", PluginManager.getSuffix(player));
         result = result.replace("%player", player.getName());
         result = result.replace("%world", player.getWorld().getName());
-        result = result.replace("%group", PluginManager.getInstance().getGroupNames(player).length > 0 ? PluginManager.getInstance().getGroupNames(player)[0] : "none");
+        result = result.replace("%group", PluginManager.getGroupNames(player).length > 0 ? PluginManager.getGroupNames(player)[0] : "none");
 
         if (HookManager.checkPlaceholderAPI()) {
             LogHelper.debug("PlaceholderAPI is installed! Replacing...");

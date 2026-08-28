@@ -23,17 +23,16 @@ import de.jeter.chatex.utils.HookManager;
 import de.jeter.chatex.utils.Utils;
 import org.bukkit.entity.Player;
 
-public class PluginManager implements PermissionsPlugin {
+/**
+ * Picks and delegates to whichever {@link PermissionsPlugin} handler is available on this
+ * server (LuckPerms, Vault or a no-op fallback). Purely static: there is no per-instance state,
+ * so unlike an earlier version of this class it no longer wraps that in a redundant singleton.
+ */
+public class PluginManager {
 
     private static PermissionsPlugin handler;
-    private static PluginManager INSTANCE;
-
-    public static PermissionsPlugin getInstance() {
-        return INSTANCE;
-    }
 
     public static void load() {
-        INSTANCE = new PluginManager();
         if (HookManager.checkLuckperms()) {
             handler = new LuckPerms();
         } else if (HookManager.checkVault() && Vault.setupChat()) {
@@ -60,33 +59,27 @@ public class PluginManager implements PermissionsPlugin {
         }
     }
 
-    @Override
-    public String getName() {
+    public static String getName() {
         return handler.getName();
     }
 
-    @Override
-    public String getPrefix(Player p) {
+    public static String getPrefix(Player p) {
         return handler.getPrefix(p);
     }
 
-    @Override
-    public String getSuffix(Player p) {
+    public static String getSuffix(Player p) {
         return handler.getSuffix(p);
     }
 
-    @Override
-    public String[] getGroupNames(Player p) {
+    public static String[] getGroupNames(Player p) {
         return handler.getGroupNames(p);
     }
 
-    @Override
-    public String getMessageFormat(Player p) {
+    public static String getMessageFormat(Player p) {
         return Utils.replaceColors(handler.getMessageFormat(p));
     }
 
-    @Override
-    public String getGlobalMessageFormat(Player p) {
+    public static String getGlobalMessageFormat(Player p) {
         return Utils.replaceColors(handler.getGlobalMessageFormat(p));
     }
 }

@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 public class ChatExAPI {
 
     public String getPermissionHandlerName() {
-        return PluginManager.getInstance().getName();
+        return PluginManager.getName();
     }
 
     public AntiSpamManager getAntiSpamManager() {
@@ -33,22 +33,22 @@ public class ChatExAPI {
     }
 
     public String getPrefix(Player p) {
-        return PluginManager.getInstance().getPrefix(p);
+        return PluginManager.getPrefix(p);
     }
 
     public String getSuffix(Player p) {
-        return PluginManager.getInstance().getSuffix(p);
+        return PluginManager.getSuffix(p);
     }
 
     public String[] getGroupNames(Player p) {
-        return PluginManager.getInstance().getGroupNames(p);
+        return PluginManager.getGroupNames(p);
     }
 
     public String getMessageFormat(Player p) {
-        return PluginManager.getInstance().getMessageFormat(p);
+        return PluginManager.getMessageFormat(p);
     }
 
     public String getGlobalMessageFormat(Player p) {
-        return PluginManager.getInstance().getGlobalMessageFormat(p);
+        return PluginManager.getGlobalMessageFormat(p);
     }
 }

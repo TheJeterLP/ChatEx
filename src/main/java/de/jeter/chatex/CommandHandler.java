@@ -19,6 +19,7 @@
 package de.jeter.chatex;
 
 import de.jeter.chatex.utils.Config;
+import de.jeter.chatex.utils.DomainDictionary;
 import de.jeter.chatex.utils.Locales;
 import de.jeter.chatex.utils.Utils;
 import org.bukkit.Bukkit;
@@ -42,6 +43,8 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("chatex.reload")) {
                     Config.reload(true);
+                    DomainDictionary.load();
+                    ChatEx.getInstance().getChatListener().reregister(ChatEx.getInstance());
                     sender.sendMessage(Locales.MESSAGES_RELOAD.getString(null));
 
                     if (Config.CHANGE_TABLIST_NAME.getBoolean()) {
