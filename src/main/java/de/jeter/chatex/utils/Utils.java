@@ -27,16 +27,28 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Utils {
 
+    private static final Pattern COLOR_CODE_PATTERN = Pattern.compile("(?i)&[0-9a-fk-or]|#[0-9a-f]{6}");
+
     public static String translateColorCodes(String string, Player p) {
-        return p.hasPermission("chatex.chat.color") ? replaceColors(string) : string;
+        if (p.hasPermission("chatex.chat.color")) {
+            return replaceColors(string);
+        }
+        if (COLOR_CODE_PATTERN.matcher(string).find()) {
+            p.sendMessage(Locales.COMMAND_RESULT_NO_PERM.getString(p).replaceAll("%perm", "chatex.chat.color"));
+        }
+        return string;
     }
 
     public static String replaceColors(String message) {
-        message = RGBColors.translateGradientCodes(message);
+        // Must run before translateGradientCodes: it matches "&#RRGGBB" (consuming the "&"),
+        // whereas translateGradientCodes matches bare "#RRGGBB" regardless of a leading "&" and
+        // would otherwise steal the hex code first, leaving a stray unconverted "&" behind.
         message = RGBColors.translateCustomColorCodes(message);
+        message = RGBColors.translateGradientCodes(message);
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
@@ -62,11 +74,11 @@ public class Utils {
         String result = format;
 
         result = result.replace("%displayname", player.getDisplayName());
-        result = result.replace("%prefix", PluginManager.getInstance().getPrefix(player));
-        result = result.replace("%suffix", PluginManager.getInstance().getSuffix(player));
+        result = result.replace("%prefix", PluginManager.getPrefix(player));
+        result = result.replace("%suffix", PluginManager.getSuffix(player));
         result = result.replace("%player", player.getName());
         result = result.replace("%world", player.getWorld().getName());
-        result = result.replace("%group", PluginManager.getInstance().getGroupNames(player).length > 0 ? PluginManager.getInstance().getGroupNames(player)[0] : "none");
+        result = result.replace("%group", PluginManager.getGroupNames(player).length > 0 ? PluginManager.getGroupNames(player)[0] : "none");
 
         if (HookManager.checkPlaceholderAPI()) {
             LogHelper.debug("PlaceholderAPI is installed! Replacing...");

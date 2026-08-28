@@ -6,11 +6,14 @@ Commands:
     Console: CONSOLE
     Unknown: UNKNOWN
 Messages:
+  Info: '&aChatEx プラグイン 作者: %authors (%version)'
   Commands:
     Reload:
       Success: '&a設定が再読み込みされました。'
     Clear:
-      Success: '&aチャットは削除されました。 '
+      Success: '&aチャットは削除されました。 %prefix%displayname%suffix'
+    Help:
+      Line: '&a/%cmd %subcommand - %description'
   Chat:
     AdDetected: '&4[エラー] &7広告は許可されていません！ &c(%perm)'
     BlockedWord: '&4[エラー] &7禁止されている単語を使用しようとしました！'
@@ -26,5 +29,6 @@ Messages:
     Join: '%prefix%displayname%suffix &eゲームに参加しました！'
     Kick: '%prefix%displayname%suffix &eゲームから除外されました！'
     Quit: '%prefix%displayname%suffix &eゲームから退出しました！'
-  UpdateFound: '&a[ChatEx]&7 SpigotMC で新しいアップデートが見つかりました。 
+  UpdateFound: '&a[ChatEx]&7 SpigotMC で新しいアップデートが見つかりました。
     現在のバージョン: %oldversion 最新のバージョン: %newversion'
+  UpdateFoundHover: '&aクリックしてダウンロード'

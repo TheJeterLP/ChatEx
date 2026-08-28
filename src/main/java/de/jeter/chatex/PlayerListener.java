@@ -18,9 +18,11 @@
  */
 package de.jeter.chatex;
 
+import de.jeter.chatex.utils.AntiSpamManager;
 import de.jeter.chatex.utils.Config;
 import de.jeter.chatex.utils.Locales;
 import de.jeter.chatex.utils.Utils;
+import de.jeter.chatex.utils.adManager.SmartAdManager;
 import de.jeter.updatechecker.Result;
 import de.jeter.updatechecker.UpdateChecker;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -61,7 +63,7 @@ public class PlayerListener implements Listener {
             if (checker.getResult() == Result.UPDATE_FOUND) {
                 try {
                     TextComponent msg = new TextComponent(Locales.UPDATE_FOUND.getString(null).replaceAll("%oldversion", ChatEx.getInstance().getDescription().getVersion()).replaceAll("%newversion", ChatEx.getInstance().getUpdateChecker().getLatestRemoteVersion()));
-                    msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§aClick to download")));
+                    msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Locales.UPDATE_FOUND_HOVER.getString(null))));
                     msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, checker.getDownloadLink()));
                     e.getPlayer().spigot().sendMessage(msg);
                 } catch (NoClassDefFoundError ex) {
@@ -75,6 +77,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(final PlayerQuitEvent e) {
+        AntiSpamManager.getInstance().remove(e.getPlayer().getUniqueId());
+        SmartAdManager.clearPlayer(e.getPlayer().getUniqueId());
+
         if (!Config.CHANGE_JOIN_AND_QUIT.getBoolean()) {
             return;
         }

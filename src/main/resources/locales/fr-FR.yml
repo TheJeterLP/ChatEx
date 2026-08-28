@@ -6,13 +6,17 @@ Commands:
     Console: 'CONSOLE'
     Unknown: 'INCONNU'
 Messages:
+  Info: '&aPlugin ChatEx par %authors (%version)'
+  UpdateFoundHover: '&aCliquez pour télécharger'
   Chat:
     AdDetected: '&4Les publicités ne sont pas autorisées ! (%perm)'
   Commands:
     Reload:
       Success: '&aConfiguration rechargée.'
     Clear:
-      Success: '&aLe chat a été effacé par '
+      Success: '&aLe chat a été effacé par %prefix%displayname%suffix'
+    Help:
+      Line: '&a/%cmd %subcommand - %description'
   CommandResult:
     NoPermission: "&4[ERREUR] &7Vous n'avez pas la permission ! &c(%perm%)"
     WrongUsage: '&c[ERREUR] &7Mauvaise utilisation ! Tapez &6%cmd help&7!'

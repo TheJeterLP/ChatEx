@@ -29,6 +29,7 @@ public class ChatEx extends JavaPlugin {
 
     private static ChatEx INSTANCE;
     private UpdateChecker updatechecker = null;
+    private ChatListener chatListener;
 
     public static ChatEx getInstance() {
         return INSTANCE;
@@ -43,8 +44,10 @@ public class ChatEx extends JavaPlugin {
         PluginManager.load();
         ChatLogger.load();
         RGBColors.load();
+        DomainDictionary.load();
 
-        getServer().getPluginManager().registerEvents(new ChatListener(), this);
+        chatListener = new ChatListener();
+        chatListener.register(this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getCommand("chatex").setExecutor(new CommandHandler());
 
@@ -74,5 +77,9 @@ public class ChatEx extends JavaPlugin {
 
     public UpdateChecker getUpdateChecker() {
         return this.updatechecker;
+    }
+
+    public ChatListener getChatListener() {
+        return this.chatListener;
     }
 }

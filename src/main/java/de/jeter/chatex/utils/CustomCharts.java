@@ -11,7 +11,7 @@ public class CustomCharts {
     }
 
     public static void addPermissionsPluginChart(Metrics metrics) {
-        metrics.addCustomChart(new SimplePie("used_permissions_plugin", () -> PluginManager.getInstance().getName()));
+        metrics.addCustomChart(new SimplePie("used_permissions_plugin", () -> PluginManager.getName()));
     }
 
 }

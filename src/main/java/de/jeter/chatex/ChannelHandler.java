@@ -27,6 +27,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class ChannelHandler implements PluginMessageListener {
 
@@ -66,7 +67,7 @@ public class ChannelHandler implements PluginMessageListener {
                 millis = msgin.readLong();
                 msg = msgin.readUTF();
             } catch (IOException ex) {
-                ex.printStackTrace();
+                ChatEx.getInstance().getLogger().log(Level.SEVERE, "Could not read cross-server chat message", ex);
                 msg = "null";
             }
 
@@ -90,7 +91,7 @@ public class ChannelHandler implements PluginMessageListener {
                 msgout.writeLong(System.currentTimeMillis());
                 msgout.writeUTF(message);
             } catch (IOException exception) {
-                exception.printStackTrace();
+                ChatEx.getInstance().getLogger().log(Level.SEVERE, "Could not write cross-server chat message", exception);
             }
 
             out.writeShort(msgbytes.toByteArray().length);

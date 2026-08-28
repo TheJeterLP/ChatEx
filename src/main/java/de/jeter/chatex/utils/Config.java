@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 public enum Config {
 
@@ -110,7 +111,7 @@ public enum Config {
         try {
             cfg.save(f);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            ChatEx.getInstance().getLogger().log(Level.SEVERE, "Could not save config.yml", ex);
         }
     }
 
@@ -164,7 +165,7 @@ public enum Config {
             try {
                 cfg.save(f);
             } catch (IOException ex) {
-                ex.printStackTrace();
+                ChatEx.getInstance().getLogger().log(Level.SEVERE, "Could not save config.yml", ex);
             }
             reload(false);
         }
